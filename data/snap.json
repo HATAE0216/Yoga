@@ -26,10 +26,10 @@
  "seqs": [
   {
    "id": "ananda-flow",
-   "order": 0,
    "created": 0,
-   "name": "아난다 플로우",
    "desc": "앉은 전굴·비틀기 → 후굴 → 역자세 → 사바아사나. 시간은 기본값(5호흡)이니 수련하며 조정하세요.",
+   "name": "아난다 플로우",
+   "order": 0,
    "steps": [
     {
      "dur": 5,
@@ -149,86 +149,81 @@
    "updated": 1794977737155
   },
   {
-   "id": "surya-a",
-   "order": 1,
-   "created": 1,
-   "name": "태양경배 A (Sūrya Namaskāra A)",
-   "desc": "아쉬탕가 태양경배 A. 한 동작 한 호흡, 아래를 향한 개에서만 5호흡. 3~5회 반복.",
+   "id": "evening",
+   "created": 3,
+   "desc": "잠들기 전 신경계를 진정시키는 느린 수련.",
+   "name": "저녁 이완 (약 15분)",
+   "order": 3,
    "steps": [
     {
-     "dur": 3,
-     "note": "사마스티티 · 합장으로 시작해도 좋음",
-     "pose": "tadasana",
+     "dur": 60,
+     "note": "",
+     "pose": "balasana",
+     "unit": "s"
+    },
+    {
+     "dur": 6,
+     "note": "소 자세와 천천히 번갈아",
+     "pose": "marjaryasana",
      "unit": "b"
     },
     {
-     "dur": 1,
-     "note": "들숨",
-     "pose": "urdhva-hastasana",
-     "unit": "b"
+     "dur": 60,
+     "note": "좌/우",
+     "pose": "eka-pada-rajakapotasana",
+     "unit": "s"
     },
     {
-     "dur": 1,
-     "note": "날숨",
-     "pose": "uttanasana",
-     "unit": "b"
+     "dur": 60,
+     "note": "",
+     "pose": "baddha-konasana",
+     "unit": "s"
     },
     {
-     "dur": 1,
-     "note": "들숨",
-     "pose": "ardha-uttanasana",
-     "unit": "b"
-    },
-    {
-     "dur": 1,
-     "note": "날숨 · 뒤로 점프 또는 걸어서",
-     "pose": "chaturanga",
-     "unit": "b"
-    },
-    {
-     "dur": 1,
-     "note": "들숨",
-     "pose": "urdhva-mukha-svanasana",
-     "unit": "b"
+     "dur": 45,
+     "note": "좌/우",
+     "pose": "janu-sirsasana",
+     "unit": "s"
     },
     {
      "dur": 5,
-     "note": "날숨 · 5호흡 머물기",
-     "pose": "adho-mukha-svanasana",
+     "note": "2회",
+     "pose": "setu-bandhasana",
      "unit": "b"
     },
     {
-     "dur": 1,
-     "note": "들숨 · 앞으로 걸어오기",
-     "pose": "ardha-uttanasana",
-     "unit": "b"
+     "dur": 45,
+     "note": "좌/우",
+     "pose": "supta-matsyendrasana",
+     "unit": "s"
     },
     {
-     "dur": 1,
-     "note": "날숨",
-     "pose": "uttanasana",
-     "unit": "b"
+     "dur": 45,
+     "note": "",
+     "pose": "ananda-balasana",
+     "unit": "s"
     },
     {
-     "dur": 1,
-     "note": "들숨",
-     "pose": "urdhva-hastasana",
-     "unit": "b"
+     "dur": 180,
+     "note": "",
+     "pose": "viparita-karani",
+     "unit": "s"
     },
     {
-     "dur": 1,
-     "note": "날숨",
-     "pose": "tadasana",
-     "unit": "b"
+     "dur": 300,
+     "note": "",
+     "pose": "savasana",
+     "unit": "s"
     }
-   ]
+   ],
+   "updated": 3
   },
   {
    "id": "morning",
-   "order": 2,
    "created": 2,
-   "name": "아침 기본 플로우 (약 15분)",
    "desc": "몸을 깨우는 아침 수련. 좌우가 있는 자세는 양쪽 모두.",
+   "name": "아침 기본 플로우 (약 15분)",
+   "order": 2,
    "steps": [
     {
      "dur": 10,
@@ -308,76 +303,84 @@
      "pose": "savasana",
      "unit": "s"
     }
-   ]
+   ],
+   "updated": 2
   },
   {
-   "id": "evening",
-   "order": 3,
-   "created": 3,
-   "name": "저녁 이완 (약 15분)",
-   "desc": "잠들기 전 신경계를 진정시키는 느린 수련.",
+   "id": "surya-a",
+   "created": 1,
+   "desc": "아쉬탕가 태양경배 A. 한 동작 한 호흡, 아래를 향한 개에서만 5호흡. 3~5회 반복.",
+   "name": "태양경배 A (Sūrya Namaskāra A)",
+   "order": 1,
    "steps": [
     {
-     "dur": 60,
-     "note": "",
-     "pose": "balasana",
-     "unit": "s"
-    },
-    {
-     "dur": 6,
-     "note": "소 자세와 천천히 번갈아",
-     "pose": "marjaryasana",
+     "dur": 3,
+     "note": "사마스티티 · 합장으로 시작해도 좋음",
+     "pose": "tadasana",
      "unit": "b"
     },
     {
-     "dur": 60,
-     "note": "좌/우",
-     "pose": "eka-pada-rajakapotasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "들숨",
+     "pose": "urdhva-hastasana",
+     "unit": "b"
     },
     {
-     "dur": 60,
-     "note": "",
-     "pose": "baddha-konasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "날숨",
+     "pose": "uttanasana",
+     "unit": "b"
     },
     {
-     "dur": 45,
-     "note": "좌/우",
-     "pose": "janu-sirsasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "들숨",
+     "pose": "ardha-uttanasana",
+     "unit": "b"
+    },
+    {
+     "dur": 1,
+     "note": "날숨 · 뒤로 점프 또는 걸어서",
+     "pose": "chaturanga",
+     "unit": "b"
+    },
+    {
+     "dur": 1,
+     "note": "들숨",
+     "pose": "urdhva-mukha-svanasana",
+     "unit": "b"
     },
     {
      "dur": 5,
-     "note": "2회",
-     "pose": "setu-bandhasana",
+     "note": "날숨 · 5호흡 머물기",
+     "pose": "adho-mukha-svanasana",
      "unit": "b"
     },
     {
-     "dur": 45,
-     "note": "좌/우",
-     "pose": "supta-matsyendrasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "들숨 · 앞으로 걸어오기",
+     "pose": "ardha-uttanasana",
+     "unit": "b"
     },
     {
-     "dur": 45,
-     "note": "",
-     "pose": "ananda-balasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "날숨",
+     "pose": "uttanasana",
+     "unit": "b"
     },
     {
-     "dur": 180,
-     "note": "",
-     "pose": "viparita-karani",
-     "unit": "s"
+     "dur": 1,
+     "note": "들숨",
+     "pose": "urdhva-hastasana",
+     "unit": "b"
     },
     {
-     "dur": 300,
-     "note": "",
-     "pose": "savasana",
-     "unit": "s"
+     "dur": 1,
+     "note": "날숨",
+     "pose": "tadasana",
+     "unit": "b"
     }
-   ]
+   ],
+   "updated": 1
   },
   {
    "id": "chair-yoga",

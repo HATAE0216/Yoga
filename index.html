@@ -212,6 +212,7 @@ body.ro .seqhead textarea{resize:none}
 .muvol{display:flex;align-items:center;gap:4px;font-size:13px}
 .muvol input{width:110px;accent-color:var(--accent)}
 .muname{flex-basis:100%;text-align:center;font-size:12.5px;color:var(--soft)}
+.ver{text-align:center;font-size:11.5px;color:#b3a597;padding:0 0 calc(24px + env(safe-area-inset-bottom))}
 .confirm{display:flex;gap:8px;align-items:center;background:#fbeee8;border:1px solid #efcdbf;border-radius:10px;padding:8px 10px;font-size:13.5px;margin-top:8px;flex-wrap:wrap}
 
 /* ---------- 모바일 ---------- */
@@ -369,6 +370,7 @@ body.ro .seqhead textarea{resize:none}
   </section>
 </div>
 
+<div class="ver">요가 노트 · 버전 11.18-c (음악)</div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
 
 <div class="practice" id="practice">
@@ -803,14 +805,31 @@ const Music=(()=>{
   try{ const s=JSON.parse(localStorage.getItem("yoga-music")||"{}"); if(s.on===false) on=false; if(s.bell===false) bellOn=false; if(typeof s.vol==="number") vol=s.vol; }catch(e){}
   const save=()=>{ try{ localStorage.setItem("yoga-music",JSON.stringify({on,bell:bellOn,vol})); }catch(e){} };
   const pick=a=>a[Math.floor(Math.random()*a.length)], R=(a,b)=>a+Math.random()*(b-a);
+  // iOS: 무음 스위치를 켜도 소리가 나도록 '재생' 오디오 세션으로 전환 + 무음 <audio> 루프로 세션 유지
+  let keep=null;
+  function silentWavURL(){
+    const sr=8000, n=sr, buf=new ArrayBuffer(44+n*2), v=new DataView(buf);
+    const w=(o,s)=>{ for(let i=0;i<s.length;i++) v.setUint8(o+i,s.charCodeAt(i)); };
+    w(0,"RIFF"); v.setUint32(4,36+n*2,true); w(8,"WAVE"); w(12,"fmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+    v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,"data"); v.setUint32(40,n*2,true);
+    return URL.createObjectURL(new Blob([buf],{type:"audio/wav"}));
+  }
+  function unlock(){
+    try{ if(navigator.audioSession) navigator.audioSession.type="playback"; }catch(e){}
+    try{ if(!keep){ keep=new Audio(silentWavURL()); keep.loop=true; keep.setAttribute("playsinline",""); keep.volume=0.01; } const pp=keep.play(); if(pp&&pp.catch) pp.catch(()=>{}); }catch(e){}
+    if(ctx && ctx.state!=="running"){ try{ const r=ctx.resume(); if(r&&r.catch) r.catch(()=>{}); }catch(e){} }
+    if(ctx){ try{ const b=ctx.createBuffer(1,1,22050), s=ctx.createBufferSource(); s.buffer=b; s.connect(ctx.destination); s.start(0); }catch(e){} }
+  }
   function ensure(){
-    if(ctx) return true;
+    if(ctx){ unlock(); return true; }
     const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
-    ctx=new AC(); master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+    try{ if(navigator.audioSession) navigator.audioSession.type="playback"; }catch(e){}
+    ctx=new AC();
+    if(ctx.addEventListener) ctx.addEventListener("statechange",()=>{ if(running && ctx.state!=="running") label(); }); master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
     const conv=ctx.createConvolver(); const len=ctx.sampleRate*4.5, buf=ctx.createBuffer(2,len,ctx.sampleRate);
     for(let c=0;c<2;c++){ const d=buf.getChannelData(c); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.8); }
     conv.buffer=buf; wet=ctx.createGain(); wet.gain.value=.55; dry=ctx.createGain(); dry.gain.value=.7;
-    wet.connect(conv); conv.connect(master); dry.connect(master); return true;
+    wet.connect(conv); conv.connect(master); dry.connect(master); unlock(); return true;
   }
   const out=(node)=>{ node.connect(wet); node.connect(dry); };
   const hz=(semi,oct=0)=>P.base*Math.pow(2,semi/12+oct);
@@ -819,7 +838,10 @@ const Music=(()=>{
     P={k, sn, sc:SCALES[sn], tx, base:110*Math.pow(2,((k-9+12)%12)/12), pace:R(.8,1.3)};
     deg=0; label();
   }
-  function label(){ const el=document.getElementById("muName"); if(el&&P) el.textContent=on?`🎵 ${P.sn} · ${KEYS[P.k]} · ${P.tx.n}`:"음악 꺼짐"; }
+  function label(){ const el=document.getElementById("muName"); if(!el||!P) return;
+    if(!on){ el.textContent="음악 꺼짐"; return; }
+    const stuck = running && ctx && ctx.state!=="running";
+    el.textContent = stuck ? "🔇 소리가 막혀 있어요 — 화면을 한 번 누르거나 🔀 다른 음악을 눌러 주세요" : `🎵 ${P.sn} · ${KEYS[P.k]} · ${P.tx.n}`; }
   function drone(){
     const g=ctx.createGain(); g.gain.value=0; g.gain.linearRampToValueAtTime(.07,ctx.currentTime+6);
     const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=700; lp.connect(g); out(g);
@@ -857,15 +879,16 @@ const Music=(()=>{
   }
   function stopNow(fade=1.2){
     running=false; timers.forEach(clearTimeout); timers=[];
+    try{ if(keep) keep.pause(); }catch(e){}
     if(!ctx) return; const ds=drones; drones=[];
     master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0,ctx.currentTime,fade/3);
     setTimeout(()=>{ ds.forEach(d=>{ try{ d.stop(); }catch(e){} }); },fade*1000+200);
   }
   return {
-    newPreset, start,
+    newPreset, start, unlock(){ if(ctx) unlock(); },
     stop(){ stopNow(1.2); },
     fadeOut(sec){ stopNow(sec); },
-    next(){ const was=running; stopNow(.8); newPreset(); if(was) setTimeout(start,900); },
+    next(){ const was=running; ensure(); stopNow(.8); newPreset(); if(was) setTimeout(start,900); else label(); },
     toggle(){ on=!on; save(); if(on) { if(pr&&pr.playing) start(); } else stopNow(1); label(); return on; },
     toggleBell(){ bellOn=!bellOn; save(); return bellOn; },
     setVol(v){ vol=v; save(); if(ctx&&running) master.gain.setTargetAtTime(vol*.9,ctx.currentTime,.2); },
@@ -876,6 +899,8 @@ const Music=(()=>{
 })();
 function paintMusicUI(){ $("#muToggle").textContent=Music.on?"🎵 음악 켜짐":"🎵 음악 꺼짐"; $("#muToggle").classList.toggle("off",!Music.on); $("#muBell").textContent=Music.bellOn?"🔔 전환 종 켜짐":"🔔 전환 종 꺼짐"; $("#muBell").classList.toggle("off",!Music.bellOn); $("#muVol").value=Math.round(Music.vol*100); }
 $("#muToggle").onclick=()=>{ Music.toggle(); paintMusicUI(); };
+["touchend","click"].forEach(ev=>$("#practice").addEventListener(ev,()=>Music.unlock(),{passive:true}));
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) Music.unlock(); });
 $("#muNext").onclick=()=>{ Music.next(); if(!Music.on) toast("음악이 꺼져 있어요"); };
 $("#muBell").onclick=()=>{ Music.toggleBell(); paintMusicUI(); };
 $("#muVol").oninput=e=>Music.setVol(e.target.value/100);

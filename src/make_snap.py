@@ -12,5 +12,8 @@ jour = [{'id': d['id'], **d.get('data', {})} for d in load(sys.argv[2], [])]
 sett = load(sys.argv[3], {}) if len(sys.argv) > 3 else {}
 kst = datetime.datetime.utcnow() + datetime.timedelta(hours=9)
 snap = {'at': f"{kst.year}. {kst.month}. {kst.day}", 'motto': (sett or {}).get('motto', ''), 'journal': jour, 'seqs': seqs}
+old = load(os.path.join(ROOT, 'data', 'snap.json'), {})
+if old and all(old.get(k) == snap[k] for k in ('motto', 'journal', 'seqs')):
+    snap['at'] = old.get('at', snap['at'])  # 내용이 같으면 날짜도 그대로 두어 불필요한 커밋을 막음
 json.dump(snap, open(os.path.join(ROOT, 'data', 'snap.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print('snap:', len(seqs), 'seqs,', len(jour), 'journal')

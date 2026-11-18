@@ -1,0 +1,126 @@
+[
+ {
+  "id": "chair-yoga",
+  "name": "의자 요가 (약 15분)",
+  "desc": "의자에 앉아서 하는 수련. 사무실·집 어디서나. 의자는 바퀴 없고 단단한 것으로, 의자 앞쪽 절반에 앉아 시작하세요.",
+  "order": 4,
+  "created": 4,
+  "updated": 1794978000000,
+  "steps": [
+   {
+    "pose": "chair-dhyana",
+    "dur": 10,
+    "unit": "b",
+    "note": "호흡 관찰, 상칼파 세우기"
+   },
+   {
+    "pose": "grive-sanchalana",
+    "dur": 5,
+    "unit": "b",
+    "note": "오른쪽"
+   },
+   {
+    "pose": "grive-sanchalana",
+    "dur": 5,
+    "unit": "b",
+    "note": "왼쪽"
+   },
+   {
+    "pose": "chair-urdhva-hastasana",
+    "dur": 5,
+    "unit": "b",
+    "note": "들숨에 올리고 날숨에 내리기 반복"
+   },
+   {
+    "pose": "chair-cat-cow",
+    "dur": 6,
+    "unit": "b",
+    "note": "들숨 소(가슴 앞으로) · 날숨 고양이(등 둥글게)"
+   },
+   {
+    "pose": "chair-side-bend",
+    "dur": 5,
+    "unit": "b",
+    "note": "오른쪽"
+   },
+   {
+    "pose": "chair-side-bend",
+    "dur": 5,
+    "unit": "b",
+    "note": "왼쪽"
+   },
+   {
+    "pose": "chair-twist",
+    "dur": 5,
+    "unit": "b",
+    "note": "오른쪽 · 들숨에 길게, 날숨에 조금 더"
+   },
+   {
+    "pose": "chair-twist",
+    "dur": 5,
+    "unit": "b",
+    "note": "왼쪽"
+   },
+   {
+    "pose": "chair-garudasana",
+    "dur": 5,
+    "unit": "b",
+    "note": "오른팔 아래로"
+   },
+   {
+    "pose": "chair-garudasana",
+    "dur": 5,
+    "unit": "b",
+    "note": "왼팔 아래로"
+   },
+   {
+    "pose": "chair-ankle",
+    "dur": 30,
+    "unit": "s",
+    "note": "오른발 · 양방향 5바퀴씩"
+   },
+   {
+    "pose": "chair-ankle",
+    "dur": 30,
+    "unit": "s",
+    "note": "왼발 · 양방향 5바퀴씩"
+   },
+   {
+    "pose": "chair-pigeon",
+    "dur": 8,
+    "unit": "b",
+    "note": "오른 발목을 왼 무릎에 · 무릎 지그시 누르고 등 편 채 앞으로 숙이기"
+   },
+   {
+    "pose": "chair-pigeon",
+    "dur": 8,
+    "unit": "b",
+    "note": "왼 발목을 오른 무릎에"
+   },
+   {
+    "pose": "chair-navasana",
+    "dur": 3,
+    "unit": "b",
+    "note": "오른 무릎 들기"
+   },
+   {
+    "pose": "chair-navasana",
+    "dur": 3,
+    "unit": "b",
+    "note": "왼 무릎 들기"
+   },
+   {
+    "pose": "chair-uttanasana",
+    "dur": 8,
+    "unit": "b",
+    "note": "일어날 땐 천천히, 머리는 마지막에"
+   },
+   {
+    "pose": "chair-dhyana",
+    "dur": 180,
+    "unit": "s",
+    "note": "눈 감고 휴식"
+   }
+  ]
+ }
+]

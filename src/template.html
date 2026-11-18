@@ -82,13 +82,26 @@ nav.tabs a.on{color:var(--ink);border-color:var(--accent)}
 .term .desc{font-size:14px;color:#4c423b}
 @media(max-width:620px){.term{grid-template-columns:1fr}}
 /* public read-only */
-body.ro #newSeq, body.ro #sAdd, body.ro .acts, body.ro .ins, body.ro #sDup, body.ro #sDel, body.ro .addrow, body.ro #jForm, body.ro .jacts{display:none!important}
+body.ro #newSeq, body.ro #sAdd, body.ro .acts, body.ro .ins, body.ro #sDup, body.ro #sDel, body.ro .addrow{display:none!important}
+body.ro .jentry.shared .jacts{display:none!important}
 body.ro .step{grid-template-columns:28px 78px 1fr}
 body.ro .step .ctrl select:disabled, body.ro .step .ctrl input:disabled{background:transparent;border-color:transparent;color:var(--ink);appearance:none;-webkit-appearance:none;padding:0;width:auto}
 body.ro .step .ctrl input[type=number]:disabled{width:2.2em;text-align:right}
 body.ro .step .ctrl input.note[readonly]{border-color:transparent;background:#faf4ec}
 body.ro .seqhead textarea{resize:none}
 /* journal */
+.fab{position:fixed;right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:40;background:var(--accent);color:#fff;border:none;border-radius:999px;padding:13px 18px;font-size:15px;font-weight:700;box-shadow:0 6px 20px rgba(120,60,30,.3);display:flex;align-items:center;gap:6px}
+.fab:active{transform:scale(.97)}
+body.overlay .fab{display:none}
+.jdate{display:flex;align-items:center;gap:8px;flex:1;min-width:180px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+.jdate label{font-size:12.5px;color:var(--accent);font-weight:700;white-space:nowrap}
+.jdate input{border:none!important;padding:4px 0!important;background:transparent!important;min-width:0!important}
+.jdate .wd{font-size:13px;color:var(--soft);white-space:nowrap}
+.jquick{display:flex;gap:5px;flex-wrap:wrap}
+.jquick button{border:1px solid var(--line);background:#fbf6f0;border-radius:999px;padding:3px 10px;font-size:12.5px}
+.jlocal{font-size:12px;color:var(--soft);background:#fbf6f0;border-radius:8px;padding:6px 9px}
+.jbadge.dev{background:#eee7f6;color:#5b4a7a}
+
 .journalbtn{border-color:var(--accent-soft);background:var(--card);font-weight:500}
 .jcount{background:var(--accent);color:#fff;border-radius:999px;font-size:11px;padding:0 7px;line-height:18px}
 .drawer{position:fixed;inset:0;background:rgba(40,28,20,.4);z-index:55;display:none;justify-content:flex-end}
@@ -290,6 +303,9 @@ body.ro .seqhead textarea{resize:none}
   /* 일지 */
   .dpanel{width:100vw;padding:calc(12px + env(safe-area-inset-top)) 12px calc(30px + env(safe-area-inset-bottom))}
   .jform textarea,.jrow input[type=date],.jrow select{font-size:16px}
+  .jdate{flex:1 1 100%}
+  .jrow select{flex:1 1 100%}
+  .jdate input{flex:1}
   /* 수련 모드 */
   .pr-top{padding:calc(10px + env(safe-area-inset-top)) 12px 10px}
   .pr-main .kr{font-size:22px!important}
@@ -369,7 +385,7 @@ body.ro .seqhead textarea{resize:none}
   </section>
 </div>
 
-<div class="ver">요가 노트 · 버전 11.18-c (음악)</div>
+<div class="ver">요가 노트 · 버전 11.18-d (일지)</div>
 <div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
 
 <div class="practice" id="practice">
@@ -390,14 +406,17 @@ body.ro .seqhead textarea{resize:none}
     <div class="muname" id="muName"></div>
   </div>
 </div>
+<button class="fab" id="jFab" aria-label="수련 일지 쓰기">✏️ 일지 쓰기</button>
 <div class="drawer" id="drawer">
   <div class="dpanel">
     <div class="dhead"><h2>📝 수련 일지</h2><button class="btn sm" id="jClose">닫기 ✕</button></div>
     <form class="jform" id="jForm">
       <div class="jrow">
-        <input type="date" id="jDate" required>
+        <div class="jdate"><label for="jDate">📅 날짜</label><input type="date" id="jDate" required><span class="wd" id="jWd"></span></div>
         <select id="jSeq"><option value="">시퀀스 (선택)</option></select>
       </div>
+      <div class="jquick" id="jQuick"><button type="button" data-d="0">오늘</button><button type="button" data-d="-1">어제</button><button type="button" data-d="-2">그제</button><span style="font-size:12px;color:var(--soft);align-self:center">· 📅 날짜 칸을 누르면 다른 날로 바꿀 수 있어요</span></div>
+      <div class="jlocal" id="jLocalNote" hidden>📱 이 사이트에서 쓴 일지는 <b>이 휴대폰(브라우저)에만</b> 저장돼요. 다른 기기나 다른 사람에게는 보이지 않아요.</div>
       <div class="chips" id="jType">
         <button type="button" class="chip on" data-t="feel">💭 느낀 점</button>
         <button type="button" class="chip" data-t="teacher">🧘 선생님 말씀</button>
@@ -414,6 +433,7 @@ body.ro .seqhead textarea{resize:none}
         <button class="chip" data-f="teacher">🧘 선생님 말씀</button>
       </div>
       <input class="search" id="jSearch" placeholder="일지 검색">
+      <button class="btn sm" id="jCopy" type="button">📋 일지 텍스트로 복사</button>
     </div>
     <div id="jList"></div>
   </div>
@@ -556,15 +576,17 @@ function renderTerms(){
 }
 
 /* ---------- 모달 ---------- */
-function openModal(html){ $("#sheet").innerHTML=html; $("#modal").classList.add("on"); }
-function closeModal(){ $("#modal").classList.remove("on"); }
+function openModal(html){ $("#sheet").innerHTML=html; $("#modal").classList.add("on"); document.body.classList.add("overlay"); }
+function closeModal(){ $("#modal").classList.remove("on"); if(!$("#drawer").classList.contains("on")) document.body.classList.remove("overlay"); }
 $("#modal").onclick=e=>{ if(e.target.id==="modal"||e.target.closest("[data-close]")) closeModal(); };
 addEventListener("keydown",e=>{ if(e.key==="Escape"){ if($("#practice").classList.contains("on")) stopPractice(); else if($("#modal").classList.contains("on")) closeModal(); else closeJournal(); }});
 
 /* ---------- 저장소 ---------- */
 let db=null, seqs=[], curId=null, motto="", storeMode="loading";
 const LS_KEY="yoga-note-v1";
-let journal=[];
+let journal=[]; const LJ_KEY="yoga-local-journal";
+function ljLoad(){ try{ return JSON.parse(localStorage.getItem(LJ_KEY)||"[]").map(j=>({...j,local:true})); }catch(e){ return []; } }
+function ljSave(){ try{ localStorage.setItem(LJ_KEY, JSON.stringify(journal.filter(j=>j.local).map(({local,...j})=>j))); }catch(e){ toast("이 브라우저에 저장할 수 없어요"); } }
 function lsLoad(){ try{ const d=JSON.parse(localStorage.getItem(LS_KEY)||"{}"); seqs=d.seqs||[]; motto=d.motto||""; journal=d.journal||[]; }catch(e){} }
 function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({seqs,motto,journal})); }catch(e){} }
 function setStatus(m){ $("#status").textContent=m; }
@@ -605,7 +627,7 @@ $("#motto").oninput=e=>{
 };
 
 async function initStore(){
-  if(PUBLIC){ storeMode="public"; seqs=SNAP.seqs||[]; journal=SNAP.journal||[]; motto=SNAP.motto||""; sortSeqs(); $("#motto").value=motto; $("#motto").readOnly=true; if(!motto) document.querySelector(".motto .mine").hidden=true; setStatus(`공개용 보기 · ${SNAP.at} 기준`); renderSeq(); renderJournal(); return; }
+  if(PUBLIC){ storeMode="public"; seqs=SNAP.seqs||[]; journal=(SNAP.journal||[]).map(j=>({...j,shared:true})).concat(ljLoad()); $("#jLocalNote").hidden=false; motto=SNAP.motto||""; sortSeqs(); $("#motto").value=motto; $("#motto").readOnly=true; if(!motto) document.querySelector(".motto .mine").hidden=true; setStatus(`공개용 보기 · ${SNAP.at} 기준`); renderSeq(); renderJournal(); return; }
   setStatus("불러오는 중…");
   let resolved=false;
   const fallback=()=>{ if(resolved) return; resolved=true; storeMode="local"; lsLoad(); $("#motto").value=motto; setStatus("이 브라우저에만 저장됩니다 (클라우드 저장을 쓸 수 없는 화면)."); renderSeq(); renderJournal(); };
@@ -765,7 +787,7 @@ function openPicker(s,at){
 
 /* ---------- 수련 모드 ---------- */
 let pr=null;
-function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; Music.newPreset(); loadStep(); $("#practice").classList.add("on"); $("#prTitle").textContent=s.name; }
+function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; Music.newPreset(); loadStep(); $("#practice").classList.add("on"); document.body.classList.add("overlay"); $("#prTitle").textContent=s.name; }
 function loadStep(){
   if(pr.loaded) Music.bell(); pr.loaded=true;
   const st=pr.s.steps[pr.i], p=PMAP[st.pose], nx=pr.s.steps[pr.i+1];
@@ -786,7 +808,7 @@ function paintT(){ const t=Math.max(0,Math.ceil(pr.left)); const bs=+$("#prBreat
   $("#prB").style.width = (pr.total? (1-pr.left/pr.total)*100 : 0)+"%"; }
 function play(on){ pr.playing=on; $("#prPlay").textContent=on?"❚❚ 일시정지":"▶ 시작"; clearInterval(pr.tick);
   if(on) pr.tick=setInterval(()=>{ pr.left-=0.25; if(pr.left<=0){ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } else { play(false); pr.left=0; paintT(); Music.bell(true); setTimeout(()=>Music.fadeOut(12),4000); $("#prMain").insertAdjacentHTML("beforeend",`<div class="pr-note" style="font-size:18px">🙏 수련 완료. Om śānti.</div><button class="btn pri" id="prJournal" style="margin-top:8px">📝 오늘 수련 일지 쓰기</button>`); const sid=pr.s.id; $("#prJournal").onclick=()=>{ stopPractice(); openJournal(sid); }; } } else paintT(); },250); }
-function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; Music.stop(); $("#practice").classList.remove("on"); }
+function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; Music.stop(); $("#practice").classList.remove("on"); document.body.classList.remove("overlay"); }
 $("#prPlay").onclick=()=>{ if(!pr.playing) Music.start(); play(!pr.playing); };
 $("#prPrev").onclick=()=>{ if(pr.i>0){ pr.i--; loadStep(); } };
 $("#prNextBtn").onclick=()=>{ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } };
@@ -909,12 +931,18 @@ const today=()=>{ const d=new Date(); return new Date(d-d.getTimezoneOffset()*60
 const JT={feel:"💭 느낀 점",teacher:"🧘 선생님 말씀"};
 const WD=["일","월","화","수","목","금","토"];
 function fmtDay(s){ const d=new Date(s+"T00:00:00"); return isNaN(d)? s : `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} (${WD[d.getDay()]})`; }
+function paintWd(){ const v=$("#jDate").value; const d=new Date(v+"T00:00:00"); $("#jWd").textContent = isNaN(d)?"":`(${WD[d.getDay()]})${v===today()?" · 오늘":""}`; }
+function shiftDay(n){ const d=new Date(); d.setDate(d.getDate()+n); return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
 function setJType(t){ jType=t; document.querySelectorAll("#jType .chip").forEach(c=>c.classList.toggle("on",c.dataset.t===t)); }
 function fillSeqSelect(sel){ $("#jSeq").innerHTML=`<option value="">시퀀스 (선택)</option>`+seqs.map(s=>`<option value="${s.id}">${esc(s.name||"이름 없는 시퀀스")}</option>`).join(""); $("#jSeq").value=sel||""; }
-function resetJForm(){ jEditId=null; $("#jForm").classList.remove("editing"); $("#jEditing").textContent=""; $("#jCancel").hidden=true; $("#jSave").textContent="저장"; $("#jText").value=""; $("#jDate").value=today(); }
-function openJournal(seqId){ resetJForm(); fillSeqSelect(seqId||""); $("#drawer").classList.add("on"); renderJournal(); setTimeout(()=>$("#jText").focus(),50); }
-function closeJournal(){ $("#drawer").classList.remove("on"); }
+function resetJForm(){ jEditId=null; $("#jForm").classList.remove("editing"); $("#jEditing").textContent=""; $("#jCancel").hidden=true; $("#jSave").textContent="저장"; $("#jText").value=""; $("#jDate").value=today(); paintWd(); }
+function openJournal(seqId){ resetJForm(); fillSeqSelect(seqId||""); $("#drawer").classList.add("on"); document.body.classList.add("overlay"); renderJournal(); setTimeout(()=>$("#jText").focus(),50); }
+function closeJournal(){ $("#drawer").classList.remove("on"); document.body.classList.remove("overlay"); }
 $("#jOpen").onclick=()=>openJournal("");
+$("#jFab").onclick=()=>openJournal("");
+$("#jDate").addEventListener("input",paintWd); $("#jDate").addEventListener("change",paintWd);
+$("#jQuick").onclick=e=>{ const b=e.target.closest("[data-d]"); if(!b) return; $("#jDate").value=shiftDay(+b.dataset.d); paintWd(); };
+$("#jCopy").onclick=async()=>{ const list=[...journal].sort((a,b)=>(a.date||"").localeCompare(b.date||"")); if(!list.length){ toast("복사할 일지가 없어요"); return; } const txt=list.map(j=>`[${fmtDay(j.date)}] ${JT[j.type]||""}${j.seqName?" · "+j.seqName:""}\n${j.text}`).join("\n\n"); try{ await navigator.clipboard.writeText(txt); toast("일지를 복사했어요"); }catch(e){ toast("복사할 수 없는 환경이에요"); } };
 $("#jClose").onclick=closeJournal;
 $("#drawer").onclick=e=>{ if(e.target.id==="drawer") closeJournal(); };
 $("#jType").onclick=e=>{ const b=e.target.closest("[data-t]"); if(b) setJType(b.dataset.t); };
@@ -929,8 +957,9 @@ $("#jForm").onsubmit=async e=>{
   const isNew=!jEditId, id=jEditId||uid();
   const prev=journal.find(j=>j.id===id);
   const entry={date:$("#jDate").value||today(), type:jType, text, seqId, seqName, created:prev?.created||Date.now(), updated:Date.now()};
-  if(prev) Object.assign(prev,entry); else journal.push({id,...entry});
+  if(prev) Object.assign(prev,entry); else journal.push({id,...entry, local:PUBLIC||undefined});
   renderJournal(); resetJForm(); toast(isNew?"일지를 저장했어요":"일지를 고쳤어요");
+  if(PUBLIC){ ljSave(); return; }
   if(storeMode!=="db"){ lsSave(); return; }
   jBusy=true;
   try{ await db.doc("journal/"+id).set(entry); }catch(err){ toast(err&&err.code==="quota_exceeded"?"저장 공간이 가득 찼어요":"저장하지 못했어요. 다시 시도해 주세요."); }
@@ -942,13 +971,13 @@ function renderJournal(){
   const q=norm($("#jSearch").value.trim());
   const list=journal.filter(j=>(jFilter==="all"||j.type===jFilter)&&(!q||norm(j.text+" "+(j.seqName||"")).includes(q)))
     .sort((a,b)=> (b.date||"").localeCompare(a.date||"") || (b.created||0)-(a.created||0));
-  if(!list.length){ $("#jList").innerHTML=`<div class="empty">${journal.length?"조건에 맞는 기록이 없어요.":(PUBLIC?"아직 공개된 기록이 없어요.":"아직 기록이 없어요. 오늘 수련의 느낌을 남겨 보세요.")}</div>`; return; }
+  if(!list.length){ $("#jList").innerHTML=`<div class="empty">${journal.length?"조건에 맞는 기록이 없어요.":(PUBLIC?"아직 기록이 없어요. 위에서 오늘 수련의 느낌을 남겨 보세요.":"아직 기록이 없어요. 오늘 수련의 느낌을 남겨 보세요.")}</div>`; return; }
   let html="", last="";
   for(const j of list){
     if(j.date!==last){ html+=`<div class="jday">${esc(fmtDay(j.date))}</div>`; last=j.date; }
     const sname = j.seqId&&getSeq(j.seqId) ? getSeq(j.seqId).name : j.seqName;
-    html+=`<div class="jentry ${j.type}" data-j="${j.id}">
-      <div class="jmeta"><span class="jbadge ${j.type}">${JT[j.type]||""}</span>${sname?`<span>· ${esc(sname)}</span>`:""}
+    html+=`<div class="jentry ${j.type} ${j.shared?"shared":""}" data-j="${j.id}">
+      <div class="jmeta"><span class="jbadge ${j.type}">${JT[j.type]||""}</span>${PUBLIC&&j.local?`<span class="jbadge dev">📱 이 기기</span>`:""}${sname?`<span>· ${esc(sname)}</span>`:""}
         <span class="jacts"><button class="icon" data-ja="edit" title="고치기">✎</button><button class="icon" data-ja="del" title="삭제">✕</button></span></div>
       <div class="jtext">${esc(j.text)}</div><div class="jconf"></div></div>`;
   }
@@ -958,7 +987,7 @@ $("#jList").onclick=e=>{
   const b=e.target.closest("[data-ja]"); if(!b) return;
   const box=b.closest("[data-j]"), j=journal.find(x=>x.id===box.dataset.j); if(!j) return;
   if(b.dataset.ja==="edit"){
-    jEditId=j.id; $("#jDate").value=j.date; setJType(j.type); fillSeqSelect(j.seqId); $("#jText").value=j.text;
+    jEditId=j.id; $("#jDate").value=j.date; paintWd(); setJType(j.type); fillSeqSelect(j.seqId); $("#jText").value=j.text;
     $("#jForm").classList.add("editing"); $("#jEditing").textContent="✎ 기록을 고치는 중"; $("#jCancel").hidden=false; $("#jSave").textContent="고친 내용 저장";
     $("#drawer .dpanel").scrollTop=0; $("#jText").focus();
   } else {
@@ -966,11 +995,12 @@ $("#jList").onclick=e=>{
     box.querySelector("[data-no]").onclick=ev=>{ ev.stopPropagation(); box.querySelector(".jconf").innerHTML=""; };
     box.querySelector("[data-yes]").onclick=async ev=>{ ev.stopPropagation();
       journal=journal.filter(x=>x.id!==j.id); if(jEditId===j.id) resetJForm(); renderJournal(); toast("삭제했어요");
+      if(PUBLIC){ ljSave(); return; }
       if(storeMode!=="db"){ lsSave(); return; }
       try{ await db.doc("journal/"+j.id).delete(); }catch(err){ toast("삭제하지 못했어요"); } };
   }
 };
-$("#jDate").value=today();
+$("#jDate").value=today(); paintWd();
 
 /* ---------- 시작 ---------- */
 renderChips(); renderAsanas(); renderRoots(); renderTerms(); renderSeq();

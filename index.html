@@ -207,6 +207,11 @@ body.ro .seqhead textarea{resize:none}
 .pr-bar i{display:block;height:100%;background:var(--accent);width:0}
 .pr-ctrl{display:flex;gap:10px;justify-content:center;padding:14px;border-top:1px solid var(--line);flex-wrap:wrap}
 .pr-next{font-size:13px;color:var(--soft)}
+.pr-music{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;padding:0 12px 14px}
+.pr-music .btn.off{opacity:.55}
+.muvol{display:flex;align-items:center;gap:4px;font-size:13px}
+.muvol input{width:110px;accent-color:var(--accent)}
+.muname{flex-basis:100%;text-align:center;font-size:12.5px;color:var(--soft)}
 .confirm{display:flex;gap:8px;align-items:center;background:#fbeee8;border:1px solid #efcdbf;border-radius:10px;padding:8px 10px;font-size:13.5px;margin-top:8px;flex-wrap:wrap}
 
 /* ---------- 모바일 ---------- */
@@ -294,6 +299,8 @@ body.ro .seqhead textarea{resize:none}
   .pr-ctrl{padding:12px 12px calc(14px + env(safe-area-inset-bottom));gap:8px}
   .pr-ctrl .btn{flex:1;justify-content:center;padding:13px 6px;font-size:15px}
   .pr-ctrl label.btn{flex-basis:100%}
+  .pr-music{padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+  .pr-ctrl{padding-bottom:10px}
   .toast{bottom:calc(18px + env(safe-area-inset-bottom))}
   body.ro .step{grid-template-columns:62px 1fr}
   .dot{display:none}
@@ -373,6 +380,13 @@ body.ro .seqhead textarea{resize:none}
     <button class="btn" id="prNextBtn">다음 ▶</button>
     <label class="btn ghost" style="font-size:13px">1호흡 =
       <select id="prBreath"><option>4</option><option selected>5</option><option>6</option><option>8</option></select>초</label>
+  </div>
+  <div class="pr-music">
+    <button class="btn sm" id="muToggle">🎵 음악 켜짐</button>
+    <button class="btn sm" id="muNext" title="다른 음악으로">🔀 다른 음악</button>
+    <label class="muvol">🔈<input type="range" id="muVol" min="0" max="100" value="60" aria-label="음악 볼륨">🔊</label>
+    <button class="btn sm" id="muBell">🔔 전환 종 켜짐</button>
+    <div class="muname" id="muName"></div>
   </div>
 </div>
 <div class="drawer" id="drawer">
@@ -752,8 +766,9 @@ function openPicker(s,at){
 
 /* ---------- 수련 모드 ---------- */
 let pr=null;
-function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; loadStep(); $("#practice").classList.add("on"); $("#prTitle").textContent=s.name; }
+function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; Music.newPreset(); loadStep(); $("#practice").classList.add("on"); $("#prTitle").textContent=s.name; }
 function loadStep(){
+  if(pr.loaded) Music.bell(); pr.loaded=true;
   const st=pr.s.steps[pr.i], p=PMAP[st.pose], nx=pr.s.steps[pr.i+1];
   pr.total=pr.left=stepSecs(st,+$("#prBreath").value);
   $("#prPos").textContent=`${pr.i+1} / ${pr.s.steps.length}`;
@@ -771,13 +786,100 @@ function paintT(){ const t=Math.max(0,Math.ceil(pr.left)); const bs=+$("#prBreat
   $("#prT").textContent = st.unit==="b" ? `${Math.ceil(pr.left/bs)} 호흡` : `${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;
   $("#prB").style.width = (pr.total? (1-pr.left/pr.total)*100 : 0)+"%"; }
 function play(on){ pr.playing=on; $("#prPlay").textContent=on?"❚❚ 일시정지":"▶ 시작"; clearInterval(pr.tick);
-  if(on) pr.tick=setInterval(()=>{ pr.left-=0.25; if(pr.left<=0){ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } else { play(false); pr.left=0; paintT(); $("#prMain").insertAdjacentHTML("beforeend",`<div class="pr-note" style="font-size:18px">🙏 수련 완료. Om śānti.</div><button class="btn pri" id="prJournal" style="margin-top:8px">📝 오늘 수련 일지 쓰기</button>`); const sid=pr.s.id; $("#prJournal").onclick=()=>{ stopPractice(); openJournal(sid); }; } } else paintT(); },250); }
-function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; $("#practice").classList.remove("on"); }
-$("#prPlay").onclick=()=>play(!pr.playing);
+  if(on) pr.tick=setInterval(()=>{ pr.left-=0.25; if(pr.left<=0){ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } else { play(false); pr.left=0; paintT(); Music.bell(true); setTimeout(()=>Music.fadeOut(12),4000); $("#prMain").insertAdjacentHTML("beforeend",`<div class="pr-note" style="font-size:18px">🙏 수련 완료. Om śānti.</div><button class="btn pri" id="prJournal" style="margin-top:8px">📝 오늘 수련 일지 쓰기</button>`); const sid=pr.s.id; $("#prJournal").onclick=()=>{ stopPractice(); openJournal(sid); }; } } else paintT(); },250); }
+function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; Music.stop(); $("#practice").classList.remove("on"); }
+$("#prPlay").onclick=()=>{ if(!pr.playing) Music.start(); play(!pr.playing); };
 $("#prPrev").onclick=()=>{ if(pr.i>0){ pr.i--; loadStep(); } };
 $("#prNextBtn").onclick=()=>{ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } };
 $("#prClose").onclick=stopPractice;
 $("#prBreath").onchange=()=>{ if(pr) loadStep(); renderSeqList(); };
+
+/* ---------- 명상 음악 (페이지에서 직접 합성) ---------- */
+const Music=(()=>{
+  const SCALES={"라가 야만":[0,2,4,6,7,9,11],"라가 부팔리":[0,2,4,7,9],"라가 바이라비":[0,1,3,5,7,8,10],"라가 카피":[0,2,3,5,7,9,10],"단조 펜타토닉":[0,3,5,7,10],"라가 아사바리":[0,2,3,5,7,8,10],"리디안 앰비언트":[0,2,4,6,7,11]};
+  const KEYS=["도","도#","레","레#","미","파","파#","솔","솔#","라","라#","시"];
+  const TEX=[{n:"싱잉볼 · 탄푸라",bowl:1,tan:1,pad:.6},{n:"싱잉볼 · 잔잔한 선율",bowl:1,tan:0,pad:1},{n:"탄푸라 · 선율",bowl:.3,tan:1,pad:1},{n:"깊은 드론 · 싱잉볼",bowl:1,tan:0,pad:.25},{n:"탄푸라 · 싱잉볼 · 선율",bowl:.8,tan:1,pad:.8}];
+  let ctx=null, master=null, wet=null, dry=null, drones=[], timers=[], on=true, bellOn=true, vol=.6, P=null, running=false, deg=0;
+  try{ const s=JSON.parse(localStorage.getItem("yoga-music")||"{}"); if(s.on===false) on=false; if(s.bell===false) bellOn=false; if(typeof s.vol==="number") vol=s.vol; }catch(e){}
+  const save=()=>{ try{ localStorage.setItem("yoga-music",JSON.stringify({on,bell:bellOn,vol})); }catch(e){} };
+  const pick=a=>a[Math.floor(Math.random()*a.length)], R=(a,b)=>a+Math.random()*(b-a);
+  function ensure(){
+    if(ctx) return true;
+    const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+    ctx=new AC(); master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+    const conv=ctx.createConvolver(); const len=ctx.sampleRate*4.5, buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=buf.getChannelData(c); for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.8); }
+    conv.buffer=buf; wet=ctx.createGain(); wet.gain.value=.55; dry=ctx.createGain(); dry.gain.value=.7;
+    wet.connect(conv); conv.connect(master); dry.connect(master); return true;
+  }
+  const out=(node)=>{ node.connect(wet); node.connect(dry); };
+  const hz=(semi,oct=0)=>P.base*Math.pow(2,semi/12+oct);
+  function newPreset(){
+    const k=Math.floor(Math.random()*12), sn=pick(Object.keys(SCALES)), tx=pick(TEX);
+    P={k, sn, sc:SCALES[sn], tx, base:110*Math.pow(2,((k-9+12)%12)/12), pace:R(.8,1.3)};
+    deg=0; label();
+  }
+  function label(){ const el=document.getElementById("muName"); if(el&&P) el.textContent=on?`🎵 ${P.sn} · ${KEYS[P.k]} · ${P.tx.n}`:"음악 꺼짐"; }
+  function drone(){
+    const g=ctx.createGain(); g.gain.value=0; g.gain.linearRampToValueAtTime(.07,ctx.currentTime+6);
+    const lp=ctx.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=700; lp.connect(g); out(g);
+    [[0,-1,"sine",1],[7,-1,"triangle",.5],[0,0,"sine",.35]].forEach(([s,o,ty,a])=>{ const os=ctx.createOscillator(), og=ctx.createGain(); os.type=ty; os.frequency.value=hz(s,o); os.detune.value=R(-4,4); og.gain.value=a; os.connect(og); og.connect(lp); os.start(); drones.push(os); });
+    const lfo=ctx.createOscillator(), lg=ctx.createGain(); lfo.frequency.value=.07; lg.gain.value=.025; lfo.connect(lg); lg.connect(g.gain); lfo.start(); drones.push(lfo);
+    drones.push({stop(){ try{ g.gain.cancelScheduledValues(ctx.currentTime); g.gain.setTargetAtTime(0,ctx.currentTime,.8); }catch(e){} }});
+  }
+  function pluck(f,t,amp){
+    const o=ctx.createOscillator(), lp=ctx.createBiquadFilter(), g=ctx.createGain(); o.type="sawtooth"; o.frequency.value=f;
+    lp.type="lowpass"; lp.frequency.setValueAtTime(2400,t); lp.frequency.exponentialRampToValueAtTime(500,t+2.5);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(amp,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+4.5);
+    o.connect(lp); lp.connect(g); out(g); o.start(t); o.stop(t+4.6);
+  }
+  function bowlAt(f,t,amp,dur=10){
+    [[1,1],[2.76,.45],[5.4,.22],[8.93,.1]].forEach(([r,a])=>{ const o=ctx.createOscillator(), g=ctx.createGain(); o.type="sine"; o.frequency.value=f*r; o.detune.value=R(-6,6);
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(amp*a,t+.015); g.gain.exponentialRampToValueAtTime(.0001,t+dur/r**.35); o.connect(g); out(g); o.start(t); o.stop(t+dur+.1); });
+  }
+  function padNote(f,t,amp){
+    const o1=ctx.createOscillator(), o2=ctx.createOscillator(), g=ctx.createGain(), lp=ctx.createBiquadFilter();
+    o1.type="sine"; o2.type="triangle"; o1.frequency.value=f; o2.frequency.value=f; o2.detune.value=R(4,9); lp.type="lowpass"; lp.frequency.value=1800;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(amp,t+1.4); g.gain.setTargetAtTime(0,t+2.2,1.3);
+    o1.connect(lp); o2.connect(lp); lp.connect(g); out(g); o1.start(t); o2.start(t); o1.stop(t+9); o2.stop(t+9);
+  }
+  function loop(fn,min,max){ const run=()=>{ if(!running) return; fn(); timers.push(setTimeout(run,R(min,max)*1000*P.pace)); }; timers.push(setTimeout(run,R(.2,2)*1000)); }
+  function start(){
+    if(!on||running) { label(); return; }
+    if(!ensure()) return; if(!P) newPreset();
+    ctx.resume&&ctx.resume(); running=true;
+    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(vol*.9,ctx.currentTime,1.5);
+    drone();
+    if(P.tx.tan){ let i=0; const pat=[[7,0],[0,1],[0,1],[0,0]]; loop(()=>{ const [s,o]=pat[i++%4]; pluck(hz(s,o),ctx.currentTime+.05,.05*P.tx.tan); },1.1,1.25); }
+    if(P.tx.bowl) loop(()=>bowlAt(hz(pick([0,7,0,12]),1),ctx.currentTime+.05,.08*P.tx.bowl),9,20);
+    if(P.tx.pad) loop(()=>{ const n=P.sc.length; deg=Math.max(-n,Math.min(2*n-1,deg+pick([-2,-1,-1,0,1,1,2]))); const oct=Math.floor(deg/n), s=P.sc[((deg%n)+n)%n]; padNote(hz(s,1+oct),ctx.currentTime+.05,.045*P.tx.pad); },2.8,6.5);
+    label();
+  }
+  function stopNow(fade=1.2){
+    running=false; timers.forEach(clearTimeout); timers=[];
+    if(!ctx) return; const ds=drones; drones=[];
+    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0,ctx.currentTime,fade/3);
+    setTimeout(()=>{ ds.forEach(d=>{ try{ d.stop(); }catch(e){} }); },fade*1000+200);
+  }
+  return {
+    newPreset, start,
+    stop(){ stopNow(1.2); },
+    fadeOut(sec){ stopNow(sec); },
+    next(){ const was=running; stopNow(.8); newPreset(); if(was) setTimeout(start,900); },
+    toggle(){ on=!on; save(); if(on) { if(pr&&pr.playing) start(); } else stopNow(1); label(); return on; },
+    toggleBell(){ bellOn=!bellOn; save(); return bellOn; },
+    setVol(v){ vol=v; save(); if(ctx&&running) master.gain.setTargetAtTime(vol*.9,ctx.currentTime,.2); },
+    bell(final){ if(!bellOn||!ensure()) return; ctx.resume&&ctx.resume(); if(!running){ master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setValueAtTime(Math.max(vol,.3)*.9,ctx.currentTime); }
+      const b=P?hz(0,2):523; bowlAt(b,ctx.currentTime+.02,final?.16:.1,final?14:6); },
+    get on(){return on;}, get bellOn(){return bellOn;}, get vol(){return vol;}
+  };
+})();
+function paintMusicUI(){ $("#muToggle").textContent=Music.on?"🎵 음악 켜짐":"🎵 음악 꺼짐"; $("#muToggle").classList.toggle("off",!Music.on); $("#muBell").textContent=Music.bellOn?"🔔 전환 종 켜짐":"🔔 전환 종 꺼짐"; $("#muBell").classList.toggle("off",!Music.bellOn); $("#muVol").value=Math.round(Music.vol*100); }
+$("#muToggle").onclick=()=>{ Music.toggle(); paintMusicUI(); };
+$("#muNext").onclick=()=>{ Music.next(); if(!Music.on) toast("음악이 꺼져 있어요"); };
+$("#muBell").onclick=()=>{ Music.toggleBell(); paintMusicUI(); };
+$("#muVol").oninput=e=>Music.setVol(e.target.value/100);
+paintMusicUI();
 
 /* ---------- 수련 일지 ---------- */
 let jType="feel", jFilter="all", jEditId=null;

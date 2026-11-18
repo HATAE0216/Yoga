@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="요가 노트">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!--ICON-->
+<title>요가 노트 — 시퀀스 & 아사나 용어집</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1ea; --card:#fffdf9; --ink:#2f2722; --soft:#7b6e64; --line:#e7ddd1;
+  --accent:#b5653f; --accent-soft:#f3e2d6; --sage:#6f8a6a; --sage-soft:#e4ece1;
+  --fig:#8a5236; --fig-back:#8a5236;
+  --r:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:15px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
+header.top{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand h1{font-family:"Noto Serif KR",serif;font-size:26px;margin:0;letter-spacing:-.5px}
+.brand .om{font-family:"Noto Sans Devanagari",sans-serif;color:var(--accent);font-size:24px}
+.brand small{color:var(--soft)}
+.motto{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}
+.motto .lbl{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px}
+.motto .q-sa{font-style:italic;color:var(--soft);font-size:13.5px}
+.motto .q-ko{font-family:"Noto Serif KR",serif;font-size:17px}
+.motto .q-src{font-size:12px;color:var(--soft)}
+.motto .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.motto .mine{border-top:1px dashed var(--line);padding-top:8px;display:flex;gap:8px;align-items:center}
+.motto .mine input{flex:1;border:none;background:transparent;font-family:"Noto Serif KR",serif;font-size:16px;padding:4px 0;outline:none;min-width:0}
+.motto .mine input::placeholder{color:#b8aca1}
+.linkbtn{background:none;border:none;color:var(--accent);font-size:12.5px;padding:2px 4px}
+nav.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:8px 0 18px;overflow-x:auto}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--soft);font-weight:500;border-bottom:2.5px solid transparent;white-space:nowrap}
+nav.tabs a.on{color:var(--ink);border-color:var(--accent)}
+.view{display:none}.view.on{display:block}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 13px;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:#d4c4b3}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 9px;font-size:13px;border-radius:8px}
+.btn.danger{color:#a23b2a}
+.status{font-size:12.5px;color:var(--soft);margin:-8px 0 12px}
+/* glossary */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{flex:1;min-width:200px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 12px;outline:none}
+.search:focus{border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font-size:13px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0}
+.pcard:hover{border-color:#d4c4b3;box-shadow:0 3px 14px rgba(80,50,30,.07)}
+.pcard .art{background:linear-gradient(#fbf6f0,#f4ece2);border-bottom:1px solid var(--line)}
+.pcard .art svg{display:block;width:100%;height:auto}
+.pcard .body{padding:10px 12px 12px;display:grid;gap:2px}
+.kr{font-weight:700;font-size:16px;font-family:"Noto Serif KR",serif}
+.sa{font-weight:500;font-size:14px}
+.dev{font-family:"Noto Sans Devanagari",sans-serif;color:var(--accent);font-size:14px}
+.ko{font-size:14px}
+.en{font-size:12.5px;color:var(--soft)}
+.pdesc{font-size:12.5px;color:var(--soft);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;gap:5px;margin-top:6px}
+.tag{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--sage-soft);color:#4b6347}
+.tag.l2{background:#f6ead0;color:#8a6420}.tag.l3{background:#f6dcd3;color:#9a4127}
+.count{font-size:13px;color:var(--soft);margin-bottom:10px}
+/* terms */
+.tlist{display:grid;gap:8px}
+.term{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:4px 16px}
+.term .names{display:grid}
+.term .desc{font-size:14px;color:#4c423b}
+@media(max-width:620px){.term{grid-template-columns:1fr}}
+/* public read-only */
+body.ro #newSeq, body.ro #sAdd, body.ro .acts, body.ro .ins, body.ro #sDup, body.ro #sDel, body.ro .addrow, body.ro #jForm, body.ro .jacts{display:none!important}
+body.ro .step{grid-template-columns:28px 78px 1fr}
+body.ro .step .ctrl select:disabled, body.ro .step .ctrl input:disabled{background:transparent;border-color:transparent;color:var(--ink);appearance:none;-webkit-appearance:none;padding:0;width:auto}
+body.ro .step .ctrl input[type=number]:disabled{width:2.2em;text-align:right}
+body.ro .step .ctrl input.note[readonly]{border-color:transparent;background:#faf4ec}
+body.ro .seqhead textarea{resize:none}
+/* journal */
+.journalbtn{border-color:var(--accent-soft);background:var(--card);font-weight:500}
+.jcount{background:var(--accent);color:#fff;border-radius:999px;font-size:11px;padding:0 7px;line-height:18px}
+.drawer{position:fixed;inset:0;background:rgba(40,28,20,.4);z-index:55;display:none;justify-content:flex-end}
+.drawer.on{display:flex}
+.dpanel{background:var(--bg);width:min(520px,100vw);height:100%;overflow-y:auto;padding:16px 16px 40px;box-shadow:-10px 0 40px rgba(0,0,0,.15)}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dhead h2{font-family:"Noto Serif KR",serif;font-size:20px;margin:0}
+.jform{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px}
+.jform.editing{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.jrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.jrow input[type=date],.jrow select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;flex:1;min-width:130px}
+.jform textarea{border:1px solid var(--line);border-radius:10px;padding:9px 10px;resize:vertical;background:#fff;outline:none;min-height:90px}
+.jform textarea:focus{border-color:var(--accent)}
+.jediting{font-size:12.5px;color:var(--accent)}
+.jfilter{display:grid;gap:8px;margin:16px 0 8px}
+.jday{font-size:13px;font-weight:700;color:var(--soft);margin:16px 0 6px;display:flex;gap:6px;align-items:center}
+.jday::after{content:"";flex:1;border-top:1px solid var(--line)}
+.jentry{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.jentry.teacher{border-left:4px solid var(--sage)}
+.jentry.feel{border-left:4px solid var(--accent)}
+.jmeta{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--soft);flex-wrap:wrap}
+.jbadge{border-radius:999px;padding:1px 8px;font-size:11.5px}
+.jbadge.feel{background:var(--accent-soft);color:#8a4a2c}
+.jbadge.teacher{background:var(--sage-soft);color:#4b6347}
+.jtext{white-space:pre-wrap;font-size:14.5px;margin-top:6px;word-break:break-word}
+.jentry .jacts{margin-left:auto;display:flex;gap:2px}
+/* roots */
+.rootintro{background:var(--sage-soft);border-radius:12px;padding:12px 14px;font-size:14px;color:#3f513c;margin-bottom:14px}
+.rgroup{font-family:"Noto Serif KR",serif;font-size:17px;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.rgroup span{font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--soft);font-weight:400}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.root{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:grid;gap:2px;align-content:start}
+.root .rk{font-family:"Noto Serif KR",serif;font-weight:700;font-size:18px}
+.root .rs{font-size:14px}
+.root .rm{font-size:15px;font-weight:600;color:var(--accent)}
+.root .rn{font-size:12.5px;color:var(--soft)}
+.rex{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.exchip{border:1px solid var(--line);background:#fbf6f0;border-radius:999px;padding:2px 8px;font-size:12px}
+.exchip:hover{border-color:var(--accent);color:var(--accent)}
+/* sequences */
+.seqlayout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:820px){.seqlayout{grid-template-columns:minmax(0,1fr)}}
+.seqlist{display:grid;gap:8px}
+.seqitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;display:grid;gap:2px}
+.seqitem.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.seqitem .n{font-weight:700}
+.seqitem .m{font-size:12px;color:var(--soft)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.seqhead{display:grid;gap:8px;margin-bottom:12px}
+.seqhead input.name{font-family:"Noto Serif KR",serif;font-size:21px;font-weight:700;border:none;border-bottom:1px solid transparent;background:transparent;padding:2px 0;outline:none;width:100%}
+.seqhead input.name:focus,.seqhead textarea:focus{border-color:var(--line)}
+.seqhead textarea{border:1px solid transparent;background:transparent;resize:vertical;min-height:38px;padding:4px 0;outline:none;color:#4c423b;width:100%}
+.seqmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--soft)}
+.seqmeta .sp{flex:1}
+.steps{display:grid;gap:8px;margin:10px 0}
+.step{display:grid;grid-template-columns:28px 78px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:6px 10px 6px 8px;background:#fffefb}
+.step .no{font-size:12px;color:var(--soft);text-align:center}
+.step .mini{background:#f7f0e7;border-radius:8px;cursor:pointer}
+.step .mini svg{display:block;width:78px;height:auto}
+.step .info{display:grid;gap:4px;min-width:0}
+.step .info .t{font-weight:700;font-size:14px;line-height:1.4}
+.step .info .t span{font-weight:400;color:var(--soft);font-size:13px}
+.step .info .t .tko{font-weight:700}
+.dot{font-style:normal}
+.step .ctrl{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.step .ctrl input[type=number]{width:56px;border:1px solid var(--line);border-radius:7px;padding:3px 6px;background:#fff}
+.step .ctrl select{border:1px solid var(--line);border-radius:7px;padding:3px 4px;background:#fff}
+.step .ctrl input.note{flex:1;min-width:120px;border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:#fff;font-size:13px}
+.step .acts{display:flex;flex-direction:column;gap:2px}
+.icon{border:none;background:transparent;color:var(--soft);font-size:15px;padding:2px 6px;border-radius:6px;line-height:1}
+.icon:hover{background:var(--accent-soft);color:var(--ink)}
+.ins{display:block;width:100%;border:none;background:transparent;height:14px;margin:-4px 0;padding:0;position:relative;color:var(--accent);font-size:12px}
+.ins::before{content:"";position:absolute;left:44px;right:8px;top:50%;border-top:1.5px dashed transparent}
+.ins span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--card);padding:0 10px;border-radius:999px;border:1px solid var(--accent-soft);opacity:0;transition:opacity .15s;white-space:nowrap;line-height:20px}
+.ins:hover::before,.ins:focus::before{border-color:var(--accent)}
+.ins:hover span,.ins:focus span{opacity:1}
+@media(hover:none){.ins{height:24px;margin:0}.ins span{opacity:.85}}
+.empty{color:var(--soft);text-align:center;padding:30px 10px;border:1px dashed var(--line);border-radius:12px}
+.strip{display:flex;gap:4px;overflow-x:auto;padding:6px 0 2px}
+.strip svg{width:54px;height:auto;flex:none;background:#f7f0e7;border-radius:6px}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(40,28,20,.45);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px;z-index:50;overflow-y:auto}
+.modal.on{display:flex}
+.sheet{background:var(--card);border-radius:18px;max-width:720px;width:100%;padding:18px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.sheet .x{position:absolute;right:10px;top:10px}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:640px){.detail{grid-template-columns:1fr}}
+.detail .art{background:linear-gradient(#fbf6f0,#f1e7da);border-radius:14px}
+.detail .art svg{width:100%;height:auto;display:block}
+.detail h2{margin:0;font-size:22px}
+.detail .dev{font-size:19px}
+.detail dl{margin:10px 0 0;display:grid;gap:8px}
+.detail dt{font-size:12px;font-weight:700;color:var(--accent)}
+.detail dd{margin:0;font-size:14px}
+.addrow{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.addrow select{border:1px solid var(--line);border-radius:9px;padding:7px;background:#fff;flex:1;min-width:140px}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:60vh;overflow-y:auto;margin-top:10px}
+.pick{border:1px solid var(--line);background:#fffefb;border-radius:10px;padding:4px 4px 8px;text-align:center;font-size:12px}
+.pick:hover{border-color:var(--accent)}
+.pick svg{width:100%;height:auto;display:block}
+.pick b{display:block;font-size:12.5px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13.5px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:80}
+.toast.on{opacity:1}
+/* practice */
+.practice{position:fixed;inset:0;background:#f8f2ea;z-index:60;display:none;flex-direction:column}
+.practice.on{display:flex}
+.pr-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.pr-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 16px;text-align:center;gap:6px;overflow:auto}
+.pr-main svg{width:min(560px,92vw);height:auto}
+.pr-main .sa{font-size:19px}
+.pr-main .ko{font-size:18px;font-family:"Noto Serif KR",serif}
+.pr-note{color:var(--accent);font-size:14px}
+.pr-timer{font-size:44px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.pr-bar{height:5px;background:var(--line);width:min(560px,92vw);border-radius:9px;overflow:hidden}
+.pr-bar i{display:block;height:100%;background:var(--accent);width:0}
+.pr-ctrl{display:flex;gap:10px;justify-content:center;padding:14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.pr-next{font-size:13px;color:var(--soft)}
+.confirm{display:flex;gap:8px;align-items:center;background:#fbeee8;border:1px solid #efcdbf;border-radius:10px;padding:8px 10px;font-size:13.5px;margin-top:8px;flex-wrap:wrap}
+
+/* ---------- 모바일 ---------- */
+@media (max-width:640px){
+  html,body{font-size:15px}
+  .wrap{padding-top:calc(12px + env(safe-area-inset-top));padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}
+  .brand{flex-wrap:nowrap}
+  .brand h1{font-size:22px}
+  .brand small{display:none}
+  .journalbtn{padding:7px 11px;font-size:13.5px}
+  header.top{gap:10px;margin-bottom:6px}
+  .motto{padding:11px 13px;gap:5px}
+  .motto .q-ko{font-size:15.5px}
+  .motto .q-sa{font-size:12.5px}
+  .motto .mine input{font-size:15px}
+  nav.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:4px 0 12px;position:sticky;top:0;background:var(--bg);z-index:20;padding-top:env(safe-area-inset-top)}
+  nav.tabs a{padding:11px 2px;text-align:center;font-size:13.5px}
+  .status{margin:-4px 0 10px}
+  /* 시퀀스 목록 → 가로 스크롤 */
+  .seqlayout{gap:10px}
+  .seqlist{display:flex;overflow-x:auto;gap:8px;padding-bottom:4px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .seqitem{flex:none;max-width:72vw;scroll-snap-align:start;padding:8px 12px}
+  .seqitem .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .panel{padding:12px;border-radius:12px}
+  .seqhead input.name{font-size:19px}
+  .seqmeta{gap:6px}
+  .seqmeta>span:first-child{width:100%}
+  .seqmeta .sp{display:none}
+  .seqmeta .btn{flex:1 1 30%;justify-content:center;padding:9px 6px}
+  .seqmeta #sPlay{flex-basis:100%;padding:11px}
+  .strip svg{width:46px}
+  /* 자세 한 줄 */
+  .step{grid-template-columns:62px 1fr auto;gap:8px;padding:8px}
+  .step .no{display:none}
+  .step .mini{position:relative}
+  .step .mini svg{width:62px}
+  .step .mini::before{content:attr(data-n);position:absolute;left:4px;top:2px;font-size:10px;color:var(--soft)}
+  .step .info .t{display:grid;line-height:1.35}
+  .step .info .t .ts{font-size:11.5px}
+  .step .info .t .tko{font-weight:500;font-size:12.5px;color:var(--soft)}
+  .step .info .t .ts, .step .info .t .tko{display:inline}
+  .step .ctrl{gap:5px}
+  .step .ctrl input.note{flex-basis:100%;min-width:0}
+  .step .ctrl input, .step .ctrl select{font-size:16px}
+  .step .acts{flex-direction:column}
+  .icon{font-size:16px;padding:5px 7px}
+  .ins{height:26px;margin:-2px 0}
+  .ins span{opacity:.9;font-size:11.5px;line-height:20px}
+  /* 용어집 2열 */
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .pcard .body{padding:8px 9px 10px}
+  .pcard .kr{font-size:14px;line-height:1.3}
+  .pcard .sa{font-size:12px}
+  .pcard .ko{font-size:12.5px}
+  .pcard .en,.pcard .pdesc{display:none}
+  .tags{margin-top:4px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .chip{flex:none}
+  .search{font-size:16px}
+  .rgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .root{padding:9px 10px}
+  .root .rk{font-size:16px}
+  .root .rs{font-size:12.5px}
+  .root .rm{font-size:14px}
+  .rootintro{font-size:13px}
+  .term{padding:10px 12px}
+  /* 모달 → 아래에서 올라오는 시트 */
+  .modal{padding:0;align-items:flex-end}
+  .sheet{border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:14px 14px calc(18px + env(safe-area-inset-bottom))}
+  .detail{gap:10px}
+  .detail .art svg{max-height:34vh;margin:0 auto}
+  .detail h2{font-size:20px}
+  .addrow select{font-size:16px}
+  .picker{grid-template-columns:repeat(3,minmax(0,1fr));max-height:58vh}
+  .pick{font-size:11px}
+  /* 일지 */
+  .dpanel{width:100vw;padding:calc(12px + env(safe-area-inset-top)) 12px calc(30px + env(safe-area-inset-bottom))}
+  .jform textarea,.jrow input[type=date],.jrow select{font-size:16px}
+  /* 수련 모드 */
+  .pr-top{padding:calc(10px + env(safe-area-inset-top)) 12px 10px}
+  .pr-main .kr{font-size:22px!important}
+  .pr-main .sa{font-size:15px}
+  .pr-main .ko{font-size:15px}
+  .pr-timer{font-size:38px}
+  .pr-ctrl{padding:12px 12px calc(14px + env(safe-area-inset-bottom));gap:8px}
+  .pr-ctrl .btn{flex:1;justify-content:center;padding:13px 6px;font-size:15px}
+  .pr-ctrl label.btn{flex-basis:100%}
+  .toast{bottom:calc(18px + env(safe-area-inset-bottom))}
+  body.ro .step{grid-template-columns:62px 1fr}
+  .dot{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="om">ॐ</span><h1>요가 노트</h1><small>나의 시퀀스 · 아사나 용어집</small><span style="flex:1"></span>
+      <button class="btn journalbtn" id="jOpen">📝 수련 일지 <span class="jcount" id="jCount">0</span></button></div>
+    <section class="motto" aria-label="요가훈">
+      <div class="row"><span class="lbl">오늘의 요가훈</span><span style="flex:1"></span><button class="linkbtn" id="qNext">다른 구절 ›</button></div>
+      <div class="q-ko" id="qKo"></div>
+      <div class="q-sa" id="qSa"></div>
+      <div class="q-src" id="qSrc"></div>
+      <div class="mine"><span class="lbl">나의 요가훈</span><input id="motto" maxlength="120" placeholder="수련의 다짐을 적어두세요 (자동 저장)"></div>
+    </section>
+  </header>
+
+  <nav class="tabs">
+    <a href="#sequences" data-v="sequences">나의 시퀀스</a>
+    <a href="#asanas" data-v="asanas">아사나 용어집</a>
+    <a href="#roots" data-v="roots">어근 사전</a>
+    <a href="#terms" data-v="terms">요가 용어</a>
+  </nav>
+  <div class="status" id="status"></div>
+
+  <!-- SEQUENCES -->
+  <section class="view" id="v-sequences">
+    <div class="seqlayout">
+      <aside>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button class="btn pri" id="newSeq">＋ 새 시퀀스</button>
+        </div>
+        <div class="seqlist" id="seqList"></div>
+      </aside>
+      <div id="seqPanel"></div>
+    </div>
+  </section>
+
+  <!-- ASANAS -->
+  <section class="view" id="v-asanas">
+    <div class="toolbar">
+      <input class="search" id="aSearch" placeholder="검색: 한글 · 영어 · 산스크리트어 (예: 사바, 송장, savasana)">
+    </div>
+    <div class="chips" id="aCats" style="margin-bottom:8px"></div>
+    <div class="chips" id="aLvls" style="margin-bottom:14px"></div>
+    <div class="count" id="aCount"></div>
+    <div class="grid" id="aGrid"></div>
+  </section>
+
+  <!-- ROOTS -->
+  <section class="view" id="v-roots">
+    <div class="rootintro">자세 이름은 단어를 이어 붙여 만들어요. <b>아도 무카 스바나아사나</b> = 아도(아래) + 무카(얼굴) + 스바나(개) + 아사나(자세) → <b>아래를 향한 개 자세</b>.<br>단어를 알면 처음 보는 자세 이름도 뜻을 짐작할 수 있어요. 아래 자세 이름을 누르면 용어집 설명이 열려요.</div>
+    <div class="toolbar"><input class="search" id="rSearch" placeholder="검색: 머리, 시르사, ūrdhva, 비튼…"></div>
+    <div class="chips" id="rCats" style="margin-bottom:14px"></div>
+    <div id="rList"></div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="view" id="v-terms">
+    <div class="toolbar"><input class="search" id="tSearch" placeholder="용어 검색: 프라나야마, bandha, 집중…"></div>
+    <div class="count" id="tCount"></div>
+    <div class="tlist" id="tList"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<div class="practice" id="practice">
+  <div class="pr-top"><b id="prTitle"></b><span id="prPos" style="color:var(--soft);font-size:13px"></span><button class="btn sm" id="prClose">닫기 ✕</button></div>
+  <div class="pr-main" id="prMain"></div>
+  <div class="pr-ctrl">
+    <button class="btn" id="prPrev">◀ 이전</button>
+    <button class="btn pri" id="prPlay">▶ 시작</button>
+    <button class="btn" id="prNextBtn">다음 ▶</button>
+    <label class="btn ghost" style="font-size:13px">1호흡 =
+      <select id="prBreath"><option>4</option><option selected>5</option><option>6</option><option>8</option></select>초</label>
+  </div>
+</div>
+<div class="drawer" id="drawer">
+  <div class="dpanel">
+    <div class="dhead"><h2>📝 수련 일지</h2><button class="btn sm" id="jClose">닫기 ✕</button></div>
+    <form class="jform" id="jForm">
+      <div class="jrow">
+        <input type="date" id="jDate" required>
+        <select id="jSeq"><option value="">시퀀스 (선택)</option></select>
+      </div>
+      <div class="chips" id="jType">
+        <button type="button" class="chip on" data-t="feel">💭 느낀 점</button>
+        <button type="button" class="chip" data-t="teacher">🧘 선생님 말씀</button>
+      </div>
+      <textarea id="jText" rows="4" placeholder="오늘 수련에서 느낀 점, 몸의 변화, 선생님의 큐잉이나 조언을 적어 두세요."></textarea>
+      <div class="jrow"><span id="jEditing" class="jediting"></span><span style="flex:1"></span>
+        <button type="button" class="btn sm" id="jCancel" hidden>취소</button>
+        <button class="btn pri sm" id="jSave">저장</button></div>
+    </form>
+    <div class="jfilter">
+      <div class="chips" id="jFilter">
+        <button class="chip on" data-f="all">전체</button>
+        <button class="chip" data-f="feel">💭 느낀 점</button>
+        <button class="chip" data-f="teacher">🧘 선생님 말씀</button>
+      </div>
+      <input class="search" id="jSearch" placeholder="일지 검색">
+    </div>
+    <div id="jList"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const POSES = __POSES__;
+const TERMS = __TERMS__;
+const QUOTES = __QUOTES__;
+const ROOTS = __ROOTS__;
+const PUBLIC = __PUBLIC__;
+const SNAP = __SNAP__;
+if(PUBLIC) document.body.classList.add("ro");
+const PMAP = Object.fromEntries(POSES.map(p=>[p.id,p]));
+const CATS = ["전체", ...Array.from(new Set(POSES.map(p=>p.cat)))];
+const LVL = {1:"초급",2:"중급",3:"고급"};
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const full = p=>`${p.kr} · ${p.sa} · ${p.ko}`;
+const norm = s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+/* ---------- 자세 그림 ---------- */
+function figSVG(p, opt={}){
+  const f = p.fig, c="var(--fig)";
+  const L=(a,b,w,o=1)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" opacity="${o}"/>`;
+  let s = `<svg viewBox="0 8 200 152" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(full(p))}">`;
+  s += `<line x1="8" y1="154" x2="192" y2="154" stroke="#d9cbbb" stroke-width="2.5" stroke-linecap="round"/>`;
+  if(f.wall) s += `<line x1="${f.wall+6}" y1="70" x2="${f.wall+6}" y2="154" stroke="#d9cbbb" stroke-width="4" stroke-linecap="round"/>`;
+  for(const k of ["a2","l2"]){ const [e,h]=f[k], b=k[0]==="a"?f.N:f.P; s+=L(b,e,7,.38)+L(e,h,7,.38); }
+  s += f.C ? `<path d="M${f.P[0]} ${f.P[1]} Q${f.C[0]} ${f.C[1]} ${f.N[0]} ${f.N[1]}" stroke="${c}" stroke-width="9" fill="none" stroke-linecap="round"/>` : L(f.P,f.N,9);
+  for(const k of ["l1","a1"]){ const [e,h]=f[k], b=k[0]==="a"?f.N:f.P; s+=L(b,e,7)+L(e,h,7); }
+  s += `<circle cx="${f.H[0]}" cy="${f.H[1]}" r="9" fill="${c}"/></svg>`;
+  return s;
+}
+
+/* ---------- 요가훈 ---------- */
+let qi = Math.floor(Date.now()/86400000) % QUOTES.length;
+function showQuote(){ const [sa,ko,src]=QUOTES[qi]; $("#qKo").textContent=ko; $("#qSa").textContent=sa; $("#qSrc").textContent="— "+src; }
+$("#qNext").onclick=()=>{ qi=(qi+1)%QUOTES.length; showQuote(); };
+showQuote();
+
+/* ---------- 탭 ---------- */
+const VIEWS=["sequences","asanas","roots","terms"];
+function route(){
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "sequences";
+  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on", e.id==="v-"+v));
+  document.querySelectorAll("nav.tabs a").forEach(a=>a.classList.toggle("on", a.dataset.v===v));
+}
+addEventListener("hashchange", ()=>{ route(); if(typeof closeModal==="function") closeModal(); }); route();
+
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("on"),1800); }
+
+/* ---------- 아사나 용어집 ---------- */
+let aCat="전체", aLvl=0;
+function renderChips(){
+  $("#aCats").innerHTML = CATS.map(c=>`<button class="chip ${c===aCat?"on":""}" data-c="${c}">${c}</button>`).join("");
+  $("#aLvls").innerHTML = [0,1,2,3].map(l=>`<button class="chip ${l===aLvl?"on":""}" data-l="${l}">${l?LVL[l]:"모든 난이도"}</button>`).join("");
+}
+$("#aCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(!b)return; aCat=b.dataset.c; renderChips(); renderAsanas();};
+$("#aLvls").onclick=e=>{const b=e.target.closest("[data-l]"); if(!b)return; aLvl=+b.dataset.l; renderChips(); renderAsanas();};
+$("#aSearch").oninput=renderAsanas;
+function renderAsanas(){
+  const q=norm($("#aSearch").value.trim());
+  const list=POSES.filter(p=>(aCat==="전체"||p.cat===aCat)&&(!aLvl||p.lvl===aLvl)&&(!q||norm([p.kr,p.sa,p.ko,p.en,p.id,p.ety,p.dev].join(" ")).includes(q)));
+  $("#aCount").textContent=`${list.length}개 자세`;
+  $("#aGrid").innerHTML=list.map(p=>`
+    <button class="pcard" data-p="${p.id}">
+      <div class="art">${figSVG(p)}</div>
+      <div class="body">
+        <div class="kr">${esc(p.kr)}</div>
+        <div class="sa">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+        <div class="ko">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+        <div class="pdesc">${esc(p.desc)}</div>
+        <div class="tags"><span class="tag">${esc(p.cat)}</span><span class="tag l${p.lvl}">${LVL[p.lvl]}</span></div>
+      </div>
+    </button>`).join("") || `<div class="empty">찾는 자세가 없어요.</div>`;
+}
+$("#aGrid").onclick=e=>{const b=e.target.closest("[data-p]"); if(b) openPose(b.dataset.p);};
+
+function openPose(id){
+  const p=PMAP[id]; if(!p) return;
+  const opts = seqs.map(s=>`<option value="${s.id}" ${s.id===curId?"selected":""}>${esc(s.name||"이름 없는 시퀀스")}</option>`).join("");
+  openModal(`
+    <button class="btn sm ghost x" data-close>✕</button>
+    <div class="detail">
+      <div class="art">${figSVG(p)}</div>
+      <div>
+        <h2>${esc(p.kr)}</h2>
+        <div class="sa" style="font-size:17px">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+        <div class="ko" style="font-size:16px;margin-top:2px">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+        <div class="tags"><span class="tag">${esc(p.cat)}</span><span class="tag l${p.lvl}">${LVL[p.lvl]}</span></div>
+        <dl>
+          <dt>어원</dt><dd>${esc(p.ety)}</dd>
+          <dt>자세 설명</dt><dd>${esc(p.desc)}</dd>
+          <dt>효과</dt><dd>${esc(p.ben)}</dd>
+          <dt>주의</dt><dd>${esc(p.cau)}</dd>
+        </dl>
+        <div class="addrow">${seqs.length?`<select id="addTo">${opts}</select><button class="btn pri sm" id="addBtn">시퀀스에 추가</button>`:`<button class="btn pri sm" id="addNew">새 시퀀스를 만들고 추가</button>`}</div>
+      </div>
+    </div>`);
+  const ab=$("#addBtn"); if(ab) ab.onclick=()=>{ const s=getSeq($("#addTo").value); addStep(s,id); toast(`'${s.name}'에 ${p.kr} 추가`); };
+  const an=$("#addNew"); if(an) an.onclick=()=>{ const s=createSeq(); addStep(s,id); closeModal(); location.hash="sequences"; toast("새 시퀀스에 추가했어요"); };
+}
+
+/* ---------- 어근 사전 ---------- */
+const RCATS=["전체",...Array.from(new Set(ROOTS.map(r=>r[0])))];
+let rCat="전체";
+$("#rSearch").oninput=renderRoots;
+$("#rCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(!b)return; rCat=b.dataset.c; renderRoots();};
+function renderRoots(){
+  $("#rCats").innerHTML=RCATS.map(c=>`<button class="chip ${c===rCat?"on":""}" data-c="${c}">${c}</button>`).join("");
+  const q=norm($("#rSearch").value.trim());
+  const list=ROOTS.filter(r=>(rCat==="전체"||r[0]===rCat)&&(!q||norm(r.slice(1,6).join(" ")).includes(q)));
+  const groups={}; list.forEach(r=>(groups[r[0]] ||= []).push(r));
+  $("#rList").innerHTML = Object.entries(groups).map(([g,rs])=>`
+    <h3 class="rgroup">${esc(g)} <span>${rs.length}</span></h3>
+    <div class="rgrid">${rs.map(([,kr,sa,dev,mean,note,ex])=>`
+      <div class="root">
+        <div class="rk">${esc(kr)}</div>
+        <div class="rs">${esc(sa)} <span class="dev">${esc(dev)}</span></div>
+        <div class="rm">${esc(mean)}</div>
+        ${note?`<div class="rn">${esc(note)}</div>`:""}
+        ${ex.length?`<div class="rex">${ex.filter(id=>PMAP[id]).map(id=>`<button class="exchip" data-p="${id}">${esc(PMAP[id].kr)}</button>`).join("")}</div>`:""}
+      </div>`).join("")}</div>`).join("") || `<div class="empty">찾는 단어가 없어요.</div>`;
+}
+$("#rList").onclick=e=>{const b=e.target.closest("[data-p]"); if(b) openPose(b.dataset.p);};
+
+/* ---------- 요가 용어 ---------- */
+$("#tSearch").oninput=renderTerms;
+function renderTerms(){
+  const q=norm($("#tSearch").value.trim());
+  const list=TERMS.filter(t=>!q||norm(t.join(" ")).includes(q));
+  $("#tCount").textContent=`${list.length}개 용어`;
+  $("#tList").innerHTML=list.map(([sa,dev,ko,en,d])=>`
+    <div class="term"><div class="names"><span class="sa">${esc(sa)}</span><span class="dev">${esc(dev)}</span><span class="ko">${esc(ko)}</span><span class="en">${esc(en)}</span></div>
+    <div class="desc">${esc(d)}</div></div>`).join("");
+}
+
+/* ---------- 모달 ---------- */
+function openModal(html){ $("#sheet").innerHTML=html; $("#modal").classList.add("on"); }
+function closeModal(){ $("#modal").classList.remove("on"); }
+$("#modal").onclick=e=>{ if(e.target.id==="modal"||e.target.closest("[data-close]")) closeModal(); };
+addEventListener("keydown",e=>{ if(e.key==="Escape"){ if($("#practice").classList.contains("on")) stopPractice(); else if($("#modal").classList.contains("on")) closeModal(); else closeJournal(); }});
+
+/* ---------- 저장소 ---------- */
+let db=null, seqs=[], curId=null, motto="", storeMode="loading";
+const LS_KEY="yoga-note-v1";
+let journal=[];
+function lsLoad(){ try{ const d=JSON.parse(localStorage.getItem(LS_KEY)||"{}"); seqs=d.seqs||[]; motto=d.motto||""; journal=d.journal||[]; }catch(e){} }
+function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({seqs,motto,journal})); }catch(e){} }
+function setStatus(m){ $("#status").textContent=m; }
+
+const writeQ={}; // id -> {timer, busy, pending}
+function persist(seq){
+  if(PUBLIC) return;
+  if(storeMode!=="db"){ lsSave(); return; }
+  const w = writeQ[seq.id] ||= {timer:null,busy:false,pending:false};
+  clearTimeout(w.timer);
+  w.timer=setTimeout(()=>flush(seq.id),600);
+}
+async function flush(id){
+  const w=writeQ[id]; if(!w) return;
+  if(w.busy){ w.pending=true; return; }
+  const seq=getSeq(id); if(!seq) return;
+  w.busy=true;
+  try{ const {id:_, ...body}=seq; await db.doc("sequences/"+id).set(JSON.parse(JSON.stringify(body))); setStatus("저장됨 ✓"); }
+  catch(e){ setStatus(e&&e.code==="quota_exceeded" ? "저장 공간이 가득 찼어요. 안 쓰는 시퀀스를 지워주세요." : "저장하지 못했어요 — 잠시 후 다시 시도됩니다."); if(e&&e.code==="unavailable") setTimeout(()=>persist(seq),1500); }
+  w.busy=false;
+  if(w.pending){ w.pending=false; flush(id); }
+}
+async function removeSeqStore(id){
+  if(storeMode!=="db"){ lsSave(); return; }
+  clearTimeout(writeQ[id]?.timer);
+  try{ await db.doc("sequences/"+id).delete(); }catch(e){ setStatus("삭제하지 못했어요."); }
+}
+let mottoTimer, mottoBusy=false;
+$("#motto").oninput=e=>{
+  motto=e.target.value;
+  clearTimeout(mottoTimer);
+  mottoTimer=setTimeout(async()=>{
+    if(storeMode!=="db"){ lsSave(); return; }
+    if(mottoBusy) return; mottoBusy=true;
+    try{ await db.doc("settings/main").set({motto}); }catch(e){}
+    mottoBusy=false;
+  },700);
+};
+
+async function initStore(){
+  if(PUBLIC){ storeMode="public"; seqs=SNAP.seqs||[]; journal=SNAP.journal||[]; motto=SNAP.motto||""; sortSeqs(); $("#motto").value=motto; $("#motto").readOnly=true; if(!motto) document.querySelector(".motto .mine").hidden=true; setStatus(`공개용 보기 · ${SNAP.at} 기준`); renderSeq(); renderJournal(); return; }
+  setStatus("불러오는 중…");
+  let resolved=false;
+  const fallback=()=>{ if(resolved) return; resolved=true; storeMode="local"; lsLoad(); $("#motto").value=motto; setStatus("이 브라우저에만 저장됩니다 (클라우드 저장을 쓸 수 없는 화면)."); renderSeq(); renderJournal(); };
+  const timer=setTimeout(fallback,10000);
+  try{ db = window.claude && typeof window.claude.use==="function" ? await window.claude.use("db") : null; }catch(e){ db=null; }
+  if(!db){ clearTimeout(timer); fallback(); return; }
+  if(resolved) return;
+  storeMode="db";
+  let first=true;
+  db.collection("sequences").onSnapshot(snap=>{
+    if(!snap.metadata.fromCache){ clearTimeout(timer); resolved=true; if(first){ setStatus(""); first=false; } }
+    const incoming=snap.docs.map(d=>({id:d.id, ...structuredClone(d.data())}));
+    // 내가 편집 중인(쓰기 대기) 문서는 로컬 버전 유지
+    const local=Object.fromEntries(seqs.map(s=>[s.id,s]));
+    seqs=incoming.map(s=> (writeQ[s.id]&&(writeQ[s.id].busy||writeQ[s.id].pending||writeQ[s.id].timer)&&local[s.id]) ? local[s.id] : s);
+    for(const s of Object.values(local)) if(!seqs.find(x=>x.id===s.id) && writeQ[s.id]) seqs.push(s);
+    sortSeqs();
+    if(!editingNow()) renderSeq(); else renderSeqList();
+  }, err=>{ clearTimeout(timer); setStatus("시퀀스를 불러오지 못했어요. 새로고침해 주세요."); });
+  db.collection("journal").onSnapshot(snap=>{ journal=snap.docs.map(d=>({id:d.id,...structuredClone(d.data())})); renderJournal(); },
+    ()=>{ $("#jList").innerHTML=`<div class="empty">일지를 불러오지 못했어요.</div>`; });
+  db.doc("settings/main").onSnapshot(s=>{ if(s.exists && document.activeElement!==$("#motto")){ motto=s.data().motto||""; $("#motto").value=motto; } },()=>{});
+}
+function editingNow(){ const a=document.activeElement; return a && $("#seqPanel").contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName); }
+function sortSeqs(){ seqs.sort((a,b)=>(a.order??0)-(b.order??0) || (a.created||0)-(b.created||0)); }
+
+/* ---------- 시퀀스 ---------- */
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function getSeq(id){ return seqs.find(s=>s.id===id); }
+function createSeq(base){
+  const s = base ? {...structuredClone(base), id:uid(), name:(base.name||"")+" (복사)"} : {id:uid(), name:"새 시퀀스", desc:"", steps:[]};
+  s.created=Date.now(); s.updated=Date.now(); s.order=(Math.max(0,...seqs.map(x=>x.order||0)))+1;
+  seqs.push(s); curId=s.id; persist(s); renderSeq(); return s;
+}
+function touch(s){ s.updated=Date.now(); persist(s); }
+function addStep(s,pose,at){ const st={pose, dur:5, unit:"b", note:""}; if(at==null||at>=s.steps.length) s.steps.push(st); else s.steps.splice(at,0,st); touch(s); if(s.id===curId) renderSeq(); else renderSeqList(); }
+function stepSecs(st,bs){ return st.unit==="s" ? +st.dur||0 : (+st.dur||0)*bs; }
+function totalTime(s){ const bs=+$("#prBreath").value||5; const t=s.steps.reduce((a,st)=>a+stepSecs(st,bs),0); const m=Math.floor(t/60), sec=t%60; return m? `${m}분 ${sec?sec+"초":""}`.trim() : `${sec}초`; }
+
+$("#newSeq").onclick=()=>{ createSeq(); setTimeout(()=>{ const i=$("#seqPanel input.name"); if(i){i.focus(); i.select();} },30); };
+
+function renderSeqList(){
+  $("#seqList").innerHTML = seqs.length ? seqs.map(s=>`
+    <button class="seqitem ${s.id===curId?"on":""}" data-s="${s.id}">
+      <span class="n">${esc(s.name||"이름 없는 시퀀스")}</span>
+      <span class="m">${s.steps.length}개 자세 · 약 ${totalTime(s)}</span>
+    </button>`).join("") : `<div class="empty" style="padding:16px">아직 시퀀스가 없어요.</div>`;
+}
+$("#seqList").onclick=e=>{const b=e.target.closest("[data-s]"); if(!b)return; curId=b.dataset.s; renderSeq();};
+
+function renderSeq(){
+  if(!getSeq(curId)) curId = seqs[0]?.id || null;
+  renderSeqList();
+  const s=getSeq(curId), P=$("#seqPanel");
+  if(!s){ P.innerHTML=`<div class="panel"><div class="empty">왼쪽의 <b>＋ 새 시퀀스</b>로 나만의 수련 순서를 만들어 보세요.<br>아사나 용어집에서 자세를 눌러 바로 추가할 수도 있어요.</div></div>`; return; }
+  P.innerHTML=`<div class="panel">
+    <div class="seqhead">
+      <input class="name" id="sName" value="${esc(s.name)}" placeholder="시퀀스 이름">
+      <textarea id="sDesc" rows="1" placeholder="메모 (목적, 수련 시간대, 느낀 점…)">${esc(s.desc||"")}</textarea>
+      <div class="seqmeta"><span>${s.steps.length}개 자세 · 약 ${totalTime(s)}</span><span class="sp"></span>
+        <button class="btn pri sm" id="sPlay" ${s.steps.length?"":"disabled"}>▶ 수련 시작</button>
+        <button class="btn sm" id="sCopyTxt">텍스트 복사</button>
+        <button class="btn sm" id="sDup">복제</button>
+        <button class="btn sm danger" id="sDel">삭제</button>
+      </div>
+      <div id="sConfirm"></div>
+    </div>
+    ${s.steps.length?`<div class="strip">${s.steps.map(st=>PMAP[st.pose]?figSVG(PMAP[st.pose]):"").join("")}</div>`:""}
+    <div class="steps" id="steps">
+      ${s.steps.map((st,i)=>{ const p=PMAP[st.pose]; if(!p) return ""; return `
+      ${i>0?`<button class="ins" data-ins="${i}" title="${i}번과 ${i+1}번 사이에 넣기"><span>＋ 여기에 자세 넣기</span></button>`:""}
+      <div class="step" data-i="${i}">
+        <div class="no">${i+1}</div>
+        <div class="mini" data-view="${p.id}" data-n="${i+1}">${figSVG(p)}</div>
+        <div class="info">
+          <div class="t"><b class="tk">${esc(p.kr)}</b><span class="ts"><i class="dot"> · </i>${esc(p.sa)}<i class="dot"> · </i></span><b class="tko">${esc(p.ko)}</b></div>
+          <div class="ctrl">
+            <input type="number" min="1" max="600" value="${esc(st.dur)}" data-f="dur" aria-label="길이">
+            <select data-f="unit"><option value="b" ${st.unit==="b"?"selected":""}>호흡</option><option value="s" ${st.unit==="s"?"selected":""}>초</option></select>
+            <input class="note" data-f="note" value="${esc(st.note||"")}" placeholder="메모 (좌/우, 변형, 큐잉…)">
+          </div>
+        </div>
+        <div class="acts">
+          <button class="icon" data-a="up" title="위로">▲</button>
+          <button class="icon" data-a="down" title="아래로">▼</button>
+          <button class="icon" data-a="ins" title="이 아래에 자세 넣기">＋</button>
+          <button class="icon" data-a="dup" title="복제">⧉</button>
+          <button class="icon" data-a="del" title="삭제">✕</button>
+        </div>
+      </div>`;}).join("") || `<div class="empty">아래 버튼으로 자세를 추가하세요.</div>`}
+    </div>
+    <button class="btn" id="sAdd">＋ 자세 추가</button>
+  </div>`;
+  if(PUBLIC){ P.querySelectorAll("input,textarea,select").forEach(el=>{ el.readOnly=true; if(el.tagName==="SELECT"||el.type==="number") el.disabled=true; el.placeholder=""; }); if(!s.desc) $("#sDesc").hidden=true; P.querySelectorAll("input.note").forEach(el=>{ if(!el.value) el.hidden=true; }); }
+  $("#sName").oninput=e=>{ s.name=e.target.value; touch(s); renderSeqList(); };
+  const grow=el=>{ el.style.height="auto"; el.style.height=el.scrollHeight+"px"; }; grow($("#sDesc"));
+  $("#sDesc").oninput=e=>{ grow(e.target); s.desc=e.target.value; touch(s); };
+  $("#sAdd").onclick=()=>openPicker(s);
+  $("#sDup").onclick=()=>{ createSeq(s); toast("시퀀스를 복제했어요"); };
+  $("#sPlay").onclick=()=>startPractice(s);
+  $("#sCopyTxt").onclick=async()=>{
+    const txt=`${s.name}\n`+s.steps.map((st,i)=>{const p=PMAP[st.pose]; return `${i+1}. ${full(p)} — ${st.dur}${st.unit==="b"?"호흡":"초"}${st.note?" · "+st.note:""}`;}).join("\n");
+    try{ await navigator.clipboard.writeText(txt); toast("클립보드에 복사했어요"); }catch(e){ toast("복사할 수 없는 환경이에요"); }
+  };
+  $("#sDel").onclick=()=>{
+    $("#sConfirm").innerHTML=`<div class="confirm">‘${esc(s.name)}’을(를) 삭제할까요? 되돌릴 수 없어요. <button class="btn sm danger" id="cYes">삭제</button><button class="btn sm" id="cNo">취소</button></div>`;
+    $("#cNo").onclick=()=>$("#sConfirm").innerHTML="";
+    $("#cYes").onclick=()=>{ seqs=seqs.filter(x=>x.id!==s.id); removeSeqStore(s.id); curId=seqs[0]?.id||null; renderSeq(); toast("삭제했어요"); };
+  };
+  const box=$("#steps");
+  box.oninput=e=>{ const row=e.target.closest(".step"); const f=e.target.dataset.f; if(!row||!f) return; const st=s.steps[+row.dataset.i]; st[f]= f==="dur" ? Math.max(1,+e.target.value||1) : e.target.value; touch(s); if(f!=="note"){ renderSeqList(); P.querySelector(".seqmeta span").textContent=`${s.steps.length}개 자세 · 약 ${totalTime(s)}`; } };
+  box.onchange=box.oninput;
+  box.onclick=e=>{
+    const v=e.target.closest("[data-view]"); if(v){ openPose(v.dataset.view); return; }
+    const ins=e.target.closest("[data-ins]"); if(ins){ openPicker(s,+ins.dataset.ins); return; }
+    const b=e.target.closest("[data-a]"); if(!b) return; const i=+b.closest(".step").dataset.i, a=b.dataset.a, A=s.steps;
+    if(a==="ins"){ openPicker(s,i+1); return; }
+    if(a==="up"&&i>0) [A[i-1],A[i]]=[A[i],A[i-1]];
+    else if(a==="down"&&i<A.length-1) [A[i+1],A[i]]=[A[i],A[i+1]];
+    else if(a==="dup") A.splice(i+1,0,structuredClone(A[i]));
+    else if(a==="del") A.splice(i,1);
+    else return;
+    touch(s); renderSeq();
+  };
+}
+
+function openPicker(s,at){
+  let pos = (at==null) ? null : at;
+  openModal(`<button class="btn sm ghost x" data-close>✕</button>
+    <h3 style="margin:0 0 4px">‘${esc(s.name)}’에 자세 추가</h3>
+    <div id="pkWhere" style="font-size:13px;color:var(--accent);margin-bottom:8px"></div>
+    <input class="search" id="pkQ" placeholder="검색" style="width:100%">
+    <div class="chips" id="pkCats" style="margin-top:8px"></div>
+    <div class="picker" id="pkGrid"></div>
+    <div style="font-size:12.5px;color:var(--soft);margin-top:8px">여러 개를 연달아 누르면 누른 순서대로 들어갑니다.</div>`);
+  const where=()=>{ const A=s.steps; let m;
+    if(pos==null||pos>=A.length) m="📍 넣을 위치: 맨 끝";
+    else if(pos===0) m=`📍 넣을 위치: 맨 앞 (${PMAP[A[0].pose]?.kr||""} 앞)`;
+    else m=`📍 넣을 위치: ${pos}번 ${PMAP[A[pos-1].pose]?.kr||""} 다음 → ${PMAP[A[pos].pose]?.kr||""} 앞`;
+    $("#pkWhere").textContent=m; };
+  where();
+  let cat="전체";
+  const draw=()=>{
+    $("#pkCats").innerHTML=CATS.map(c=>`<button class="chip ${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("");
+    const q=norm($("#pkQ").value);
+    $("#pkGrid").innerHTML=POSES.filter(p=>(cat==="전체"||p.cat===cat)&&(!q||norm([p.kr,p.sa,p.ko,p.en].join(" ")).includes(q)))
+      .map(p=>`<button class="pick" data-p="${p.id}">${figSVG(p)}<b>${esc(p.kr)}</b>${esc(p.sa)}<br><span style="color:var(--soft)">${esc(p.ko)}</span></button>`).join("");
+  };
+  draw();
+  $("#pkQ").oninput=draw; $("#pkQ").focus();
+  $("#pkCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(b){cat=b.dataset.c; draw();}};
+  $("#pkGrid").onclick=e=>{const b=e.target.closest("[data-p]"); if(!b)return;
+    const n = pos==null ? s.steps.length+1 : pos+1;
+    addStep(s,b.dataset.p,pos); if(pos!=null) pos++;
+    toast(`${PMAP[b.dataset.p].kr} → ${n}번째에 추가`); where();};
+}
+
+/* ---------- 수련 모드 ---------- */
+let pr=null;
+function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; loadStep(); $("#practice").classList.add("on"); $("#prTitle").textContent=s.name; }
+function loadStep(){
+  const st=pr.s.steps[pr.i], p=PMAP[st.pose], nx=pr.s.steps[pr.i+1];
+  pr.total=pr.left=stepSecs(st,+$("#prBreath").value);
+  $("#prPos").textContent=`${pr.i+1} / ${pr.s.steps.length}`;
+  $("#prMain").innerHTML=`${figSVG(p)}
+    <div class="kr" style="font-size:26px">${esc(p.kr)}</div>
+    <div class="sa">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+    <div class="ko">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+    ${st.note?`<div class="pr-note">${esc(st.note)}</div>`:""}
+    <div class="pr-timer" id="prT"></div>
+    <div class="pr-bar"><i id="prB"></i></div>
+    <div class="pr-next">${nx?`다음: ${esc(full(PMAP[nx.pose]))}`:"마지막 자세"}</div>`;
+  paintT();
+}
+function paintT(){ const t=Math.max(0,Math.ceil(pr.left)); const bs=+$("#prBreath").value; const st=pr.s.steps[pr.i];
+  $("#prT").textContent = st.unit==="b" ? `${Math.ceil(pr.left/bs)} 호흡` : `${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;
+  $("#prB").style.width = (pr.total? (1-pr.left/pr.total)*100 : 0)+"%"; }
+function play(on){ pr.playing=on; $("#prPlay").textContent=on?"❚❚ 일시정지":"▶ 시작"; clearInterval(pr.tick);
+  if(on) pr.tick=setInterval(()=>{ pr.left-=0.25; if(pr.left<=0){ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } else { play(false); pr.left=0; paintT(); $("#prMain").insertAdjacentHTML("beforeend",`<div class="pr-note" style="font-size:18px">🙏 수련 완료. Om śānti.</div><button class="btn pri" id="prJournal" style="margin-top:8px">📝 오늘 수련 일지 쓰기</button>`); const sid=pr.s.id; $("#prJournal").onclick=()=>{ stopPractice(); openJournal(sid); }; } } else paintT(); },250); }
+function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; $("#practice").classList.remove("on"); }
+$("#prPlay").onclick=()=>play(!pr.playing);
+$("#prPrev").onclick=()=>{ if(pr.i>0){ pr.i--; loadStep(); } };
+$("#prNextBtn").onclick=()=>{ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } };
+$("#prClose").onclick=stopPractice;
+$("#prBreath").onchange=()=>{ if(pr) loadStep(); renderSeqList(); };
+
+/* ---------- 수련 일지 ---------- */
+let jType="feel", jFilter="all", jEditId=null;
+const today=()=>{ const d=new Date(); return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
+const JT={feel:"💭 느낀 점",teacher:"🧘 선생님 말씀"};
+const WD=["일","월","화","수","목","금","토"];
+function fmtDay(s){ const d=new Date(s+"T00:00:00"); return isNaN(d)? s : `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} (${WD[d.getDay()]})`; }
+function setJType(t){ jType=t; document.querySelectorAll("#jType .chip").forEach(c=>c.classList.toggle("on",c.dataset.t===t)); }
+function fillSeqSelect(sel){ $("#jSeq").innerHTML=`<option value="">시퀀스 (선택)</option>`+seqs.map(s=>`<option value="${s.id}">${esc(s.name||"이름 없는 시퀀스")}</option>`).join(""); $("#jSeq").value=sel||""; }
+function resetJForm(){ jEditId=null; $("#jForm").classList.remove("editing"); $("#jEditing").textContent=""; $("#jCancel").hidden=true; $("#jSave").textContent="저장"; $("#jText").value=""; $("#jDate").value=today(); }
+function openJournal(seqId){ resetJForm(); fillSeqSelect(seqId||""); $("#drawer").classList.add("on"); renderJournal(); setTimeout(()=>$("#jText").focus(),50); }
+function closeJournal(){ $("#drawer").classList.remove("on"); }
+$("#jOpen").onclick=()=>openJournal("");
+$("#jClose").onclick=closeJournal;
+$("#drawer").onclick=e=>{ if(e.target.id==="drawer") closeJournal(); };
+$("#jType").onclick=e=>{ const b=e.target.closest("[data-t]"); if(b) setJType(b.dataset.t); };
+$("#jFilter").onclick=e=>{ const b=e.target.closest("[data-f]"); if(!b) return; jFilter=b.dataset.f; document.querySelectorAll("#jFilter .chip").forEach(c=>c.classList.toggle("on",c===b)); renderJournal(); };
+$("#jSearch").oninput=renderJournal;
+$("#jCancel").onclick=resetJForm;
+let jBusy=false;
+$("#jForm").onsubmit=async e=>{
+  e.preventDefault(); if(jBusy) return;
+  const text=$("#jText").value.trim(); if(!text){ $("#jText").focus(); return; }
+  const seqId=$("#jSeq").value, seqName=seqId?(getSeq(seqId)?.name||""):"";
+  const isNew=!jEditId, id=jEditId||uid();
+  const prev=journal.find(j=>j.id===id);
+  const entry={date:$("#jDate").value||today(), type:jType, text, seqId, seqName, created:prev?.created||Date.now(), updated:Date.now()};
+  if(prev) Object.assign(prev,entry); else journal.push({id,...entry});
+  renderJournal(); resetJForm(); toast(isNew?"일지를 저장했어요":"일지를 고쳤어요");
+  if(storeMode!=="db"){ lsSave(); return; }
+  jBusy=true;
+  try{ await db.doc("journal/"+id).set(entry); }catch(err){ toast(err&&err.code==="quota_exceeded"?"저장 공간이 가득 찼어요":"저장하지 못했어요. 다시 시도해 주세요."); }
+  jBusy=false;
+};
+function renderJournal(){
+  $("#jCount").textContent=journal.length;
+  if(!$("#drawer").classList.contains("on")) return;
+  const q=norm($("#jSearch").value.trim());
+  const list=journal.filter(j=>(jFilter==="all"||j.type===jFilter)&&(!q||norm(j.text+" "+(j.seqName||"")).includes(q)))
+    .sort((a,b)=> (b.date||"").localeCompare(a.date||"") || (b.created||0)-(a.created||0));
+  if(!list.length){ $("#jList").innerHTML=`<div class="empty">${journal.length?"조건에 맞는 기록이 없어요.":(PUBLIC?"아직 공개된 기록이 없어요.":"아직 기록이 없어요. 오늘 수련의 느낌을 남겨 보세요.")}</div>`; return; }
+  let html="", last="";
+  for(const j of list){
+    if(j.date!==last){ html+=`<div class="jday">${esc(fmtDay(j.date))}</div>`; last=j.date; }
+    const sname = j.seqId&&getSeq(j.seqId) ? getSeq(j.seqId).name : j.seqName;
+    html+=`<div class="jentry ${j.type}" data-j="${j.id}">
+      <div class="jmeta"><span class="jbadge ${j.type}">${JT[j.type]||""}</span>${sname?`<span>· ${esc(sname)}</span>`:""}
+        <span class="jacts"><button class="icon" data-ja="edit" title="고치기">✎</button><button class="icon" data-ja="del" title="삭제">✕</button></span></div>
+      <div class="jtext">${esc(j.text)}</div><div class="jconf"></div></div>`;
+  }
+  $("#jList").innerHTML=html;
+}
+$("#jList").onclick=e=>{
+  const b=e.target.closest("[data-ja]"); if(!b) return;
+  const box=b.closest("[data-j]"), j=journal.find(x=>x.id===box.dataset.j); if(!j) return;
+  if(b.dataset.ja==="edit"){
+    jEditId=j.id; $("#jDate").value=j.date; setJType(j.type); fillSeqSelect(j.seqId); $("#jText").value=j.text;
+    $("#jForm").classList.add("editing"); $("#jEditing").textContent="✎ 기록을 고치는 중"; $("#jCancel").hidden=false; $("#jSave").textContent="고친 내용 저장";
+    $("#drawer .dpanel").scrollTop=0; $("#jText").focus();
+  } else {
+    box.querySelector(".jconf").innerHTML=`<div class="confirm">이 기록을 삭제할까요? <button class="btn sm danger" data-yes>삭제</button><button class="btn sm" data-no>취소</button></div>`;
+    box.querySelector("[data-no]").onclick=ev=>{ ev.stopPropagation(); box.querySelector(".jconf").innerHTML=""; };
+    box.querySelector("[data-yes]").onclick=async ev=>{ ev.stopPropagation();
+      journal=journal.filter(x=>x.id!==j.id); if(jEditId===j.id) resetJForm(); renderJournal(); toast("삭제했어요");
+      if(storeMode!=="db"){ lsSave(); return; }
+      try{ await db.doc("journal/"+j.id).delete(); }catch(err){ toast("삭제하지 못했어요"); } };
+  }
+};
+$("#jDate").value=today();
+
+/* ---------- 시작 ---------- */
+renderChips(); renderAsanas(); renderRoots(); renderTerms(); renderSeq();
+initStore();
+</script>
+</body>
+</html>

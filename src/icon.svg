@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+<rect width="180" height="180" fill="#f6f1ea"/>
+<circle cx="90" cy="98" r="62" fill="#f3e2d6"/>
+<g stroke="#8a5236" stroke-linecap="round" fill="none" transform="translate(-10,6)">
+<line x1="100" y1="98" x2="100" y2="58" stroke-width="9"/>
+<line x1="100" y1="98" x2="100" y2="124" stroke-width="7"/><line x1="100" y1="124" x2="100" y2="150" stroke-width="7"/>
+<line x1="100" y1="98" x2="126" y2="112" stroke-width="7" opacity=".55"/><line x1="126" y1="112" x2="103" y2="118" stroke-width="7" opacity=".55"/>
+<line x1="100" y1="58" x2="80" y2="34" stroke-width="7"/><line x1="80" y1="34" x2="100" y2="14" stroke-width="7"/>
+<line x1="100" y1="58" x2="120" y2="34" stroke-width="7"/><line x1="120" y1="34" x2="100" y2="14" stroke-width="7"/>
+</g>
+<circle cx="90" cy="47" r="9" fill="#8a5236"/>
+</svg>

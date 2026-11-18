@@ -2,7 +2,14 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f1ea">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="요가 노트">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
 <title>요가 노트 (공개용)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
@@ -18,7 +25,7 @@
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:15px;line-height:1.55}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 80px}
+.wrap{max-width:1080px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
 header.top{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
 .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .brand h1{font-family:"Noto Serif KR",serif;font-size:26px;margin:0;letter-spacing:-.5px}
@@ -145,6 +152,8 @@ body.ro .seqhead textarea{resize:none}
 .step .info{display:grid;gap:4px;min-width:0}
 .step .info .t{font-weight:700;font-size:14px;line-height:1.4}
 .step .info .t span{font-weight:400;color:var(--soft);font-size:13px}
+.step .info .t .tko{font-weight:700}
+.dot{font-style:normal}
 .step .ctrl{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .step .ctrl input[type=number]{width:56px;border:1px solid var(--line);border-radius:7px;padding:3px 6px;background:#fff}
 .step .ctrl select{border:1px solid var(--line);border-radius:7px;padding:3px 4px;background:#fff}
@@ -199,6 +208,96 @@ body.ro .seqhead textarea{resize:none}
 .pr-ctrl{display:flex;gap:10px;justify-content:center;padding:14px;border-top:1px solid var(--line);flex-wrap:wrap}
 .pr-next{font-size:13px;color:var(--soft)}
 .confirm{display:flex;gap:8px;align-items:center;background:#fbeee8;border:1px solid #efcdbf;border-radius:10px;padding:8px 10px;font-size:13.5px;margin-top:8px;flex-wrap:wrap}
+
+/* ---------- 모바일 ---------- */
+@media (max-width:640px){
+  html,body{font-size:15px}
+  .wrap{padding-top:calc(12px + env(safe-area-inset-top));padding-left:calc(12px + env(safe-area-inset-left));padding-right:calc(12px + env(safe-area-inset-right))}
+  .brand{flex-wrap:nowrap}
+  .brand h1{font-size:22px}
+  .brand small{display:none}
+  .journalbtn{padding:7px 11px;font-size:13.5px}
+  header.top{gap:10px;margin-bottom:6px}
+  .motto{padding:11px 13px;gap:5px}
+  .motto .q-ko{font-size:15.5px}
+  .motto .q-sa{font-size:12.5px}
+  .motto .mine input{font-size:15px}
+  nav.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:4px 0 12px;position:sticky;top:0;background:var(--bg);z-index:20;padding-top:env(safe-area-inset-top)}
+  nav.tabs a{padding:11px 2px;text-align:center;font-size:13.5px}
+  .status{margin:-4px 0 10px}
+  /* 시퀀스 목록 → 가로 스크롤 */
+  .seqlayout{gap:10px}
+  .seqlist{display:flex;overflow-x:auto;gap:8px;padding-bottom:4px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .seqitem{flex:none;max-width:72vw;scroll-snap-align:start;padding:8px 12px}
+  .seqitem .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .panel{padding:12px;border-radius:12px}
+  .seqhead input.name{font-size:19px}
+  .seqmeta{gap:6px}
+  .seqmeta>span:first-child{width:100%}
+  .seqmeta .sp{display:none}
+  .seqmeta .btn{flex:1 1 30%;justify-content:center;padding:9px 6px}
+  .seqmeta #sPlay{flex-basis:100%;padding:11px}
+  .strip svg{width:46px}
+  /* 자세 한 줄 */
+  .step{grid-template-columns:62px 1fr auto;gap:8px;padding:8px}
+  .step .no{display:none}
+  .step .mini{position:relative}
+  .step .mini svg{width:62px}
+  .step .mini::before{content:attr(data-n);position:absolute;left:4px;top:2px;font-size:10px;color:var(--soft)}
+  .step .info .t{display:grid;line-height:1.35}
+  .step .info .t .ts{font-size:11.5px}
+  .step .info .t .tko{font-weight:500;font-size:12.5px;color:var(--soft)}
+  .step .info .t .ts, .step .info .t .tko{display:inline}
+  .step .ctrl{gap:5px}
+  .step .ctrl input.note{flex-basis:100%;min-width:0}
+  .step .ctrl input, .step .ctrl select{font-size:16px}
+  .step .acts{flex-direction:column}
+  .icon{font-size:16px;padding:5px 7px}
+  .ins{height:26px;margin:-2px 0}
+  .ins span{opacity:.9;font-size:11.5px;line-height:20px}
+  /* 용어집 2열 */
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .pcard .body{padding:8px 9px 10px}
+  .pcard .kr{font-size:14px;line-height:1.3}
+  .pcard .sa{font-size:12px}
+  .pcard .ko{font-size:12.5px}
+  .pcard .en,.pcard .pdesc{display:none}
+  .tags{margin-top:4px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .chip{flex:none}
+  .search{font-size:16px}
+  .rgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .root{padding:9px 10px}
+  .root .rk{font-size:16px}
+  .root .rs{font-size:12.5px}
+  .root .rm{font-size:14px}
+  .rootintro{font-size:13px}
+  .term{padding:10px 12px}
+  /* 모달 → 아래에서 올라오는 시트 */
+  .modal{padding:0;align-items:flex-end}
+  .sheet{border-radius:18px 18px 0 0;max-height:92vh;overflow-y:auto;padding:14px 14px calc(18px + env(safe-area-inset-bottom))}
+  .detail{gap:10px}
+  .detail .art svg{max-height:34vh;margin:0 auto}
+  .detail h2{font-size:20px}
+  .addrow select{font-size:16px}
+  .picker{grid-template-columns:repeat(3,minmax(0,1fr));max-height:58vh}
+  .pick{font-size:11px}
+  /* 일지 */
+  .dpanel{width:100vw;padding:calc(12px + env(safe-area-inset-top)) 12px calc(30px + env(safe-area-inset-bottom))}
+  .jform textarea,.jrow input[type=date],.jrow select{font-size:16px}
+  /* 수련 모드 */
+  .pr-top{padding:calc(10px + env(safe-area-inset-top)) 12px 10px}
+  .pr-main .kr{font-size:22px!important}
+  .pr-main .sa{font-size:15px}
+  .pr-main .ko{font-size:15px}
+  .pr-timer{font-size:38px}
+  .pr-ctrl{padding:12px 12px calc(14px + env(safe-area-inset-bottom));gap:8px}
+  .pr-ctrl .btn{flex:1;justify-content:center;padding:13px 6px;font-size:15px}
+  .pr-ctrl label.btn{flex-basis:100%}
+  .toast{bottom:calc(18px + env(safe-area-inset-bottom))}
+  body.ro .step{grid-template-columns:62px 1fr}
+  .dot{display:none}
+}
 </style>
 </head>
 <body>
@@ -349,7 +448,7 @@ function route(){
   document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on", e.id==="v-"+v));
   document.querySelectorAll("nav.tabs a").forEach(a=>a.classList.toggle("on", a.dataset.v===v));
 }
-addEventListener("hashchange", route); route();
+addEventListener("hashchange", ()=>{ route(); if(typeof closeModal==="function") closeModal(); }); route();
 
 function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("on"),1800); }
 
@@ -565,9 +664,9 @@ function renderSeq(){
       ${i>0?`<button class="ins" data-ins="${i}" title="${i}번과 ${i+1}번 사이에 넣기"><span>＋ 여기에 자세 넣기</span></button>`:""}
       <div class="step" data-i="${i}">
         <div class="no">${i+1}</div>
-        <div class="mini" data-view="${p.id}">${figSVG(p)}</div>
+        <div class="mini" data-view="${p.id}" data-n="${i+1}">${figSVG(p)}</div>
         <div class="info">
-          <div class="t">${esc(p.kr)} <span>· ${esc(p.sa)} ·</span> ${esc(p.ko)}</div>
+          <div class="t"><b class="tk">${esc(p.kr)}</b><span class="ts"><i class="dot"> · </i>${esc(p.sa)}<i class="dot"> · </i></span><b class="tko">${esc(p.ko)}</b></div>
           <div class="ctrl">
             <input type="number" min="1" max="600" value="${esc(st.dur)}" data-f="dur" aria-label="길이">
             <select data-f="unit"><option value="b" ${st.unit==="b"?"selected":""}>호흡</option><option value="s" ${st.unit==="s"?"selected":""}>초</option></select>
@@ -587,7 +686,8 @@ function renderSeq(){
   </div>`;
   if(PUBLIC){ P.querySelectorAll("input,textarea,select").forEach(el=>{ el.readOnly=true; if(el.tagName==="SELECT"||el.type==="number") el.disabled=true; el.placeholder=""; }); if(!s.desc) $("#sDesc").hidden=true; P.querySelectorAll("input.note").forEach(el=>{ if(!el.value) el.hidden=true; }); }
   $("#sName").oninput=e=>{ s.name=e.target.value; touch(s); renderSeqList(); };
-  $("#sDesc").oninput=e=>{ s.desc=e.target.value; touch(s); };
+  const grow=el=>{ el.style.height="auto"; el.style.height=el.scrollHeight+"px"; }; grow($("#sDesc"));
+  $("#sDesc").oninput=e=>{ grow(e.target); s.desc=e.target.value; touch(s); };
   $("#sAdd").onclick=()=>openPicker(s);
   $("#sDup").onclick=()=>{ createSeq(s); toast("시퀀스를 복제했어요"); };
   $("#sPlay").onclick=()=>startPractice(s);

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>요가 노트 (공개용)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1ea; --card:#fffdf9; --ink:#2f2722; --soft:#7b6e64; --line:#e7ddd1;
+  --accent:#b5653f; --accent-soft:#f3e2d6; --sage:#6f8a6a; --sage-soft:#e4ece1;
+  --fig:#8a5236; --fig-back:#8a5236;
+  --r:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-size:15px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 80px}
+header.top{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand h1{font-family:"Noto Serif KR",serif;font-size:26px;margin:0;letter-spacing:-.5px}
+.brand .om{font-family:"Noto Sans Devanagari",sans-serif;color:var(--accent);font-size:24px}
+.brand small{color:var(--soft)}
+.motto{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:8px}
+.motto .lbl{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px}
+.motto .q-sa{font-style:italic;color:var(--soft);font-size:13.5px}
+.motto .q-ko{font-family:"Noto Serif KR",serif;font-size:17px}
+.motto .q-src{font-size:12px;color:var(--soft)}
+.motto .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.motto .mine{border-top:1px dashed var(--line);padding-top:8px;display:flex;gap:8px;align-items:center}
+.motto .mine input{flex:1;border:none;background:transparent;font-family:"Noto Serif KR",serif;font-size:16px;padding:4px 0;outline:none;min-width:0}
+.motto .mine input::placeholder{color:#b8aca1}
+.linkbtn{background:none;border:none;color:var(--accent);font-size:12.5px;padding:2px 4px}
+nav.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:8px 0 18px;overflow-x:auto}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--soft);font-weight:500;border-bottom:2.5px solid transparent;white-space:nowrap}
+nav.tabs a.on{color:var(--ink);border-color:var(--accent)}
+.view{display:none}.view.on{display:block}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 13px;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:#d4c4b3}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 9px;font-size:13px;border-radius:8px}
+.btn.danger{color:#a23b2a}
+.status{font-size:12.5px;color:var(--soft);margin:-8px 0 12px}
+/* glossary */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{flex:1;min-width:200px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 12px;outline:none}
+.search:focus{border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font-size:13px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;text-align:left;padding:0}
+.pcard:hover{border-color:#d4c4b3;box-shadow:0 3px 14px rgba(80,50,30,.07)}
+.pcard .art{background:linear-gradient(#fbf6f0,#f4ece2);border-bottom:1px solid var(--line)}
+.pcard .art svg{display:block;width:100%;height:auto}
+.pcard .body{padding:10px 12px 12px;display:grid;gap:2px}
+.kr{font-weight:700;font-size:16px;font-family:"Noto Serif KR",serif}
+.sa{font-weight:500;font-size:14px}
+.dev{font-family:"Noto Sans Devanagari",sans-serif;color:var(--accent);font-size:14px}
+.ko{font-size:14px}
+.en{font-size:12.5px;color:var(--soft)}
+.pdesc{font-size:12.5px;color:var(--soft);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tags{display:flex;gap:5px;margin-top:6px}
+.tag{font-size:11px;padding:2px 7px;border-radius:999px;background:var(--sage-soft);color:#4b6347}
+.tag.l2{background:#f6ead0;color:#8a6420}.tag.l3{background:#f6dcd3;color:#9a4127}
+.count{font-size:13px;color:var(--soft);margin-bottom:10px}
+/* terms */
+.tlist{display:grid;gap:8px}
+.term{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:4px 16px}
+.term .names{display:grid}
+.term .desc{font-size:14px;color:#4c423b}
+@media(max-width:620px){.term{grid-template-columns:1fr}}
+/* public read-only */
+body.ro #newSeq, body.ro #sAdd, body.ro .acts, body.ro .ins, body.ro #sDup, body.ro #sDel, body.ro .addrow, body.ro #jForm, body.ro .jacts{display:none!important}
+body.ro .step{grid-template-columns:28px 78px 1fr}
+body.ro .step .ctrl select:disabled, body.ro .step .ctrl input:disabled{background:transparent;border-color:transparent;color:var(--ink);appearance:none;-webkit-appearance:none;padding:0;width:auto}
+body.ro .step .ctrl input[type=number]:disabled{width:2.2em;text-align:right}
+body.ro .step .ctrl input.note[readonly]{border-color:transparent;background:#faf4ec}
+body.ro .seqhead textarea{resize:none}
+/* journal */
+.journalbtn{border-color:var(--accent-soft);background:var(--card);font-weight:500}
+.jcount{background:var(--accent);color:#fff;border-radius:999px;font-size:11px;padding:0 7px;line-height:18px}
+.drawer{position:fixed;inset:0;background:rgba(40,28,20,.4);z-index:55;display:none;justify-content:flex-end}
+.drawer.on{display:flex}
+.dpanel{background:var(--bg);width:min(520px,100vw);height:100%;overflow-y:auto;padding:16px 16px 40px;box-shadow:-10px 0 40px rgba(0,0,0,.15)}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dhead h2{font-family:"Noto Serif KR",serif;font-size:20px;margin:0}
+.jform{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px}
+.jform.editing{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.jrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.jrow input[type=date],.jrow select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;flex:1;min-width:130px}
+.jform textarea{border:1px solid var(--line);border-radius:10px;padding:9px 10px;resize:vertical;background:#fff;outline:none;min-height:90px}
+.jform textarea:focus{border-color:var(--accent)}
+.jediting{font-size:12.5px;color:var(--accent)}
+.jfilter{display:grid;gap:8px;margin:16px 0 8px}
+.jday{font-size:13px;font-weight:700;color:var(--soft);margin:16px 0 6px;display:flex;gap:6px;align-items:center}
+.jday::after{content:"";flex:1;border-top:1px solid var(--line)}
+.jentry{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.jentry.teacher{border-left:4px solid var(--sage)}
+.jentry.feel{border-left:4px solid var(--accent)}
+.jmeta{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--soft);flex-wrap:wrap}
+.jbadge{border-radius:999px;padding:1px 8px;font-size:11.5px}
+.jbadge.feel{background:var(--accent-soft);color:#8a4a2c}
+.jbadge.teacher{background:var(--sage-soft);color:#4b6347}
+.jtext{white-space:pre-wrap;font-size:14.5px;margin-top:6px;word-break:break-word}
+.jentry .jacts{margin-left:auto;display:flex;gap:2px}
+/* roots */
+.rootintro{background:var(--sage-soft);border-radius:12px;padding:12px 14px;font-size:14px;color:#3f513c;margin-bottom:14px}
+.rgroup{font-family:"Noto Serif KR",serif;font-size:17px;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.rgroup span{font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--soft);font-weight:400}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.root{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:grid;gap:2px;align-content:start}
+.root .rk{font-family:"Noto Serif KR",serif;font-weight:700;font-size:18px}
+.root .rs{font-size:14px}
+.root .rm{font-size:15px;font-weight:600;color:var(--accent)}
+.root .rn{font-size:12.5px;color:var(--soft)}
+.rex{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.exchip{border:1px solid var(--line);background:#fbf6f0;border-radius:999px;padding:2px 8px;font-size:12px}
+.exchip:hover{border-color:var(--accent);color:var(--accent)}
+/* sequences */
+.seqlayout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:820px){.seqlayout{grid-template-columns:minmax(0,1fr)}}
+.seqlist{display:grid;gap:8px}
+.seqitem{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left;display:grid;gap:2px}
+.seqitem.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.seqitem .n{font-weight:700}
+.seqitem .m{font-size:12px;color:var(--soft)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.seqhead{display:grid;gap:8px;margin-bottom:12px}
+.seqhead input.name{font-family:"Noto Serif KR",serif;font-size:21px;font-weight:700;border:none;border-bottom:1px solid transparent;background:transparent;padding:2px 0;outline:none;width:100%}
+.seqhead input.name:focus,.seqhead textarea:focus{border-color:var(--line)}
+.seqhead textarea{border:1px solid transparent;background:transparent;resize:vertical;min-height:38px;padding:4px 0;outline:none;color:#4c423b;width:100%}
+.seqmeta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--soft)}
+.seqmeta .sp{flex:1}
+.steps{display:grid;gap:8px;margin:10px 0}
+.step{display:grid;grid-template-columns:28px 78px 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:6px 10px 6px 8px;background:#fffefb}
+.step .no{font-size:12px;color:var(--soft);text-align:center}
+.step .mini{background:#f7f0e7;border-radius:8px;cursor:pointer}
+.step .mini svg{display:block;width:78px;height:auto}
+.step .info{display:grid;gap:4px;min-width:0}
+.step .info .t{font-weight:700;font-size:14px;line-height:1.4}
+.step .info .t span{font-weight:400;color:var(--soft);font-size:13px}
+.step .ctrl{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.step .ctrl input[type=number]{width:56px;border:1px solid var(--line);border-radius:7px;padding:3px 6px;background:#fff}
+.step .ctrl select{border:1px solid var(--line);border-radius:7px;padding:3px 4px;background:#fff}
+.step .ctrl input.note{flex:1;min-width:120px;border:1px solid var(--line);border-radius:7px;padding:3px 8px;background:#fff;font-size:13px}
+.step .acts{display:flex;flex-direction:column;gap:2px}
+.icon{border:none;background:transparent;color:var(--soft);font-size:15px;padding:2px 6px;border-radius:6px;line-height:1}
+.icon:hover{background:var(--accent-soft);color:var(--ink)}
+.ins{display:block;width:100%;border:none;background:transparent;height:14px;margin:-4px 0;padding:0;position:relative;color:var(--accent);font-size:12px}
+.ins::before{content:"";position:absolute;left:44px;right:8px;top:50%;border-top:1.5px dashed transparent}
+.ins span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--card);padding:0 10px;border-radius:999px;border:1px solid var(--accent-soft);opacity:0;transition:opacity .15s;white-space:nowrap;line-height:20px}
+.ins:hover::before,.ins:focus::before{border-color:var(--accent)}
+.ins:hover span,.ins:focus span{opacity:1}
+@media(hover:none){.ins{height:24px;margin:0}.ins span{opacity:.85}}
+.empty{color:var(--soft);text-align:center;padding:30px 10px;border:1px dashed var(--line);border-radius:12px}
+.strip{display:flex;gap:4px;overflow-x:auto;padding:6px 0 2px}
+.strip svg{width:54px;height:auto;flex:none;background:#f7f0e7;border-radius:6px}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(40,28,20,.45);display:none;align-items:flex-start;justify-content:center;padding:4vh 12px;z-index:50;overflow-y:auto}
+.modal.on{display:flex}
+.sheet{background:var(--card);border-radius:18px;max-width:720px;width:100%;padding:18px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.2)}
+.sheet .x{position:absolute;right:10px;top:10px}
+.detail{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:640px){.detail{grid-template-columns:1fr}}
+.detail .art{background:linear-gradient(#fbf6f0,#f1e7da);border-radius:14px}
+.detail .art svg{width:100%;height:auto;display:block}
+.detail h2{margin:0;font-size:22px}
+.detail .dev{font-size:19px}
+.detail dl{margin:10px 0 0;display:grid;gap:8px}
+.detail dt{font-size:12px;font-weight:700;color:var(--accent)}
+.detail dd{margin:0;font-size:14px}
+.addrow{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.addrow select{border:1px solid var(--line);border-radius:9px;padding:7px;background:#fff;flex:1;min-width:140px}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;max-height:60vh;overflow-y:auto;margin-top:10px}
+.pick{border:1px solid var(--line);background:#fffefb;border-radius:10px;padding:4px 4px 8px;text-align:center;font-size:12px}
+.pick:hover{border-color:var(--accent)}
+.pick svg{width:100%;height:auto;display:block}
+.pick b{display:block;font-size:12.5px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:999px;font-size:13.5px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:80}
+.toast.on{opacity:1}
+/* practice */
+.practice{position:fixed;inset:0;background:#f8f2ea;z-index:60;display:none;flex-direction:column}
+.practice.on{display:flex}
+.pr-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.pr-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 16px;text-align:center;gap:6px;overflow:auto}
+.pr-main svg{width:min(560px,92vw);height:auto}
+.pr-main .sa{font-size:19px}
+.pr-main .ko{font-size:18px;font-family:"Noto Serif KR",serif}
+.pr-note{color:var(--accent);font-size:14px}
+.pr-timer{font-size:44px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.pr-bar{height:5px;background:var(--line);width:min(560px,92vw);border-radius:9px;overflow:hidden}
+.pr-bar i{display:block;height:100%;background:var(--accent);width:0}
+.pr-ctrl{display:flex;gap:10px;justify-content:center;padding:14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.pr-next{font-size:13px;color:var(--soft)}
+.confirm{display:flex;gap:8px;align-items:center;background:#fbeee8;border:1px solid #efcdbf;border-radius:10px;padding:8px 10px;font-size:13.5px;margin-top:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="om">ॐ</span><h1>요가 노트</h1><small>나의 시퀀스 · 아사나 용어집</small><span style="flex:1"></span>
+      <button class="btn journalbtn" id="jOpen">📝 수련 일지 <span class="jcount" id="jCount">0</span></button></div>
+    <section class="motto" aria-label="요가훈">
+      <div class="row"><span class="lbl">오늘의 요가훈</span><span style="flex:1"></span><button class="linkbtn" id="qNext">다른 구절 ›</button></div>
+      <div class="q-ko" id="qKo"></div>
+      <div class="q-sa" id="qSa"></div>
+      <div class="q-src" id="qSrc"></div>
+      <div class="mine"><span class="lbl">나의 요가훈</span><input id="motto" maxlength="120" placeholder="수련의 다짐을 적어두세요 (자동 저장)"></div>
+    </section>
+  </header>
+
+  <nav class="tabs">
+    <a href="#sequences" data-v="sequences">나의 시퀀스</a>
+    <a href="#asanas" data-v="asanas">아사나 용어집</a>
+    <a href="#roots" data-v="roots">어근 사전</a>
+    <a href="#terms" data-v="terms">요가 용어</a>
+  </nav>
+  <div class="status" id="status"></div>
+
+  <!-- SEQUENCES -->
+  <section class="view" id="v-sequences">
+    <div class="seqlayout">
+      <aside>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button class="btn pri" id="newSeq">＋ 새 시퀀스</button>
+        </div>
+        <div class="seqlist" id="seqList"></div>
+      </aside>
+      <div id="seqPanel"></div>
+    </div>
+  </section>
+
+  <!-- ASANAS -->
+  <section class="view" id="v-asanas">
+    <div class="toolbar">
+      <input class="search" id="aSearch" placeholder="검색: 한글 · 영어 · 산스크리트어 (예: 사바, 송장, savasana)">
+    </div>
+    <div class="chips" id="aCats" style="margin-bottom:8px"></div>
+    <div class="chips" id="aLvls" style="margin-bottom:14px"></div>
+    <div class="count" id="aCount"></div>
+    <div class="grid" id="aGrid"></div>
+  </section>
+
+  <!-- ROOTS -->
+  <section class="view" id="v-roots">
+    <div class="rootintro">자세 이름은 단어를 이어 붙여 만들어요. <b>아도 무카 스바나아사나</b> = 아도(아래) + 무카(얼굴) + 스바나(개) + 아사나(자세) → <b>아래를 향한 개 자세</b>.<br>단어를 알면 처음 보는 자세 이름도 뜻을 짐작할 수 있어요. 아래 자세 이름을 누르면 용어집 설명이 열려요.</div>
+    <div class="toolbar"><input class="search" id="rSearch" placeholder="검색: 머리, 시르사, ūrdhva, 비튼…"></div>
+    <div class="chips" id="rCats" style="margin-bottom:14px"></div>
+    <div id="rList"></div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="view" id="v-terms">
+    <div class="toolbar"><input class="search" id="tSearch" placeholder="용어 검색: 프라나야마, bandha, 집중…"></div>
+    <div class="count" id="tCount"></div>
+    <div class="tlist" id="tList"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<div class="practice" id="practice">
+  <div class="pr-top"><b id="prTitle"></b><span id="prPos" style="color:var(--soft);font-size:13px"></span><button class="btn sm" id="prClose">닫기 ✕</button></div>
+  <div class="pr-main" id="prMain"></div>
+  <div class="pr-ctrl">
+    <button class="btn" id="prPrev">◀ 이전</button>
+    <button class="btn pri" id="prPlay">▶ 시작</button>
+    <button class="btn" id="prNextBtn">다음 ▶</button>
+    <label class="btn ghost" style="font-size:13px">1호흡 =
+      <select id="prBreath"><option>4</option><option selected>5</option><option>6</option><option>8</option></select>초</label>
+  </div>
+</div>
+<div class="drawer" id="drawer">
+  <div class="dpanel">
+    <div class="dhead"><h2>📝 수련 일지</h2><button class="btn sm" id="jClose">닫기 ✕</button></div>
+    <form class="jform" id="jForm">
+      <div class="jrow">
+        <input type="date" id="jDate" required>
+        <select id="jSeq"><option value="">시퀀스 (선택)</option></select>
+      </div>
+      <div class="chips" id="jType">
+        <button type="button" class="chip on" data-t="feel">💭 느낀 점</button>
+        <button type="button" class="chip" data-t="teacher">🧘 선생님 말씀</button>
+      </div>
+      <textarea id="jText" rows="4" placeholder="오늘 수련에서 느낀 점, 몸의 변화, 선생님의 큐잉이나 조언을 적어 두세요."></textarea>
+      <div class="jrow"><span id="jEditing" class="jediting"></span><span style="flex:1"></span>
+        <button type="button" class="btn sm" id="jCancel" hidden>취소</button>
+        <button class="btn pri sm" id="jSave">저장</button></div>
+    </form>
+    <div class="jfilter">
+      <div class="chips" id="jFilter">
+        <button class="chip on" data-f="all">전체</button>
+        <button class="chip" data-f="feel">💭 느낀 점</button>
+        <button class="chip" data-f="teacher">🧘 선생님 말씀</button>
+      </div>
+      <input class="search" id="jSearch" placeholder="일지 검색">
+    </div>
+    <div id="jList"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const POSES = [{"id": "tadasana", "sa": "Tāḍāsana", "dev": "ताडासन", "ko": "산 자세", "en": "Mountain Pose", "cat": "서서", "lvl": 1, "ety": "tāḍa(산) + āsana(자세)", "desc": "두 발을 모으고 바르게 서서 정수리를 위로 길게 늘이는 모든 선 자세의 기본. 아쉬탕가에서는 사마스티티(Samasthiti)라고도 부른다.", "ben": "자세 정렬과 균형 감각, 발바닥 감각을 깨운다.", "cau": "무릎을 과신전하지 말고 허벅지를 살짝 끌어올린다.", "fig": {"H": [100, 44], "N": [100, 58], "P": [100, 98], "a1": [[90, 78], [88, 98]], "a2": [[110, 78], [112, 98]], "l1": [[96, 124], [96, 150]], "l2": [[104, 124], [104, 150]]}, "kr": "타다아사나"}, {"id": "pranamasana", "sa": "Praṇāmāsana", "dev": "प्रणामासन", "ko": "기도 자세", "en": "Prayer Pose", "cat": "서서", "lvl": 1, "ety": "praṇāma(경배, 인사) + āsana", "desc": "산 자세로 서서 가슴 앞에 두 손을 합장(안잘리 무드라)한다. 태양경배의 시작과 끝.", "ben": "마음을 모으고 수련의 의도를 세운다.", "cau": "어깨를 귀에서 멀리 내린다.", "fig": {"H": [100, 44], "N": [100, 58], "P": [100, 98], "a1": [[86, 84], [100, 72]], "a2": [[114, 84], [100, 72]], "l1": [[96, 124], [96, 150]], "l2": [[104, 124], [104, 150]]}, "kr": "프라나마아사나"}, {"id": "urdhva-hastasana", "sa": "Ūrdhva Hastāsana", "dev": "ऊर्ध्वहस्तासन", "ko": "하늘 향해 팔 뻗기", "en": "Upward Salute", "cat": "서서", "lvl": 1, "ety": "ūrdhva(위로) + hasta(손) + āsana", "desc": "산 자세에서 숨을 들이마시며 두 팔을 머리 위로 뻗어 몸 옆선을 길게 늘인다.", "ben": "어깨와 옆구리를 열고 호흡 공간을 넓힌다.", "cau": "허리를 과하게 꺾지 말고 갈비뼈를 살짝 모은다.", "fig": {"H": [100, 44], "N": [100, 58], "P": [100, 98], "a1": [[88, 38], [82, 17]], "a2": [[112, 38], [118, 17]], "l1": [[96, 124], [96, 150]], "l2": [[104, 124], [104, 150]]}, "kr": "우르드바 하스타아사나"}, {"id": "uttanasana", "sa": "Uttānāsana", "dev": "उत्तानासन", "ko": "선 전굴 자세", "en": "Standing Forward Bend", "cat": "전굴", "lvl": 1, "ety": "ut(강하게) + tāna(늘이다) + āsana", "desc": "서서 고관절부터 접어 상체를 다리 쪽으로 내리고 머리와 목의 힘을 뺀다.", "ben": "햄스트링과 등 뒤를 늘이고 신경계를 진정시킨다.", "cau": "허리가 불편하면 무릎을 넉넉히 굽힌다.", "fig": {"H": [112, 128], "N": [110, 118], "P": [96, 82], "a1": [[112, 135], [104, 150]], "a2": [[110, 135], [102, 150]], "l1": [[96, 116], [96, 150]], "l2": [[98, 116], [98, 150]]}, "kr": "우타나아사나"}, {"id": "ardha-uttanasana", "sa": "Ardha Uttānāsana", "dev": "अर्धोत्तानासन", "ko": "반 전굴 자세", "en": "Half Standing Forward Bend", "cat": "전굴", "lvl": 1, "ety": "ardha(반) + uttānāsana", "desc": "전굴에서 등을 평평하게 펴고 상체를 바닥과 나란히 들어 올린다. 손은 정강이나 바닥에.", "ben": "척추를 길게 하고 등 근육을 깨운다.", "cau": "목을 꺾지 말고 시선은 바닥 앞쪽.", "fig": {"H": [150, 96], "N": [138, 100], "P": [98, 98], "a1": [[132, 118], [124, 134]], "a2": [[130, 118], [122, 134]], "l1": [[98, 124], [98, 150]], "l2": [[100, 124], [100, 150]]}, "kr": "아르다 우타나아사나"}, {"id": "utkatasana", "sa": "Utkaṭāsana", "dev": "उत्कटासन", "ko": "의자 자세", "en": "Chair Pose", "cat": "서서", "lvl": 1, "ety": "utkaṭa(강렬한, 힘찬) + āsana", "desc": "두 발을 모으고 의자에 앉듯 무릎을 굽히며 팔을 귀 옆으로 뻗어 올린다.", "ben": "허벅지·엉덩이 근력과 지구력, 몸의 열을 키운다.", "cau": "무릎이 발끝 앞으로 과하게 나가지 않게 엉덩이를 뒤로.", "fig": {"H": [115, 60], "N": [110, 73], "P": [94, 110], "a1": [[118, 53], [127, 33]], "a2": [[116, 54], [125, 34]], "l1": [[120, 126], [104, 150]], "l2": [[118, 128], [102, 150]]}, "kr": "웃카타아사나"}, {"id": "phalakasana", "sa": "Phalakāsana", "dev": "फलकासन", "ko": "판자 자세", "en": "Plank Pose", "cat": "팔 지지", "lvl": 1, "ety": "phalaka(판자) + āsana", "desc": "손을 어깨 아래에 두고 머리부터 발뒤꿈치까지 한 줄로 몸을 곧게 지탱한다.", "ben": "코어와 팔·어깨 근력을 기른다.", "cau": "엉덩이가 처지거나 들리지 않게, 손목이 아프면 무릎을 내린다.", "fig": {"H": [153, 104], "N": [140, 109], "P": [95, 127], "a1": [[140, 129], [140, 150]], "a2": [[138, 129], [138, 150]], "l1": [[66, 138], [40, 148]], "l2": [[66, 139], [40, 149]]}, "kr": "팔라카아사나"}, {"id": "chaturanga", "sa": "Caturaṅga Daṇḍāsana", "dev": "चतुरङ्गदण्डासन", "ko": "사지 막대 자세", "en": "Four-Limbed Staff Pose", "cat": "팔 지지", "lvl": 2, "ety": "catur(넷) + aṅga(사지) + daṇḍa(막대) + āsana", "desc": "판자 자세에서 팔꿈치를 몸 옆에 붙여 굽히며 몸을 바닥 가까이 낮춘다.", "ben": "팔·어깨·코어의 통합 근력.", "cau": "어깨가 팔꿈치보다 낮아지지 않게. 처음엔 무릎을 내려 연습.", "fig": {"H": [153, 128], "N": [140, 131], "P": [95, 138], "a1": [[122, 133], [124, 150]], "a2": [[120, 133], [122, 150]], "l1": [[66, 142], [40, 147]], "l2": [[66, 143], [40, 148]]}, "kr": "차투랑가 단다아사나"}, {"id": "urdhva-mukha-svanasana", "sa": "Ūrdhva Mukha Śvānāsana", "dev": "ऊर्ध्वमुखश्वानासन", "ko": "위를 향한 개 자세", "en": "Upward-Facing Dog", "cat": "후굴", "lvl": 2, "ety": "ūrdhva(위) + mukha(얼굴) + śvāna(개) + āsana", "desc": "엎드린 상태에서 팔을 펴 가슴을 앞·위로 끌어올리고 허벅지를 바닥에서 띄운다.", "ben": "가슴과 복부 앞쪽을 열고 척추 신전을 돕는다.", "cau": "어깨를 귀에서 멀리, 허리 통증이 있으면 코브라로 대체.", "fig": {"H": [148, 93], "N": [140, 107], "P": [98, 136], "C": [120, 130], "a1": [[140, 128], [140, 150]], "a2": [[138, 128], [138, 150]], "l1": [[70, 143], [40, 148]], "l2": [[70, 144], [40, 149]]}, "kr": "우르드바 무카 스바나아사나"}, {"id": "adho-mukha-svanasana", "sa": "Adho Mukha Śvānāsana", "dev": "अधोमुखश्वानासन", "ko": "아래를 향한 개 자세", "en": "Downward-Facing Dog", "cat": "역자세", "lvl": 1, "ety": "adhas(아래) + mukha(얼굴) + śvāna(개) + āsana", "desc": "손과 발로 바닥을 밀어 엉덩이를 높이 들고 몸을 뒤집힌 V자로 만든다.", "ben": "어깨·햄스트링·종아리를 늘이고 온몸에 활력을 준다.", "cau": "등이 둥글면 무릎을 굽혀 척추 길이를 먼저 확보한다.", "fig": {"H": [122, 124], "N": [124, 112], "P": [100, 80], "a1": [[137, 131], [150, 150]], "a2": [[135, 131], [148, 150]], "l1": [[75, 115], [50, 150]], "l2": [[77, 115], [52, 150]]}, "kr": "아도 무카 스바나아사나"}, {"id": "anjaneyasana", "sa": "Añjaneyāsana", "dev": "अञ्जनेयासन", "ko": "낮은 런지 자세", "en": "Low Lunge", "cat": "서서", "lvl": 1, "ety": "Añjaneya(하누만의 다른 이름) + āsana", "desc": "한 발을 앞에 두고 뒤 무릎을 바닥에 내린 뒤 골반을 앞으로 낮추며 팔을 위로 뻗는다.", "ben": "고관절 굴곡근(장요근)과 허벅지 앞쪽을 늘인다.", "cau": "뒤 무릎이 아프면 담요를 깐다.", "fig": {"H": [103, 70], "N": [103, 84], "P": [104, 122], "a1": [[100, 62], [102, 42]], "a2": [[108, 62], [106, 42]], "l1": [[130, 122], [130, 150]], "l2": [[72, 147], [46, 150]]}, "kr": "안자네야아사나"}, {"id": "virabhadrasana-1", "sa": "Vīrabhadrāsana I", "dev": "वीरभद्रासन १", "ko": "전사 자세 1", "en": "Warrior I", "cat": "서서", "lvl": 1, "ety": "Vīrabhadra(시바가 만든 전사) + āsana", "desc": "앞무릎을 90도로 굽히고 뒷다리는 곧게, 골반을 정면으로 하며 두 팔을 머리 위로 뻗는다.", "ben": "다리 근력과 고관절 유연성, 가슴 열기.", "cau": "앞무릎이 발목 위에 오도록, 허리를 꺾지 않는다.", "fig": {"H": [110, 58], "N": [110, 72], "P": [110, 112], "a1": [[106, 52], [108, 32]], "a2": [[114, 52], [112, 32]], "l1": [[134, 124], [140, 150]], "l2": [[89, 131], [68, 150]]}, "kr": "비라바드라아사나 1"}, {"id": "virabhadrasana-2", "sa": "Vīrabhadrāsana II", "dev": "वीरभद्रासन २", "ko": "전사 자세 2", "en": "Warrior II", "cat": "서서", "lvl": 1, "ety": "Vīrabhadra + āsana", "desc": "다리를 넓게 벌려 앞무릎을 굽히고, 두 팔을 바닥과 나란히 양옆으로 뻗어 앞 손끝을 응시한다.", "ben": "하체 지구력, 집중력, 어깨와 고관절의 개방.", "cau": "앞무릎이 안쪽으로 무너지지 않게 새끼발가락 쪽으로.", "fig": {"H": [100, 58], "N": [100, 72], "P": [100, 112], "a1": [[122, 72], [144, 72]], "a2": [[78, 72], [56, 72]], "l1": [[126, 114], [128, 150]], "l2": [[79, 131], [58, 150]]}, "kr": "비라바드라아사나 2"}, {"id": "viparita-virabhadrasana", "sa": "Viparīta Vīrabhadrāsana", "dev": "विपरीतवीरभद्रासन", "ko": "역전사 자세", "en": "Reverse Warrior", "cat": "서서", "lvl": 1, "ety": "viparīta(거꾸로) + vīrabhadrāsana", "desc": "전사 2에서 앞 팔을 위·뒤로 뻗고 뒤 손은 뒷다리에 가볍게 얹어 옆구리를 늘인다.", "ben": "옆구리와 늑간 근육을 늘이고 호흡을 깊게 한다.", "cau": "뒷손에 체중을 싣지 말고 다리 힘으로 지탱.", "fig": {"H": [86, 60], "N": [92, 74], "P": [100, 112], "a1": [[90, 52], [82, 32]], "a2": [[80, 92], [76, 114]], "l1": [[126, 114], [128, 150]], "l2": [[79, 131], [58, 150]]}, "kr": "비파리타 비라바드라아사나"}, {"id": "utthita-parsvakonasana", "sa": "Utthita Pārśvakoṇāsana", "dev": "उत्थितपार्श्वकोणासन", "ko": "측면 각 자세", "en": "Extended Side Angle", "cat": "서서", "lvl": 2, "ety": "utthita(뻗은) + pārśva(옆) + koṇa(각) + āsana", "desc": "전사 2에서 상체를 앞 허벅지 쪽으로 기울여 아래 손을 바닥에, 위 팔은 귀 옆으로 사선으로 뻗는다.", "ben": "몸 옆선 전체를 길게 늘이고 다리를 강화한다.", "cau": "아래 손이 닿지 않으면 팔뚝을 허벅지에 얹는다.", "fig": {"H": [147, 96], "N": [134, 104], "P": [100, 112], "a1": [[150, 90], [168, 76]], "a2": [[133, 125], [132, 146]], "l1": [[126, 114], [128, 150]], "l2": [[79, 131], [58, 150]]}, "kr": "우티타 파르스바코나아사나"}, {"id": "trikonasana", "sa": "Utthita Trikoṇāsana", "dev": "उत्थितत्रिकोणासन", "ko": "삼각 자세", "en": "Triangle Pose", "cat": "서서", "lvl": 1, "ety": "utthita(뻗은) + tri(셋) + koṇa(각) + āsana", "desc": "다리를 곧게 넓게 벌리고 상체를 옆으로 기울여 아래 손은 정강이에, 위 팔은 하늘로 뻗는다.", "ben": "다리 뒤쪽과 옆구리를 늘이고 가슴을 연다.", "cau": "앞무릎을 잠그지 말고 미세하게 풀어둔다.", "fig": {"H": [150, 98], "N": [138, 101], "P": [100, 108], "a1": [[139, 79], [140, 58]], "a2": [[136, 121], [132, 140]], "l1": [[116, 129], [132, 150]], "l2": [[84, 129], [68, 150]]}, "kr": "우티타 트리코나아사나"}, {"id": "parsvottanasana", "sa": "Pārśvottānāsana", "dev": "पार्श्वोत्तानासन", "ko": "피라미드 자세", "en": "Intense Side Stretch", "cat": "전굴", "lvl": 2, "ety": "pārśva(옆) + ut(강하게) + tāna(늘이다) + āsana", "desc": "다리를 앞뒤로 벌려 곧게 펴고 골반을 정면으로 맞춘 뒤 상체를 앞다리 위로 접는다.", "ben": "햄스트링을 깊게 늘이고 균형감을 기른다.", "cau": "허리가 둥글면 손을 블록에 둔다.", "fig": {"H": [136, 136], "N": [128, 126], "P": [100, 104], "a1": [[132, 140], [134, 150]], "a2": [[130, 140], [132, 150]], "l1": [[115, 127], [130, 150]], "l2": [[85, 127], [70, 150]]}, "kr": "파르스보타나아사나"}, {"id": "prasarita-padottanasana", "sa": "Prasārita Pādottānāsana", "dev": "प्रसारितपादोत्तानासन", "ko": "다리 넓혀 전굴 자세", "en": "Wide-Legged Forward Bend", "cat": "전굴", "lvl": 1, "ety": "prasārita(넓게 벌린) + pāda(발) + ut + tāna + āsana", "desc": "다리를 넓게 벌리고 고관절부터 접어 손을 바닥에, 정수리를 바닥 쪽으로 내린다.", "ben": "다리 안쪽·뒤쪽을 늘이고 머리로 혈류를 보낸다.", "cau": "발 바깥날을 평행하게 두고 무릎을 잠그지 않는다.", "fig": {"H": [100, 140], "N": [100, 128], "P": [100, 96], "a1": [[110, 140], [114, 150]], "a2": [[90, 140], [86, 150]], "l1": [[119, 123], [138, 150]], "l2": [[81, 123], [62, 150]]}, "kr": "프라사리타 파도타나아사나"}, {"id": "vrksasana", "sa": "Vṛkṣāsana", "dev": "वृक्षासन", "ko": "나무 자세", "en": "Tree Pose", "cat": "균형", "lvl": 1, "ety": "vṛkṣa(나무) + āsana", "desc": "한 발로 서서 다른 발바닥을 안쪽 허벅지(또는 종아리)에 대고 두 손을 머리 위로 모은다.", "ben": "균형과 집중력, 발목과 다리의 안정성.", "cau": "발을 무릎 관절에 직접 대지 않는다.", "fig": {"H": [100, 44], "N": [100, 58], "P": [100, 98], "a1": [[90, 38], [100, 20]], "a2": [[110, 38], [100, 20]], "l1": [[100, 124], [100, 150]], "l2": [[126, 112], [103, 118]]}, "kr": "브륵샤아사나"}, {"id": "garudasana", "sa": "Garuḍāsana", "dev": "गरुडासन", "ko": "독수리 자세", "en": "Eagle Pose", "cat": "균형", "lvl": 2, "ety": "Garuḍa(신화 속 독수리, 비슈누의 탈것) + āsana", "desc": "무릎을 굽혀 한 다리를 다른 다리에 감고, 팔도 팔꿈치에서 교차해 감아 올린다.", "ben": "어깨 사이와 엉덩이 바깥쪽을 풀고 집중력을 기른다.", "cau": "무릎이 불편하면 위 발끝을 바닥에 둔다.", "fig": {"H": [100, 56], "N": [100, 70], "P": [100, 108], "a1": [[92, 62], [104, 44]], "a2": [[108, 64], [96, 44]], "l1": [[104, 128], [98, 150]], "l2": [[98, 124], [112, 140]]}, "kr": "가루다아사나"}, {"id": "ardha-chandrasana", "sa": "Ardha Candrāsana", "dev": "अर्धचन्द्रासन", "ko": "반달 자세", "en": "Half Moon Pose", "cat": "균형", "lvl": 2, "ety": "ardha(반) + candra(달) + āsana", "desc": "한 다리와 한 손으로 지탱하고 다른 다리는 바닥과 수평으로, 위 팔은 하늘로 뻗어 몸을 옆으로 연다.", "ben": "균형, 다리 근력, 몸 옆선의 개방.", "cau": "아래 손에 블록을 사용하면 안정적이다.", "fig": {"H": [176, 100], "N": [163, 102], "P": [126, 98], "a1": [[163, 80], [163, 58]], "a2": [[163, 124], [163, 148]], "l1": [[128, 124], [130, 150]], "l2": [[100, 96], [74, 94]]}, "kr": "아르다 찬드라아사나"}, {"id": "virabhadrasana-3", "sa": "Vīrabhadrāsana III", "dev": "वीरभद्रासन ३", "ko": "전사 자세 3", "en": "Warrior III", "cat": "균형", "lvl": 2, "ety": "Vīrabhadra + āsana", "desc": "한 다리로 서서 상체와 뒷다리를 바닥과 수평으로 만들고 팔을 앞으로 뻗어 T자를 만든다.", "ben": "균형, 코어, 서 있는 다리와 엉덩이 근력.", "cau": "뒷다리 골반이 열리지 않도록 양 골반을 바닥과 나란히.", "fig": {"H": [153, 98], "N": [140, 98], "P": [100, 98], "a1": [[161, 97], [182, 96]], "a2": [[161, 99], [182, 100]], "l1": [[100, 124], [100, 150]], "l2": [[74, 98], [48, 98]]}, "kr": "비라바드라아사나 3"}, {"id": "natarajasana", "sa": "Naṭarājāsana", "dev": "नटराजासन", "ko": "춤의 왕 자세", "en": "Dancer Pose", "cat": "균형", "lvl": 3, "ety": "naṭa(춤추는 이) + rāja(왕) + āsana — 춤추는 시바", "desc": "한 발로 서서 뒤로 든 발을 같은 쪽 손으로 잡아 끌어올리고, 다른 팔은 앞으로 뻗는다.", "ben": "균형, 허벅지 앞쪽과 가슴·어깨의 개방.", "cau": "허리만 꺾지 말고 발을 손으로 밀어내며 들어올린다.", "fig": {"H": [143, 66], "N": [134, 76], "P": [110, 98], "a1": [[154, 62], [172, 48]], "a2": [[111, 82], [89, 82]], "l1": [[110, 124], [110, 150]], "l2": [[88, 112], [86, 84]]}, "kr": "나타라자아사나"}, {"id": "malasana", "sa": "Mālāsana", "dev": "मालासन", "ko": "화환 자세(스쿼트)", "en": "Garland Pose", "cat": "앉아서", "lvl": 1, "ety": "mālā(화환, 염주) + āsana", "desc": "발을 골반 너비로 두고 깊이 쪼그려 앉아 합장한 팔꿈치로 무릎 안쪽을 민다.", "ben": "고관절과 발목을 열고 골반저를 깨운다.", "cau": "뒤꿈치가 뜨면 말은 담요를 받친다.", "fig": {"H": [100, 78], "N": [100, 92], "P": [100, 130], "a1": [[82, 114], [100, 102]], "a2": [[118, 114], [100, 102]], "l1": [[72, 124], [88, 150]], "l2": [[128, 124], [112, 150]]}, "kr": "말라아사나"}, {"id": "dandasana", "sa": "Daṇḍāsana", "dev": "दण्डासन", "ko": "막대 자세", "en": "Staff Pose", "cat": "앉아서", "lvl": 1, "ety": "daṇḍa(막대) + āsana", "desc": "다리를 앞으로 곧게 뻗고 앉아 손으로 바닥을 누르며 척추를 위로 길게 세운다.", "ben": "앉은 자세의 기본 정렬, 등 근육 강화.", "cau": "허리가 말리면 엉덩이 밑에 담요를 깐다.", "fig": {"H": [70, 92], "N": [70, 106], "P": [70, 146], "a1": [[72, 126], [74, 148]], "a2": [[68, 126], [66, 148]], "l1": [[96, 147], [122, 146]], "l2": [[96, 148], [122, 147]]}, "kr": "단다아사나"}, {"id": "paschimottanasana", "sa": "Paścimottānāsana", "dev": "पश्चिमोत्तानासन", "ko": "앉은 전굴 자세", "en": "Seated Forward Bend", "cat": "전굴", "lvl": 1, "ety": "paścima(서쪽 = 몸의 뒷면) + ut + tāna + āsana", "desc": "막대 자세에서 숨을 내쉬며 고관절부터 접어 상체를 다리 위로 내리고 손으로 발을 잡는다.", "ben": "몸 뒷면 전체를 늘이고 마음을 가라앉힌다.", "cau": "등을 억지로 말지 말고 배꼽을 허벅지 쪽으로 보낸다.", "fig": {"H": [118, 124], "N": [106, 128], "P": [70, 146], "a1": [[116, 136], [126, 142]], "a2": [[114, 137], [124, 143]], "l1": [[96, 147], [124, 146]], "l2": [[96, 148], [124, 147]]}, "kr": "파스치모타나아사나"}, {"id": "janu-sirsasana", "sa": "Jānu Śīrṣāsana", "dev": "जानुशीर्षासन", "ko": "머리-무릎 자세", "en": "Head-to-Knee Pose", "cat": "전굴", "lvl": 1, "ety": "jānu(무릎) + śīrṣa(머리) + āsana", "desc": "한 다리는 뻗고 다른 발바닥은 뻗은 다리 안쪽 허벅지에 붙인 뒤 뻗은 다리 쪽으로 전굴한다.", "ben": "햄스트링과 등의 한쪽씩 깊은 이완.", "cau": "굽힌 무릎이 들리면 밑에 쿠션을 받친다.", "fig": {"H": [118, 124], "N": [106, 128], "P": [70, 146], "a1": [[116, 136], [126, 142]], "a2": [[114, 137], [124, 143]], "l1": [[96, 147], [124, 146]], "l2": [[92, 140], [76, 147]]}, "kr": "자누 시르사아사나"}, {"id": "sukhasana", "sa": "Sukhāsana", "dev": "सुखासन", "ko": "편안한 자세", "en": "Easy Pose", "cat": "앉아서", "lvl": 1, "ety": "sukha(편안함, 행복) + āsana", "desc": "양반다리로 편하게 앉아 척추를 세우고 손은 무릎 위에 둔다. 명상·호흡의 기본 자세.", "ben": "고관절을 부드럽게 열고 마음을 차분히 한다.", "cau": "무릎이 엉덩이보다 높으면 방석을 깔고 앉는다.", "fig": {"H": [100, 84], "N": [100, 98], "P": [100, 138], "a1": [[84, 118], [74, 138]], "a2": [[116, 118], [126, 138]], "l1": [[72, 144], [110, 148]], "l2": [[128, 144], [90, 148]]}, "kr": "수카아사나"}, {"id": "padmasana", "sa": "Padmāsana", "dev": "पद्मासन", "ko": "연꽃 자세", "en": "Lotus Pose", "cat": "앉아서", "lvl": 3, "ety": "padma(연꽃) + āsana", "desc": "양발을 반대쪽 허벅지 위에 올려 앉는 고전 명상 자세.", "ben": "안정된 좌법으로 오래 앉아 명상하기 좋다.", "cau": "무릎에 비틀림 통증이 있으면 절대 억지로 하지 않는다. 반연꽃(Ardha Padmāsana)부터.", "fig": {"H": [100, 84], "N": [100, 98], "P": [100, 138], "a1": [[84, 120], [74, 140]], "a2": [[116, 120], [126, 140]], "l1": [[72, 144], [112, 134]], "l2": [[128, 144], [88, 134]]}, "kr": "파드마아사나"}, {"id": "baddha-konasana", "sa": "Baddha Koṇāsana", "dev": "बद्धकोणासन", "ko": "나비 자세", "en": "Bound Angle Pose", "cat": "앉아서", "lvl": 1, "ety": "baddha(묶인) + koṇa(각) + āsana", "desc": "앉아서 두 발바닥을 맞대고 무릎을 양옆으로 내리며 손으로 발을 감싼다.", "ben": "고관절 안쪽과 사타구니를 연다.", "cau": "무릎을 손으로 누르지 않는다.", "fig": {"H": [100, 84], "N": [100, 98], "P": [100, 136], "a1": [[90, 122], [98, 144]], "a2": [[110, 122], [102, 144]], "l1": [[68, 138], [98, 148]], "l2": [[132, 138], [102, 148]]}, "kr": "받다 코나아사나"}, {"id": "ardha-matsyendrasana", "sa": "Ardha Matsyendrāsana", "dev": "अर्धमत्स्येन्द्रासन", "ko": "앉은 비틀기 자세", "en": "Half Lord of the Fishes", "cat": "비틀기", "lvl": 2, "ety": "ardha(반) + Matsyendra(요기 이름, '물고기의 왕') + āsana", "desc": "한 무릎을 세워 반대 다리 바깥에 발을 두고, 반대 팔로 무릎을 감싸며 상체를 비튼다.", "ben": "척추 회전 가동성, 소화 기관 자극.", "cau": "먼저 척추를 세운 뒤 비틀고, 목만 과하게 돌리지 않는다.", "fig": {"H": [94, 86], "N": [100, 100], "P": [100, 140], "a1": [[114, 110], [120, 124]], "a2": [[84, 120], [80, 146]], "l1": [[118, 112], [90, 148]], "l2": [[72, 146], [112, 148]]}, "kr": "아르다 마첸드라아사나"}, {"id": "navasana", "sa": "Nāvāsana", "dev": "नावासन", "ko": "보트 자세", "en": "Boat Pose", "cat": "앉아서", "lvl": 2, "ety": "nāvā(배) + āsana", "desc": "엉덩이로 균형을 잡고 상체를 뒤로 기울이며 다리를 들어 V자를 만들고 팔을 앞으로 뻗는다.", "ben": "복부·고관절 굴곡근 강화, 균형.", "cau": "허리가 말리면 무릎을 굽혀(반보트) 가슴을 세운다.", "fig": {"H": [66, 90], "N": [72, 104], "P": [90, 142], "a1": [[94, 108], [116, 110]], "a2": [[92, 110], [114, 112]], "l1": [[110, 122], [130, 102]], "l2": [[112, 123], [132, 103]]}, "kr": "나바아사나"}, {"id": "eka-pada-rajakapotasana", "sa": "Eka Pāda Rājakapotāsana", "dev": "एकपादराजकपोतासन", "ko": "비둘기 자세", "en": "Pigeon Pose", "cat": "앉아서", "lvl": 2, "ety": "eka(하나) + pāda(발) + rāja(왕) + kapota(비둘기) + āsana", "desc": "앞 정강이를 바닥에 비스듬히 두고 뒷다리를 뒤로 곧게 뻗어 골반을 내린다. (초보용 변형)", "ben": "엉덩이 바깥쪽(이상근)과 고관절 굴곡근을 깊게 연다.", "cau": "앞무릎에 통증이 있으면 앞발을 몸 쪽으로 당기거나 엉덩이 밑에 담요를.", "fig": {"H": [102, 84], "N": [100, 98], "P": [96, 138], "a1": [[110, 120], [114, 146]], "a2": [[106, 121], [110, 147]], "l1": [[122, 146], [98, 148]], "l2": [[70, 147], [42, 148]]}, "kr": "에카 파다 라자카포타아사나"}, {"id": "balasana", "sa": "Bālāsana", "dev": "बालासन", "ko": "아기 자세", "en": "Child's Pose", "cat": "휴식", "lvl": 1, "ety": "bāla(아이) + āsana", "desc": "무릎을 꿇고 엉덩이를 발뒤꿈치에 내린 채 상체를 앞으로 숙여 이마를 바닥에 대는 휴식 자세.", "ben": "등과 엉덩이를 이완하고 호흡을 고른다.", "cau": "무릎이 불편하면 무릎 뒤에 담요를 끼운다.", "fig": {"H": [130, 140], "N": [118, 134], "P": [82, 136], "a1": [[142, 146], [164, 148]], "a2": [[140, 147], [162, 149]], "l1": [[104, 148], [78, 150]], "l2": [[104, 149], [78, 150]]}, "kr": "발라아사나"}, {"id": "marjaryasana", "sa": "Mārjāryāsana", "dev": "मार्जार्यासन", "ko": "고양이 자세", "en": "Cat Pose", "cat": "네발", "lvl": 1, "ety": "mārjāra(고양이) + āsana", "desc": "네발 기기 자세에서 숨을 내쉬며 등을 둥글게 말아 올리고 턱을 가슴 쪽으로 당긴다.", "ben": "척추 굴곡 가동성, 등 근육 이완.", "cau": "손목이 불편하면 주먹이나 팔뚝으로.", "fig": {"H": [140, 120], "N": [132, 108], "P": [90, 122], "C": [110, 92], "a1": [[132, 129], [132, 150]], "a2": [[130, 129], [130, 150]], "l1": [[90, 148], [62, 150]], "l2": [[92, 148], [64, 150]]}, "kr": "마르자리아사나"}, {"id": "bitilasana", "sa": "Bitilāsana", "dev": "बितिलासन", "ko": "소 자세", "en": "Cow Pose", "cat": "네발", "lvl": 1, "ety": "bitila(소) + āsana", "desc": "네발 기기 자세에서 숨을 들이마시며 배를 내리고 가슴과 꼬리뼈를 들어 시선을 앞으로.", "ben": "척추 신전, 가슴 열기. 고양이 자세와 번갈아 호흡에 맞춰 반복.", "cau": "목을 뒤로 꺾지 않는다.", "fig": {"H": [142, 96], "N": [132, 108], "P": [90, 120], "C": [110, 128], "a1": [[132, 129], [132, 150]], "a2": [[130, 129], [130, 150]], "l1": [[90, 148], [62, 150]], "l2": [[92, 148], [64, 150]]}, "kr": "비틸라아사나"}, {"id": "bhujangasana", "sa": "Bhujaṅgāsana", "dev": "भुजङ्गासन", "ko": "코브라 자세", "en": "Cobra Pose", "cat": "후굴", "lvl": 1, "ety": "bhujaṅga(뱀, 코브라) + āsana", "desc": "엎드려 손을 가슴 옆에 두고 등 근육으로 가슴을 들어 올린다. 팔꿈치는 몸에 붙여 살짝 굽힌다.", "ben": "척추 신전근 강화, 가슴 열기.", "cau": "치골을 바닥에 두고 허리에 압박이 오면 높이를 낮춘다.", "fig": {"H": [136, 106], "N": [128, 118], "P": [92, 146], "C": [115, 140], "a1": [[118, 134], [124, 150]], "a2": [[116, 135], [122, 150]], "l1": [[66, 148], [40, 148]], "l2": [[66, 149], [40, 149]]}, "kr": "부장가아사나"}, {"id": "salabhasana", "sa": "Śalabhāsana", "dev": "शलभासन", "ko": "메뚜기 자세", "en": "Locust Pose", "cat": "후굴", "lvl": 1, "ety": "śalabha(메뚜기) + āsana", "desc": "엎드린 채 가슴과 다리를 동시에 바닥에서 들어 올리고 팔은 몸 옆 뒤로 뻗는다.", "ben": "등·엉덩이·다리 뒤쪽 근력.", "cau": "목을 길게 유지하고 시선은 바닥 앞.", "fig": {"H": [148, 132], "N": [136, 138], "P": [100, 144], "a1": [[114, 134], [92, 130]], "a2": [[114, 136], [92, 132]], "l1": [[74, 140], [50, 132]], "l2": [[74, 141], [50, 133]]}, "kr": "살라바아사나"}, {"id": "dhanurasana", "sa": "Dhanurāsana", "dev": "धनुरासन", "ko": "활 자세", "en": "Bow Pose", "cat": "후굴", "lvl": 2, "ety": "dhanus(활) + āsana", "desc": "엎드려 무릎을 굽히고 손으로 발목을 잡아 다리를 밀어내며 가슴과 허벅지를 들어 올린다.", "ben": "몸 앞면 전체를 열고 등 근력을 기른다.", "cau": "허리 디스크가 있으면 피하거나 한쪽씩(Ardha) 연습.", "fig": {"H": [143, 116], "N": [132, 126], "P": [100, 140], "C": [116, 140], "a1": [[110, 114], [88, 108]], "a2": [[110, 116], [88, 110]], "l1": [[74, 138], [86, 108]], "l2": [[75, 139], [87, 109]]}, "kr": "다누라아사나"}, {"id": "ustrasana", "sa": "Uṣṭrāsana", "dev": "उष्ट्रासन", "ko": "낙타 자세", "en": "Camel Pose", "cat": "후굴", "lvl": 2, "ety": "uṣṭra(낙타) + āsana", "desc": "무릎을 꿇고 서서 골반을 앞으로 밀고 가슴을 들어 올리며 손을 뒤꿈치로 가져간다.", "ben": "가슴·어깨·허벅지 앞쪽을 크게 연다.", "cau": "손을 허리에 대고 시작하고, 목은 길게 유지한다.", "fig": {"H": [74, 78], "N": [84, 86], "P": [100, 120], "C": [102, 100], "a1": [[76, 108], [74, 132]], "a2": [[78, 108], [76, 132]], "l1": [[100, 148], [72, 150]], "l2": [[102, 148], [74, 150]]}, "kr": "우스트라아사나"}, {"id": "setu-bandhasana", "sa": "Setu Bandha Sarvāṅgāsana", "dev": "सेतुबन्धसर्वाङ्गासन", "ko": "다리 자세(브릿지)", "en": "Bridge Pose", "cat": "후굴", "lvl": 1, "ety": "setu(다리, 교량) + bandha(묶음) + sarva(모든) + aṅga(사지) + āsana", "desc": "누워서 무릎을 세우고 발로 바닥을 밀어 골반을 들어 올린다. 어깨와 발이 지지점.", "ben": "엉덩이·허벅지 뒤쪽 강화, 가슴과 고관절 앞쪽 열기.", "cau": "머리를 좌우로 돌리지 않는다.", "fig": {"H": [46, 145], "N": [60, 144], "P": [100, 118], "C": [80, 124], "a1": [[80, 148], [102, 148]], "a2": [[80, 149], [102, 149]], "l1": [[124, 122], [124, 150]], "l2": [[126, 123], [126, 150]]}, "kr": "세투 반다 사르반가아사나"}, {"id": "urdhva-dhanurasana", "sa": "Ūrdhva Dhanurāsana", "dev": "ऊर्ध्वधनुरासन", "ko": "바퀴 자세", "en": "Wheel Pose", "cat": "후굴", "lvl": 3, "ety": "ūrdhva(위로) + dhanus(활) + āsana", "desc": "누운 상태에서 손과 발로 바닥을 밀어 몸 전체를 아치 형태로 들어 올린다.", "ben": "몸 앞면 전체의 깊은 개방, 팔·다리 근력.", "cau": "충분한 준비(브릿지, 낙타) 후 시도. 손목·어깨·허리 부상 시 피한다.", "fig": {"H": [62, 118], "N": [70, 104], "P": [120, 96], "C": [94, 74], "a1": [[60, 126], [50, 148]], "a2": [[62, 126], [52, 148]], "l1": [[140, 118], [150, 150]], "l2": [[142, 119], [152, 150]]}, "kr": "우르드바 다누라아사나"}, {"id": "matsyasana", "sa": "Matsyāsana", "dev": "मत्स्यासन", "ko": "물고기 자세", "en": "Fish Pose", "cat": "후굴", "lvl": 2, "ety": "matsya(물고기) + āsana", "desc": "누워서 팔꿈치로 바닥을 밀어 가슴을 들어 올리고 정수리를 가볍게 바닥에 둔다.", "ben": "가슴과 목 앞쪽을 열어 호흡을 넓힌다. 어깨서기 뒤 상쇄 자세.", "cau": "정수리에 체중을 싣지 않는다. 목이 불편하면 블록을 등 밑에.", "fig": {"H": [54, 140], "N": [64, 128], "P": [100, 146], "C": [82, 124], "a1": [[80, 146], [100, 148]], "a2": [[80, 147], [100, 149]], "l1": [[126, 148], [152, 148]], "l2": [[126, 149], [152, 149]]}, "kr": "마츠야아사나"}, {"id": "sarvangasana", "sa": "Sālamba Sarvāṅgāsana", "dev": "सालम्बसर्वाङ्गासन", "ko": "어깨서기", "en": "Shoulder Stand", "cat": "역자세", "lvl": 3, "ety": "sālamba(지지하는) + sarva(모든) + aṅga(사지) + āsana", "desc": "누워서 다리와 골반을 하늘로 들어 올리고 손으로 등을 받쳐 어깨로 몸을 세운다.", "ben": "역자세로 순환을 돕고 신경계를 진정시킨다.", "cau": "목 부상 시 피한다. 어깨 밑에 담요를 접어 목의 굴곡을 줄인다.", "fig": {"H": [86, 146], "N": [100, 144], "P": [100, 106], "a1": [[114, 146], [106, 120]], "a2": [[116, 147], [108, 121]], "l1": [[100, 80], [100, 54]], "l2": [[102, 80], [102, 54]]}, "kr": "살람바 사르반가아사나"}, {"id": "halasana", "sa": "Halāsana", "dev": "हलासन", "ko": "쟁기 자세", "en": "Plow Pose", "cat": "역자세", "lvl": 3, "ety": "hala(쟁기) + āsana", "desc": "어깨서기에서 다리를 머리 너머로 넘겨 발끝을 바닥에 내린다.", "ben": "등과 목 뒤를 늘이고 마음을 가라앉힌다.", "cau": "목 부상 시 피하고, 발이 닿지 않으면 블록이나 의자를 사용.", "fig": {"H": [86, 146], "N": [100, 144], "P": [104, 106], "a1": [[122, 148], [144, 148]], "a2": [[122, 149], [144, 149]], "l1": [[82, 118], [60, 146]], "l2": [[84, 119], [62, 147]]}, "kr": "할라아사나"}, {"id": "viparita-karani", "sa": "Viparīta Karaṇī", "dev": "विपरीतकरणी", "ko": "벽에 다리 올리기", "en": "Legs-Up-the-Wall", "cat": "역자세", "lvl": 1, "ety": "viparīta(거꾸로) + karaṇī(행하는 것)", "desc": "벽 가까이 누워 다리를 벽에 기대어 수직으로 올리고 편하게 휴식한다.", "ben": "다리 피로 회복, 깊은 이완. 수련 마무리에 좋다.", "cau": "골반 밑에 담요를 받치면 더 편하다.", "fig": {"H": [48, 145], "N": [62, 146], "P": [102, 146], "a1": [[80, 148], [98, 149]], "a2": [[80, 149], [98, 150]], "l1": [[104, 120], [106, 94]], "l2": [[106, 120], [108, 94]], "wall": 112}, "kr": "비파리타 카라니"}, {"id": "sirsasana", "sa": "Sālamba Śīrṣāsana", "dev": "सालम्बशीर्षासन", "ko": "머리서기", "en": "Headstand", "cat": "역자세", "lvl": 3, "ety": "sālamba(지지하는) + śīrṣa(머리) + āsana", "desc": "팔뚝과 깍지 낀 손으로 머리를 감싸 받치고 몸 전체를 거꾸로 수직으로 세운다. '아사나의 왕'.", "ben": "집중력, 코어와 어깨 근력, 순환 촉진.", "cau": "반드시 지도자와 함께 단계적으로 연습. 목·고혈압·녹내장 시 피한다.", "fig": {"H": [100, 141], "N": [100, 128], "P": [100, 88], "a1": [[84, 148], [98, 146]], "a2": [[86, 149], [100, 147]], "l1": [[100, 62], [100, 36]], "l2": [[102, 62], [102, 36]]}, "kr": "살람바 시르사아사나"}, {"id": "bakasana", "sa": "Bakāsana", "dev": "बकासन", "ko": "까마귀(학) 자세", "en": "Crow / Crane Pose", "cat": "팔 지지", "lvl": 3, "ety": "baka(학, 두루미) + āsana", "desc": "쪼그려 앉아 손을 바닥에 짚고 무릎을 위팔 뒤쪽에 얹은 뒤 몸을 앞으로 기울여 발을 띄운다.", "ben": "팔·손목·코어 근력과 균형 감각, 두려움 다루기.", "cau": "얼굴 앞에 쿠션을 두고 시선은 바닥 앞쪽.", "fig": {"H": [138, 118], "N": [124, 112], "P": [94, 98], "a1": [[106, 130], [110, 150]], "a2": [[104, 131], [108, 150]], "l1": [[108, 122], [86, 116]], "l2": [[110, 123], [88, 117]]}, "kr": "바카아사나"}, {"id": "ananda-balasana", "sa": "Ānanda Bālāsana", "dev": "आनन्दबालासन", "ko": "행복한 아기 자세", "en": "Happy Baby Pose", "cat": "누워서", "lvl": 1, "ety": "ānanda(기쁨, 지복) + bāla(아이) + āsana", "desc": "누워서 무릎을 겨드랑이 쪽으로 당기고 발바닥을 하늘로 향하게 한 뒤 손으로 발을 잡는다.", "ben": "고관절과 허리를 부드럽게 이완한다.", "cau": "꼬리뼈가 들리지 않게 등 전체를 바닥에.", "fig": {"H": [70, 144], "N": [82, 146], "P": [116, 146], "a1": [[92, 124], [108, 100]], "a2": [[94, 125], [110, 101]], "l1": [[102, 124], [110, 98]], "l2": [[104, 125], [112, 99]]}, "kr": "아난다 발라아사나"}, {"id": "supta-matsyendrasana", "sa": "Supta Matsyendrāsana", "dev": "सुप्तमत्स्येन्द्रासन", "ko": "누운 비틀기 자세", "en": "Supine Spinal Twist", "cat": "비틀기", "lvl": 1, "ety": "supta(누운) + Matsyendra + āsana", "desc": "누워서 한 무릎을 가슴으로 당긴 뒤 반대쪽 바닥으로 넘기고, 팔은 옆으로 뻗어 시선은 반대편.", "ben": "허리와 등의 긴장을 풀고 척추를 부드럽게 회전시킨다.", "cau": "어깨가 들려도 괜찮다. 무릎 밑에 쿠션을 받쳐도 좋다.", "fig": {"H": [48, 145], "N": [62, 146], "P": [102, 146], "a1": [[62, 124], [62, 102]], "a2": [[80, 148], [98, 149]], "l1": [[118, 128], [132, 146]], "l2": [[128, 148], [154, 148]]}, "kr": "숩타 마첸드라아사나"}, {"id": "savasana", "sa": "Śavāsana", "dev": "शवासन", "ko": "송장 자세", "en": "Corpse Pose", "cat": "휴식", "lvl": 1, "ety": "śava(시체) + āsana", "desc": "바닥에 등을 대고 누워 팔다리를 편안히 벌리고 온몸의 긴장을 풀어주는 마무리 자세.", "ben": "수련의 효과를 몸에 스며들게 하고 깊은 휴식과 회복을 준다.", "cau": "허리가 불편하면 무릎 밑에 쿠션을, 몸이 식지 않게 담요를 덮는다.", "fig": {"H": [40, 141], "N": [54, 145], "P": [94, 146], "a1": [[74, 148], [96, 150]], "a2": [[74, 149], [96, 151]], "l1": [[120, 148], [146, 148]], "l2": [[120, 149], [146, 150]]}, "kr": "사바아사나"}, {"id": "ardha-baddha-padma-paschimottanasana", "sa": "Ardha Baddha Padma Paścimottānāsana", "dev": "अर्धबद्धपद्मपश्चिमोत्तानासन", "ko": "반연꽃 묶은 앉은 전굴", "en": "Half Bound Lotus Seated Forward Bend", "cat": "전굴", "lvl": 2, "ety": "ardha(반) + baddha(묶인) + padma(연꽃) + paścima(뒷면) + uttāna(강한 늘임) + āsana", "desc": "한 발을 반대쪽 허벅지 위에 반연꽃으로 올리고, 같은 쪽 팔을 등 뒤로 돌려 그 발을 잡은 뒤 뻗은 다리 쪽으로 전굴한다.", "ben": "고관절 외회전과 햄스트링 유연성, 어깨 앞쪽 열기, 복부 자극.", "cau": "무릎에 비틀림 통증이 오면 즉시 풀고, 발을 잡지 못하면 반연꽃만 유지하거나 스트랩 사용.", "fig": {"H": [118, 124], "N": [106, 128], "P": [70, 146], "a1": [[116, 136], [126, 142]], "a2": [[88, 116], [74, 132]], "l1": [[96, 147], [124, 146]], "l2": [[96, 141], [74, 136]]}, "kr": "아르다 받다 파드마 파스치모타나아사나"}, {"id": "parivrtta-janu-sirsasana", "sa": "Parivṛtta Jānu Śīrṣāsana", "dev": "परिवृत्तजानुशीर्षासन", "ko": "비튼 머리-무릎 자세", "en": "Revolved Head-to-Knee Pose", "cat": "비틀기", "lvl": 2, "ety": "parivṛtta(비튼, 돌린) + jānu(무릎) + śīrṣa(머리) + āsana", "desc": "한 다리를 옆으로 뻗고 다른 발은 안쪽 허벅지에 붙인 채, 뻗은 다리 쪽으로 옆구리를 기울이며 위 팔을 머리 위로 넘겨 발을 잡고 가슴은 천장을 향해 연다.", "ben": "옆구리·늑간 근육을 깊게 늘이고 척추 회전과 측굴을 함께 준다.", "cau": "가슴이 바닥 쪽으로 무너지지 않게, 닿지 않으면 손을 정강이에.", "fig": {"H": [122, 106], "N": [112, 118], "P": [80, 140], "a1": [[124, 132], [138, 142]], "a2": [[104, 96], [130, 92]], "l1": [[110, 146], [140, 146]], "l2": [[54, 144], [78, 148]]}, "kr": "파리브리타 자누 시르사아사나"}, {"id": "raja-kapotasana", "sa": "Rāja Kapotāsana", "dev": "राजकपोतासन", "ko": "왕비둘기 자세", "en": "King Pigeon Pose", "cat": "후굴", "lvl": 3, "ety": "rāja(왕) + kapota(비둘기) + āsana", "desc": "비둘기 자세에서 뒷무릎을 굽혀 발을 머리 쪽으로 끌어오고, 두 팔을 머리 위로 들어 뒤로 넘겨 발을 잡으며 깊게 후굴한다.", "ben": "고관절 굴곡근·허벅지 앞쪽·가슴·어깨의 깊은 개방.", "cau": "충분한 후굴 준비 후 시도. 스트랩을 발에 걸어 단계적으로, 허리·무릎 통증 시 중단.", "fig": {"H": [78, 100], "N": [90, 104], "P": [96, 138], "C": [106, 122], "a1": [[86, 84], [74, 106]], "a2": [[88, 84], [76, 108]], "l1": [[122, 146], [98, 148]], "l2": [[70, 148], [72, 122]]}, "kr": "라자 카포타아사나"}, {"id": "karnapidasana", "sa": "Karṇapīḍāsana", "dev": "कर्णपीडासन", "ko": "귀 누르기 자세", "en": "Ear Pressure Pose", "cat": "역자세", "lvl": 3, "ety": "karṇa(귀) + pīḍa(누름) + āsana", "desc": "쟁기 자세에서 무릎을 굽혀 양 귀 옆 바닥으로 내리고 무릎으로 귀를 가볍게 감싼다.", "ben": "등과 목 뒤의 깊은 이완, 감각을 안으로 거두는(pratyāhāra) 효과.", "cau": "목에 체중이 실리지 않게 어깨 밑에 담요를. 목 부상 시 피한다.", "fig": {"H": [86, 146], "N": [100, 144], "P": [100, 108], "a1": [[122, 148], [144, 148]], "a2": [[122, 149], [144, 149]], "l1": [[88, 138], [62, 148]], "l2": [[90, 139], [64, 149]]}, "kr": "카르나피다아사나"}];
+const TERMS = [["Yoga", "योग", "요가", "Yoga", "'결합하다(yuj)'에서 온 말. 몸·호흡·마음을 하나로 묶는 수행 전체."], ["Āsana", "आसन", "아사나 · 자세", "Posture", "원래는 '앉는 자리'. 파탄잘리는 '안정되고 편안한 것(sthira sukham)'이라 정의."], ["Prāṇa", "प्राण", "프라나 · 생명 에너지", "Life force", "호흡을 통해 몸을 흐르는 생명의 기운."], ["Prāṇāyāma", "प्राणायाम", "프라나야마 · 호흡 조절", "Breath control", "prāṇa + āyāma(늘이다, 조절하다). 호흡을 다루어 기운을 다스리는 수련."], ["Ujjāyī", "उज्जायी", "우짜이 호흡 · 승리 호흡", "Victorious breath", "목구멍을 살짝 좁혀 파도 소리처럼 쉬는 호흡. 빈야사 수련의 기본 호흡."], ["Nāḍī Śodhana", "नाडीशोधन", "나디 쇼다나 · 교호 호흡", "Alternate nostril breathing", "콧구멍을 번갈아 막으며 쉬는 호흡. 에너지 통로(nāḍī)를 정화."], ["Kapālabhāti", "कपालभाति", "카팔라바티 · 정뇌 호흡", "Skull-shining breath", "짧고 강한 날숨을 반복하는 정화 호흡. 임신·고혈압 시 주의."], ["Vinyāsa", "विन्यास", "빈야사 · 연결 흐름", "Linked flow", "'특별한 방식으로 놓다'. 호흡과 동작을 하나씩 연결하는 흐름."], ["Sūrya Namaskāra", "सूर्यनमस्कार", "태양경배", "Sun Salutation", "태양에 대한 인사. 여러 자세를 호흡에 맞춰 잇는 워밍업 시퀀스."], ["Dṛṣṭi", "दृष्टि", "드리시티 · 응시점", "Gaze point", "자세마다 시선을 두는 지점. 마음의 집중을 돕는다."], ["Bandha", "बन्ध", "반다 · 잠금", "Energy lock", "몸 안의 기운을 모으고 조절하는 근육의 잠금."], ["Mūla Bandha", "मूलबन्ध", "물라 반다 · 뿌리 잠금", "Root lock", "골반저를 살짝 끌어올리는 잠금."], ["Uḍḍīyāna Bandha", "उड्डीयानबन्ध", "우디야나 반다 · 복부 잠금", "Upward abdominal lock", "아랫배를 안쪽·위쪽으로 끌어당기는 잠금."], ["Jālandhara Bandha", "जालन्धरबन्ध", "잘란다라 반다 · 목 잠금", "Throat lock", "턱을 가슴 쪽으로 당겨 목을 잠그는 반다."], ["Mudrā", "मुद्रा", "무드라 · 손 모양(인)", "Seal, gesture", "손이나 몸으로 만드는 상징적 형태. 에너지의 흐름을 봉인한다."], ["Añjali Mudrā", "अञ्जलिमुद्रा", "안잘리 무드라 · 합장", "Salutation seal", "가슴 앞에서 두 손바닥을 모으는 인사의 손 모양."], ["Jñāna Mudrā", "ज्ञानमुद्रा", "즈나나 무드라 · 지혜의 인", "Wisdom seal", "엄지와 검지 끝을 맞대는 명상의 손 모양."], ["Namaste", "नमस्ते", "나마스테", "I bow to you", "'당신께 경배합니다'. 수련의 시작과 끝 인사."], ["Om (Auṃ)", "ॐ", "옴", "Sacred syllable", "우주의 근원 소리를 상징하는 음절."], ["Śānti", "शान्ति", "샨티 · 평화", "Peace", "'Om śānti śānti śāntiḥ' — 몸·마음·세상의 평화를 비는 마무리."], ["Mantra", "मन्त्र", "만트라 · 진언", "Sacred chant", "마음(man)을 보호하는 도구(tra). 반복해 읊는 소리."], ["Saṅkalpa", "सङ्कल्प", "상칼파 · 수련 의도", "Intention", "수련을 시작하며 마음에 세우는 다짐."], ["Cakra", "चक्र", "차크라 · 바퀴", "Energy center", "척추를 따라 놓인 일곱 개의 에너지 중심."], ["Nāḍī", "नाडी", "나디 · 기운의 통로", "Energy channel", "프라나가 흐르는 미세한 통로. 이다·핑갈라·수슘나가 대표적."], ["Haṭha", "हठ", "하타", "Forceful / sun-moon", "'힘'. 또는 ha(태양)+ṭha(달)의 균형. 신체 수련 중심의 요가 전통."], ["Aṣṭāṅga", "अष्टाङ्ग", "아쉬탕가 · 8단계", "Eight limbs", "파탄잘리가 제시한 요가의 여덟 가지: 야마·니야마·아사나·프라나야마·프라티아하라·다라나·디야나·사마디."], ["Yama", "यम", "야마 · 사회적 계율", "Restraints", "비폭력·진실·불투도·절제·무소유의 다섯 계율."], ["Ahiṃsā", "अहिंसा", "아힘사 · 비폭력", "Non-harming", "나와 남을 해치지 않음. 수련에서도 몸을 억지로 몰아붙이지 않는다."], ["Satya", "सत्य", "사트야 · 진실", "Truthfulness", "말과 생각과 행동의 정직."], ["Niyama", "नियम", "니야마 · 개인적 계율", "Observances", "청결·만족·수행·자기 탐구·헌신의 다섯 실천."], ["Santoṣa", "सन्तोष", "산토샤 · 만족", "Contentment", "지금 있는 그대로에 만족하는 마음."], ["Tapas", "तपस्", "타파스 · 수행의 열", "Discipline, heat", "꾸준한 노력과 단련에서 생기는 내면의 열."], ["Svādhyāya", "स्वाध्याय", "스바디야야 · 자기 탐구", "Self-study", "경전 공부와 자기 자신에 대한 관찰."], ["Īśvara Praṇidhāna", "ईश्वरप्रणिधान", "이슈바라 프라니다나 · 내맡김", "Surrender", "결과를 내려놓고 더 큰 것에 맡기는 태도."], ["Pratyāhāra", "प्रत्याहार", "프라티아하라 · 감각 거두기", "Sense withdrawal", "바깥으로 향한 감각을 안으로 거두어들임."], ["Dhāraṇā", "धारणा", "다라나 · 집중", "Concentration", "한 대상에 마음을 묶어 두기."], ["Dhyāna", "ध्यान", "디야나 · 명상", "Meditation", "집중이 끊김 없이 흐르는 상태."], ["Samādhi", "समाधि", "사마디 · 삼매", "Absorption", "대상과 하나가 되는 요가의 최종 단계."], ["Sthira Sukha", "स्थिरसुख", "스티라 수카 · 안정과 편안", "Steady & easy", "아사나의 핵심 원리. 단단하되 편안하게."], ["Citta Vṛtti", "चित्तवृत्ति", "치타 브리티 · 마음의 동요", "Mind fluctuations", "마음에 일어나는 물결. 요가는 이것을 고요히 하는 것."], ["Abhyāsa", "अभ्यास", "아비야사 · 꾸준한 수련", "Practice", "오랜 시간, 쉬지 않고, 정성껏 이어가는 수련."], ["Vairāgya", "वैराग्य", "바이라기야 · 내려놓음", "Non-attachment", "결과와 욕망에 대한 집착을 놓음."], ["Guru", "गुरु", "구루 · 스승", "Teacher", "어둠(gu)을 없애는(ru) 이."], ["Sūtra", "सूत्र", "수트라 · 경", "Thread, aphorism", "'실'. 짧은 경구들을 꿰어 놓은 경전. 예: 요가 수트라."]];
+const QUOTES = [["yogaś citta-vṛtti-nirodhaḥ", "요가는 마음 작용의 멈춤이다.", "요가 수트라 1.2"], ["tadā draṣṭuḥ svarūpe 'vasthānam", "그때 보는 자는 자신의 본래 모습에 머문다.", "요가 수트라 1.3"], ["abhyāsa-vairāgyābhyāṃ tan-nirodhaḥ", "꾸준한 수련과 내려놓음으로 마음은 고요해진다.", "요가 수트라 1.12"], ["sa tu dīrgha-kāla-nairantarya-satkārāsevito dṛḍha-bhūmiḥ", "오랫동안, 끊임없이, 정성껏 이어갈 때 수련은 단단히 뿌리내린다.", "요가 수트라 1.14"], ["maitrī-karuṇā-muditopekṣāṇām …", "기쁜 이에겐 우정을, 괴로운 이에겐 연민을, 선한 이에겐 기쁨을, 그렇지 않은 이에겐 평정을.", "요가 수트라 1.33"], ["tapaḥ-svādhyāyeśvara-praṇidhānāni kriyā-yogaḥ", "수행, 자기 탐구, 내맡김이 행위의 요가다.", "요가 수트라 2.1"], ["heyaṃ duḥkham anāgatam", "아직 오지 않은 괴로움은 피할 수 있다.", "요가 수트라 2.16"], ["sthira-sukham āsanam", "아사나는 안정되고 편안해야 한다.", "요가 수트라 2.46"], ["prayatna-śaithilyānanta-samāpattibhyām", "애씀을 풀고 무한함에 머물 때 자세는 완성된다.", "요가 수트라 2.47"], ["tato dvandvānabhighātaḥ", "그러면 상반된 것들에 흔들리지 않는다.", "요가 수트라 2.48"]];
+const ROOTS = [["몸의 부위", "시르사", "śīrṣa", "शीर्ष", "머리", "", ["sirsasana", "janu-sirsasana", "parivrtta-janu-sirsasana"]], ["몸의 부위", "자누", "jānu", "जानु", "무릎", "", ["janu-sirsasana", "parivrtta-janu-sirsasana"]], ["몸의 부위", "하스타", "hasta", "हस्त", "손", "손바닥만 따로 말할 때는 탈라(tala)", ["urdhva-hastasana"]], ["몸의 부위", "탈라", "tala", "तल", "바닥 · 손바닥 · 발바닥", "", []], ["몸의 부위", "파다", "pāda", "पाद", "발 · 다리", "", ["prasarita-padottanasana", "eka-pada-rajakapotasana"]], ["몸의 부위", "앙구스타", "aṅguṣṭha", "अङ्गुष्ठ", "엄지 (손·발)", "파당구스타아사나 = 엄지발가락 잡는 자세", []], ["몸의 부위", "앙가", "aṅga", "अङ्ग", "사지 · 몸의 부분", "", ["chaturanga", "sarvangasana", "setu-bandhasana"]], ["몸의 부위", "바후", "bāhu", "बाहु", "팔", "", []], ["몸의 부위", "무카", "mukha", "मुख", "얼굴 · 입", "", ["adho-mukha-svanasana", "urdhva-mukha-svanasana"]], ["몸의 부위", "카르나", "karṇa", "कर्ण", "귀", "", ["karnapidasana"]], ["몸의 부위", "나시카", "nāsikā", "नासिका", "코", "나시카그라 드리시티 = 코끝 응시", []], ["몸의 부위", "브루", "bhrū", "भ्रू", "눈썹", "브루마디야 드리시티 = 미간 응시", []], ["몸의 부위", "그리바", "grīvā", "ग्रीवा", "목", "", []], ["몸의 부위", "칸타", "kaṇṭha", "कण्ठ", "목구멍", "", []], ["몸의 부위", "흐리다야", "hṛdaya", "हृदय", "가슴 · 심장", "", []], ["몸의 부위", "우다라", "udara", "उदर", "배", "", []], ["몸의 부위", "프르스타", "pṛṣṭha", "पृष्ठ", "등", "", []], ["몸의 부위", "카티", "kaṭi", "कटि", "허리", "", []], ["몸의 부위", "파르스바", "pārśva", "पार्श्व", "옆구리 · 측면", "", ["parsvottanasana", "utthita-parsvakonasana"]], ["방향 · 위치", "우르드바", "ūrdhva", "ऊर्ध्व", "위로 · 위를 향한", "", ["urdhva-hastasana", "urdhva-mukha-svanasana", "urdhva-dhanurasana"]], ["방향 · 위치", "아도", "adho (adhas)", "अधः", "아래로 · 아래를 향한", "", ["adho-mukha-svanasana"]], ["방향 · 위치", "웃(우트)", "ut", "उत्", "위로 · 강하게", "뒤 단어와 붙으며 소리가 바뀜 (ut+tāna → uttāna)", ["uttanasana", "utkatasana"]], ["방향 · 위치", "파스치마", "paścima", "पश्चिम", "서쪽 → 몸의 뒷면", "해를 향해 수련할 때 등 쪽이 서쪽", ["paschimottanasana", "ardha-baddha-padma-paschimottanasana"]], ["방향 · 위치", "푸르바", "pūrva", "पूर्व", "동쪽 → 몸의 앞면", "푸르보타나아사나 = 몸 앞면 늘이기(역판자)", []], ["방향 · 위치", "다크시나", "dakṣiṇa", "दक्षिण", "오른쪽", "", []], ["방향 · 위치", "바마", "vāma", "वाम", "왼쪽", "", []], ["방향 · 위치", "사마", "sama", "सम", "같은 · 고른", "사마스티티 = 고르게 선 자세", ["tadasana"]], ["동작 · 상태", "파리브리타", "parivṛtta", "परिवृत्त", "비튼 · 회전한", "", ["parivrtta-janu-sirsasana"]], ["동작 · 상태", "비파리타", "viparīta", "विपरीत", "거꾸로 · 반대로", "", ["viparita-virabhadrasana", "viparita-karani"]], ["동작 · 상태", "웃티타", "utthita", "उत्थित", "뻗은 · 확장된", "", ["trikonasana", "utthita-parsvakonasana"]], ["동작 · 상태", "프라사리타", "prasārita", "प्रसारित", "넓게 펼친", "", ["prasarita-padottanasana"]], ["동작 · 상태", "타나", "tāna", "तान", "늘임 · 뻗음", "", ["uttanasana", "paschimottanasana", "parsvottanasana"]], ["동작 · 상태", "받다", "baddha", "बद्ध", "묶인 · 잠긴", "", ["baddha-konasana", "ardha-baddha-padma-paschimottanasana"]], ["동작 · 상태", "반다", "bandha", "बन्ध", "묶음 · 잠금", "", ["setu-bandhasana"]], ["동작 · 상태", "살람바", "sālamba", "सालम्ब", "지지하는 · 받친", "반대말: 니랄람바(nirālamba) = 지지 없는", ["sarvangasana", "sirsasana"]], ["동작 · 상태", "숩타", "supta", "सुप्त", "누운 · 잠든", "", ["supta-matsyendrasana"]], ["동작 · 상태", "우파비스타", "upaviṣṭha", "उपविष्ठ", "앉은", "우파비스타 코나아사나 = 다리 벌려 앉은 전굴", []], ["동작 · 상태", "피다", "pīḍa", "पीड", "누름 · 압박", "", ["karnapidasana"]], ["동작 · 상태", "카라니", "karaṇī", "करणी", "행함 · 하는 것", "", ["viparita-karani"]], ["동작 · 상태", "스티티", "sthiti", "स्थिति", "서 있음 · 머묾", "", ["tadasana"]], ["동작 · 상태", "파리푸르나", "paripūrṇa", "परिपूर्ण", "완전한", "파리푸르나 나바아사나 = 완전한 보트", ["navasana"]], ["숫자 · 크기", "에카", "eka", "एक", "하나 · 한쪽", "", ["eka-pada-rajakapotasana"]], ["숫자 · 크기", "드비", "dvi", "द्वि", "둘 · 양쪽", "", []], ["숫자 · 크기", "트리", "tri", "त्रि", "셋", "", ["trikonasana"]], ["숫자 · 크기", "차투르", "catur", "चतुर्", "넷", "", ["chaturanga"]], ["숫자 · 크기", "판차", "pañca", "पञ्च", "다섯", "", []], ["숫자 · 크기", "아스타", "aṣṭa", "अष्ट", "여덟", "아쉬탕가 = aṣṭa(여덟) + aṅga(가지)", []], ["숫자 · 크기", "아르다", "ardha", "अर्ध", "반 · 절반", "", ["ardha-uttanasana", "ardha-chandrasana", "ardha-matsyendrasana", "ardha-baddha-padma-paschimottanasana"]], ["숫자 · 크기", "사르바", "sarva", "सर्व", "모든 · 전체", "", ["sarvangasana", "setu-bandhasana"]], ["숫자 · 크기", "마하", "mahā", "महा", "큰 · 위대한", "", []], ["숫자 · 크기", "라자", "rāja", "राज", "왕", "", ["raja-kapotasana", "eka-pada-rajakapotasana", "natarajasana"]], ["동물", "스바나", "śvāna", "श्वान", "개", "", ["adho-mukha-svanasana", "urdhva-mukha-svanasana"]], ["동물", "부장가", "bhujaṅga", "भुजङ्ग", "뱀 · 코브라", "", ["bhujangasana"]], ["동물", "카포타", "kapota", "कपोत", "비둘기", "", ["raja-kapotasana", "eka-pada-rajakapotasana"]], ["동물", "바카", "baka", "बक", "학 · 두루미", "", ["bakasana"]], ["동물", "마츠야", "matsya", "मत्स्य", "물고기", "", ["matsyasana"]], ["동물", "마르자라", "mārjāra", "मार्जार", "고양이", "", ["marjaryasana"]], ["동물", "비틸라", "bitila", "बितिल", "소", "", ["bitilasana"]], ["동물", "고", "go", "गो", "소", "고무카아사나 = 소 얼굴 자세", []], ["동물", "살라바", "śalabha", "शलभ", "메뚜기", "", ["salabhasana"]], ["동물", "우스트라", "uṣṭra", "उष्ट्र", "낙타", "", ["ustrasana"]], ["동물", "가루다", "garuḍa", "गरुड", "독수리 (신화의 새)", "", ["garudasana"]], ["동물", "쿠르마", "kūrma", "कूर्म", "거북", "", []], ["자연 · 사물", "타다", "tāḍa", "ताड", "산", "", ["tadasana"]], ["자연 · 사물", "브륵샤", "vṛkṣa", "वृक्ष", "나무", "", ["vrksasana"]], ["자연 · 사물", "찬드라", "candra", "चन्द्र", "달", "", ["ardha-chandrasana"]], ["자연 · 사물", "수리야", "sūrya", "सूर्य", "태양", "수리야 나마스카라 = 태양경배", []], ["자연 · 사물", "파드마", "padma", "पद्म", "연꽃", "", ["padmasana", "ardha-baddha-padma-paschimottanasana"]], ["자연 · 사물", "말라", "mālā", "माला", "화환 · 염주", "", ["malasana"]], ["자연 · 사물", "나바", "nāvā", "नावा", "배 (보트)", "", ["navasana"]], ["자연 · 사물", "코나", "koṇa", "कोण", "각 · 모서리", "", ["trikonasana", "baddha-konasana", "utthita-parsvakonasana"]], ["자연 · 사물", "단다", "daṇḍa", "दण्ड", "막대", "", ["dandasana", "chaturanga"]], ["자연 · 사물", "다누라", "dhanus", "धनुस्", "활", "", ["dhanurasana", "urdhva-dhanurasana"]], ["자연 · 사물", "할라", "hala", "हल", "쟁기", "", ["halasana"]], ["자연 · 사물", "세투", "setu", "सेतु", "다리 (교량)", "", ["setu-bandhasana"]], ["자연 · 사물", "팔라카", "phalaka", "फलक", "판자", "", ["phalakasana"]], ["자연 · 사물", "차크라", "cakra", "चक्र", "바퀴", "", []], ["사람 · 느낌", "비라바드라", "vīrabhadra", "वीरभद्र", "전사 (시바의 화신)", "", ["virabhadrasana-1", "virabhadrasana-2", "virabhadrasana-3"]], ["사람 · 느낌", "나타라자", "naṭarāja", "नटराज", "춤의 왕 (시바)", "", ["natarajasana"]], ["사람 · 느낌", "마첸드라", "matsyendra", "मत्स्येन्द्र", "물고기의 왕 (요기 이름)", "", ["ardha-matsyendrasana", "supta-matsyendrasana"]], ["사람 · 느낌", "안자네야", "añjaneya", "अञ्जनेय", "하누만 (원숭이 신)", "", ["anjaneyasana"]], ["사람 · 느낌", "발라", "bāla", "बाल", "아이", "", ["balasana", "ananda-balasana"]], ["사람 · 느낌", "사바", "śava", "शव", "송장 · 시체", "", ["savasana"]], ["사람 · 느낌", "수카", "sukha", "सुख", "편안함 · 행복", "", ["sukhasana"]], ["사람 · 느낌", "아난다", "ānanda", "आनन्द", "기쁨 · 지복", "", ["ananda-balasana"]], ["사람 · 느낌", "웃카타", "utkaṭa", "उत्कट", "강렬한 · 힘찬", "", ["utkatasana"]], ["사람 · 느낌", "아사나", "āsana", "आसन", "자세 · 앉는 자리", "모든 자세 이름의 끝. 앞 단어의 a와 만나면 '아아사나'처럼 길게 이어짐", []]];
+const PUBLIC = true;
+const SNAP = {"at": "2026. 11. 18", "motto": "", "journal": [], "seqs": [{"id": "ananda-flow", "order": 0, "created": 0, "name": "아난다 플로우", "desc": "앉은 전굴·비틀기 → 후굴 → 역자세 → 사바아사나. 시간은 기본값(5호흡)이니 수련하며 조정하세요.", "steps": [{"dur": 5, "note": "", "pose": "paschimottanasana", "unit": "b"}, {"dur": 5, "note": "오른쪽", "pose": "ardha-matsyendrasana", "unit": "b"}, {"dur": 5, "note": "왼쪽", "pose": "ardha-matsyendrasana", "unit": "b"}, {"dur": 5, "note": "오른쪽", "pose": "parivrtta-janu-sirsasana", "unit": "b"}, {"dur": 5, "note": "왼쪽", "pose": "parivrtta-janu-sirsasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "padmasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "bhujangasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "raja-kapotasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "baddha-konasana", "unit": "b"}, {"dur": 5, "note": "1단계 · 손은 허리(천골)에 대고 가슴 열기", "pose": "ustrasana", "unit": "b"}, {"dur": 5, "note": "2단계 · 손을 발뒤꿈치로", "pose": "ustrasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "urdhva-dhanurasana", "unit": "b"}, {"dur": 10, "note": "", "pose": "sirsasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "halasana", "unit": "b"}, {"dur": 10, "note": "", "pose": "sarvangasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "karnapidasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "sarvangasana", "unit": "b"}, {"dur": 300, "note": "", "pose": "savasana", "unit": "s"}]}, {"id": "surya-a", "order": 1, "created": 1, "name": "태양경배 A (Sūrya Namaskāra A)", "desc": "아쉬탕가 태양경배 A. 한 동작 한 호흡, 아래를 향한 개에서만 5호흡. 3~5회 반복.", "steps": [{"dur": 3, "note": "사마스티티 · 합장으로 시작해도 좋음", "pose": "tadasana", "unit": "b"}, {"dur": 1, "note": "들숨", "pose": "urdhva-hastasana", "unit": "b"}, {"dur": 1, "note": "날숨", "pose": "uttanasana", "unit": "b"}, {"dur": 1, "note": "들숨", "pose": "ardha-uttanasana", "unit": "b"}, {"dur": 1, "note": "날숨 · 뒤로 점프 또는 걸어서", "pose": "chaturanga", "unit": "b"}, {"dur": 1, "note": "들숨", "pose": "urdhva-mukha-svanasana", "unit": "b"}, {"dur": 5, "note": "날숨 · 5호흡 머물기", "pose": "adho-mukha-svanasana", "unit": "b"}, {"dur": 1, "note": "들숨 · 앞으로 걸어오기", "pose": "ardha-uttanasana", "unit": "b"}, {"dur": 1, "note": "날숨", "pose": "uttanasana", "unit": "b"}, {"dur": 1, "note": "들숨", "pose": "urdhva-hastasana", "unit": "b"}, {"dur": 1, "note": "날숨", "pose": "tadasana", "unit": "b"}]}, {"id": "morning", "order": 2, "created": 2, "name": "아침 기본 플로우 (약 15분)", "desc": "몸을 깨우는 아침 수련. 좌우가 있는 자세는 양쪽 모두.", "steps": [{"dur": 10, "note": "호흡 관찰, 상칼파 세우기", "pose": "sukhasana", "unit": "b"}, {"dur": 5, "note": "소 자세와 번갈아", "pose": "marjaryasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "bitilasana", "unit": "b"}, {"dur": 5, "note": "발 페달 밟기", "pose": "adho-mukha-svanasana", "unit": "b"}, {"dur": 5, "note": "좌/우", "pose": "anjaneyasana", "unit": "b"}, {"dur": 5, "note": "좌/우", "pose": "virabhadrasana-1", "unit": "b"}, {"dur": 5, "note": "좌/우", "pose": "virabhadrasana-2", "unit": "b"}, {"dur": 5, "note": "좌/우", "pose": "trikonasana", "unit": "b"}, {"dur": 5, "note": "좌/우", "pose": "vrksasana", "unit": "b"}, {"dur": 3, "note": "2회", "pose": "bhujangasana", "unit": "b"}, {"dur": 5, "note": "", "pose": "balasana", "unit": "b"}, {"dur": 8, "note": "", "pose": "paschimottanasana", "unit": "b"}, {"dur": 180, "note": "", "pose": "savasana", "unit": "s"}]}, {"id": "evening", "order": 3, "created": 3, "name": "저녁 이완 (약 15분)", "desc": "잠들기 전 신경계를 진정시키는 느린 수련.", "steps": [{"dur": 60, "note": "", "pose": "balasana", "unit": "s"}, {"dur": 6, "note": "소 자세와 천천히 번갈아", "pose": "marjaryasana", "unit": "b"}, {"dur": 60, "note": "좌/우", "pose": "eka-pada-rajakapotasana", "unit": "s"}, {"dur": 60, "note": "", "pose": "baddha-konasana", "unit": "s"}, {"dur": 45, "note": "좌/우", "pose": "janu-sirsasana", "unit": "s"}, {"dur": 5, "note": "2회", "pose": "setu-bandhasana", "unit": "b"}, {"dur": 45, "note": "좌/우", "pose": "supta-matsyendrasana", "unit": "s"}, {"dur": 45, "note": "", "pose": "ananda-balasana", "unit": "s"}, {"dur": 180, "note": "", "pose": "viparita-karani", "unit": "s"}, {"dur": 300, "note": "", "pose": "savasana", "unit": "s"}]}]};
+if(PUBLIC) document.body.classList.add("ro");
+const PMAP = Object.fromEntries(POSES.map(p=>[p.id,p]));
+const CATS = ["전체", ...Array.from(new Set(POSES.map(p=>p.cat)))];
+const LVL = {1:"초급",2:"중급",3:"고급"};
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const full = p=>`${p.kr} · ${p.sa} · ${p.ko}`;
+const norm = s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+
+/* ---------- 자세 그림 ---------- */
+function figSVG(p, opt={}){
+  const f = p.fig, c="var(--fig)";
+  const L=(a,b,w,o=1)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${c}" stroke-width="${w}" stroke-linecap="round" opacity="${o}"/>`;
+  let s = `<svg viewBox="0 8 200 152" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(full(p))}">`;
+  s += `<line x1="8" y1="154" x2="192" y2="154" stroke="#d9cbbb" stroke-width="2.5" stroke-linecap="round"/>`;
+  if(f.wall) s += `<line x1="${f.wall+6}" y1="70" x2="${f.wall+6}" y2="154" stroke="#d9cbbb" stroke-width="4" stroke-linecap="round"/>`;
+  for(const k of ["a2","l2"]){ const [e,h]=f[k], b=k[0]==="a"?f.N:f.P; s+=L(b,e,7,.38)+L(e,h,7,.38); }
+  s += f.C ? `<path d="M${f.P[0]} ${f.P[1]} Q${f.C[0]} ${f.C[1]} ${f.N[0]} ${f.N[1]}" stroke="${c}" stroke-width="9" fill="none" stroke-linecap="round"/>` : L(f.P,f.N,9);
+  for(const k of ["l1","a1"]){ const [e,h]=f[k], b=k[0]==="a"?f.N:f.P; s+=L(b,e,7)+L(e,h,7); }
+  s += `<circle cx="${f.H[0]}" cy="${f.H[1]}" r="9" fill="${c}"/></svg>`;
+  return s;
+}
+
+/* ---------- 요가훈 ---------- */
+let qi = Math.floor(Date.now()/86400000) % QUOTES.length;
+function showQuote(){ const [sa,ko,src]=QUOTES[qi]; $("#qKo").textContent=ko; $("#qSa").textContent=sa; $("#qSrc").textContent="— "+src; }
+$("#qNext").onclick=()=>{ qi=(qi+1)%QUOTES.length; showQuote(); };
+showQuote();
+
+/* ---------- 탭 ---------- */
+const VIEWS=["sequences","asanas","roots","terms"];
+function route(){
+  const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "sequences";
+  document.querySelectorAll(".view").forEach(e=>e.classList.toggle("on", e.id==="v-"+v));
+  document.querySelectorAll("nav.tabs a").forEach(a=>a.classList.toggle("on", a.dataset.v===v));
+}
+addEventListener("hashchange", route); route();
+
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("on"),1800); }
+
+/* ---------- 아사나 용어집 ---------- */
+let aCat="전체", aLvl=0;
+function renderChips(){
+  $("#aCats").innerHTML = CATS.map(c=>`<button class="chip ${c===aCat?"on":""}" data-c="${c}">${c}</button>`).join("");
+  $("#aLvls").innerHTML = [0,1,2,3].map(l=>`<button class="chip ${l===aLvl?"on":""}" data-l="${l}">${l?LVL[l]:"모든 난이도"}</button>`).join("");
+}
+$("#aCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(!b)return; aCat=b.dataset.c; renderChips(); renderAsanas();};
+$("#aLvls").onclick=e=>{const b=e.target.closest("[data-l]"); if(!b)return; aLvl=+b.dataset.l; renderChips(); renderAsanas();};
+$("#aSearch").oninput=renderAsanas;
+function renderAsanas(){
+  const q=norm($("#aSearch").value.trim());
+  const list=POSES.filter(p=>(aCat==="전체"||p.cat===aCat)&&(!aLvl||p.lvl===aLvl)&&(!q||norm([p.kr,p.sa,p.ko,p.en,p.id,p.ety,p.dev].join(" ")).includes(q)));
+  $("#aCount").textContent=`${list.length}개 자세`;
+  $("#aGrid").innerHTML=list.map(p=>`
+    <button class="pcard" data-p="${p.id}">
+      <div class="art">${figSVG(p)}</div>
+      <div class="body">
+        <div class="kr">${esc(p.kr)}</div>
+        <div class="sa">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+        <div class="ko">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+        <div class="pdesc">${esc(p.desc)}</div>
+        <div class="tags"><span class="tag">${esc(p.cat)}</span><span class="tag l${p.lvl}">${LVL[p.lvl]}</span></div>
+      </div>
+    </button>`).join("") || `<div class="empty">찾는 자세가 없어요.</div>`;
+}
+$("#aGrid").onclick=e=>{const b=e.target.closest("[data-p]"); if(b) openPose(b.dataset.p);};
+
+function openPose(id){
+  const p=PMAP[id]; if(!p) return;
+  const opts = seqs.map(s=>`<option value="${s.id}" ${s.id===curId?"selected":""}>${esc(s.name||"이름 없는 시퀀스")}</option>`).join("");
+  openModal(`
+    <button class="btn sm ghost x" data-close>✕</button>
+    <div class="detail">
+      <div class="art">${figSVG(p)}</div>
+      <div>
+        <h2>${esc(p.kr)}</h2>
+        <div class="sa" style="font-size:17px">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+        <div class="ko" style="font-size:16px;margin-top:2px">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+        <div class="tags"><span class="tag">${esc(p.cat)}</span><span class="tag l${p.lvl}">${LVL[p.lvl]}</span></div>
+        <dl>
+          <dt>어원</dt><dd>${esc(p.ety)}</dd>
+          <dt>자세 설명</dt><dd>${esc(p.desc)}</dd>
+          <dt>효과</dt><dd>${esc(p.ben)}</dd>
+          <dt>주의</dt><dd>${esc(p.cau)}</dd>
+        </dl>
+        <div class="addrow">${seqs.length?`<select id="addTo">${opts}</select><button class="btn pri sm" id="addBtn">시퀀스에 추가</button>`:`<button class="btn pri sm" id="addNew">새 시퀀스를 만들고 추가</button>`}</div>
+      </div>
+    </div>`);
+  const ab=$("#addBtn"); if(ab) ab.onclick=()=>{ const s=getSeq($("#addTo").value); addStep(s,id); toast(`'${s.name}'에 ${p.kr} 추가`); };
+  const an=$("#addNew"); if(an) an.onclick=()=>{ const s=createSeq(); addStep(s,id); closeModal(); location.hash="sequences"; toast("새 시퀀스에 추가했어요"); };
+}
+
+/* ---------- 어근 사전 ---------- */
+const RCATS=["전체",...Array.from(new Set(ROOTS.map(r=>r[0])))];
+let rCat="전체";
+$("#rSearch").oninput=renderRoots;
+$("#rCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(!b)return; rCat=b.dataset.c; renderRoots();};
+function renderRoots(){
+  $("#rCats").innerHTML=RCATS.map(c=>`<button class="chip ${c===rCat?"on":""}" data-c="${c}">${c}</button>`).join("");
+  const q=norm($("#rSearch").value.trim());
+  const list=ROOTS.filter(r=>(rCat==="전체"||r[0]===rCat)&&(!q||norm(r.slice(1,6).join(" ")).includes(q)));
+  const groups={}; list.forEach(r=>(groups[r[0]] ||= []).push(r));
+  $("#rList").innerHTML = Object.entries(groups).map(([g,rs])=>`
+    <h3 class="rgroup">${esc(g)} <span>${rs.length}</span></h3>
+    <div class="rgrid">${rs.map(([,kr,sa,dev,mean,note,ex])=>`
+      <div class="root">
+        <div class="rk">${esc(kr)}</div>
+        <div class="rs">${esc(sa)} <span class="dev">${esc(dev)}</span></div>
+        <div class="rm">${esc(mean)}</div>
+        ${note?`<div class="rn">${esc(note)}</div>`:""}
+        ${ex.length?`<div class="rex">${ex.filter(id=>PMAP[id]).map(id=>`<button class="exchip" data-p="${id}">${esc(PMAP[id].kr)}</button>`).join("")}</div>`:""}
+      </div>`).join("")}</div>`).join("") || `<div class="empty">찾는 단어가 없어요.</div>`;
+}
+$("#rList").onclick=e=>{const b=e.target.closest("[data-p]"); if(b) openPose(b.dataset.p);};
+
+/* ---------- 요가 용어 ---------- */
+$("#tSearch").oninput=renderTerms;
+function renderTerms(){
+  const q=norm($("#tSearch").value.trim());
+  const list=TERMS.filter(t=>!q||norm(t.join(" ")).includes(q));
+  $("#tCount").textContent=`${list.length}개 용어`;
+  $("#tList").innerHTML=list.map(([sa,dev,ko,en,d])=>`
+    <div class="term"><div class="names"><span class="sa">${esc(sa)}</span><span class="dev">${esc(dev)}</span><span class="ko">${esc(ko)}</span><span class="en">${esc(en)}</span></div>
+    <div class="desc">${esc(d)}</div></div>`).join("");
+}
+
+/* ---------- 모달 ---------- */
+function openModal(html){ $("#sheet").innerHTML=html; $("#modal").classList.add("on"); }
+function closeModal(){ $("#modal").classList.remove("on"); }
+$("#modal").onclick=e=>{ if(e.target.id==="modal"||e.target.closest("[data-close]")) closeModal(); };
+addEventListener("keydown",e=>{ if(e.key==="Escape"){ if($("#practice").classList.contains("on")) stopPractice(); else if($("#modal").classList.contains("on")) closeModal(); else closeJournal(); }});
+
+/* ---------- 저장소 ---------- */
+let db=null, seqs=[], curId=null, motto="", storeMode="loading";
+const LS_KEY="yoga-note-v1";
+let journal=[];
+function lsLoad(){ try{ const d=JSON.parse(localStorage.getItem(LS_KEY)||"{}"); seqs=d.seqs||[]; motto=d.motto||""; journal=d.journal||[]; }catch(e){} }
+function lsSave(){ try{ localStorage.setItem(LS_KEY, JSON.stringify({seqs,motto,journal})); }catch(e){} }
+function setStatus(m){ $("#status").textContent=m; }
+
+const writeQ={}; // id -> {timer, busy, pending}
+function persist(seq){
+  if(PUBLIC) return;
+  if(storeMode!=="db"){ lsSave(); return; }
+  const w = writeQ[seq.id] ||= {timer:null,busy:false,pending:false};
+  clearTimeout(w.timer);
+  w.timer=setTimeout(()=>flush(seq.id),600);
+}
+async function flush(id){
+  const w=writeQ[id]; if(!w) return;
+  if(w.busy){ w.pending=true; return; }
+  const seq=getSeq(id); if(!seq) return;
+  w.busy=true;
+  try{ const {id:_, ...body}=seq; await db.doc("sequences/"+id).set(JSON.parse(JSON.stringify(body))); setStatus("저장됨 ✓"); }
+  catch(e){ setStatus(e&&e.code==="quota_exceeded" ? "저장 공간이 가득 찼어요. 안 쓰는 시퀀스를 지워주세요." : "저장하지 못했어요 — 잠시 후 다시 시도됩니다."); if(e&&e.code==="unavailable") setTimeout(()=>persist(seq),1500); }
+  w.busy=false;
+  if(w.pending){ w.pending=false; flush(id); }
+}
+async function removeSeqStore(id){
+  if(storeMode!=="db"){ lsSave(); return; }
+  clearTimeout(writeQ[id]?.timer);
+  try{ await db.doc("sequences/"+id).delete(); }catch(e){ setStatus("삭제하지 못했어요."); }
+}
+let mottoTimer, mottoBusy=false;
+$("#motto").oninput=e=>{
+  motto=e.target.value;
+  clearTimeout(mottoTimer);
+  mottoTimer=setTimeout(async()=>{
+    if(storeMode!=="db"){ lsSave(); return; }
+    if(mottoBusy) return; mottoBusy=true;
+    try{ await db.doc("settings/main").set({motto}); }catch(e){}
+    mottoBusy=false;
+  },700);
+};
+
+async function initStore(){
+  if(PUBLIC){ storeMode="public"; seqs=SNAP.seqs||[]; journal=SNAP.journal||[]; motto=SNAP.motto||""; sortSeqs(); $("#motto").value=motto; $("#motto").readOnly=true; if(!motto) document.querySelector(".motto .mine").hidden=true; setStatus(`공개용 보기 · ${SNAP.at} 기준`); renderSeq(); renderJournal(); return; }
+  setStatus("불러오는 중…");
+  let resolved=false;
+  const fallback=()=>{ if(resolved) return; resolved=true; storeMode="local"; lsLoad(); $("#motto").value=motto; setStatus("이 브라우저에만 저장됩니다 (클라우드 저장을 쓸 수 없는 화면)."); renderSeq(); renderJournal(); };
+  const timer=setTimeout(fallback,10000);
+  const t0=Date.now();
+  while(!(window.claude && typeof window.claude.use==="function") && Date.now()-t0<8000) await new Promise(r=>setTimeout(r,100));
+  try{ db = window.claude && typeof window.claude.use==="function" ? await window.claude.use("db") : null; }catch(e){ db=null; }
+  if(!db){ clearTimeout(timer); fallback(); return; }
+  if(resolved) return;
+  storeMode="db";
+  let first=true;
+  db.collection("sequences").onSnapshot(snap=>{
+    if(!snap.metadata.fromCache){ clearTimeout(timer); resolved=true; if(first){ setStatus(""); first=false; } }
+    const incoming=snap.docs.map(d=>({id:d.id, ...structuredClone(d.data())}));
+    // 내가 편집 중인(쓰기 대기) 문서는 로컬 버전 유지
+    const local=Object.fromEntries(seqs.map(s=>[s.id,s]));
+    seqs=incoming.map(s=> (writeQ[s.id]&&(writeQ[s.id].busy||writeQ[s.id].pending||writeQ[s.id].timer)&&local[s.id]) ? local[s.id] : s);
+    for(const s of Object.values(local)) if(!seqs.find(x=>x.id===s.id) && writeQ[s.id]) seqs.push(s);
+    sortSeqs();
+    if(!editingNow()) renderSeq(); else renderSeqList();
+  }, err=>{ clearTimeout(timer); setStatus("시퀀스를 불러오지 못했어요. 새로고침해 주세요."); });
+  db.collection("journal").onSnapshot(snap=>{ journal=snap.docs.map(d=>({id:d.id,...structuredClone(d.data())})); renderJournal(); },
+    ()=>{ $("#jList").innerHTML=`<div class="empty">일지를 불러오지 못했어요.</div>`; });
+  db.doc("settings/main").onSnapshot(s=>{ if(s.exists && document.activeElement!==$("#motto")){ motto=s.data().motto||""; $("#motto").value=motto; } },()=>{});
+}
+function editingNow(){ const a=document.activeElement; return a && $("#seqPanel").contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName); }
+function sortSeqs(){ seqs.sort((a,b)=>(a.order??0)-(b.order??0) || (a.created||0)-(b.created||0)); }
+
+/* ---------- 시퀀스 ---------- */
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function getSeq(id){ return seqs.find(s=>s.id===id); }
+function createSeq(base){
+  const s = base ? {...structuredClone(base), id:uid(), name:(base.name||"")+" (복사)"} : {id:uid(), name:"새 시퀀스", desc:"", steps:[]};
+  s.created=Date.now(); s.updated=Date.now(); s.order=(Math.max(0,...seqs.map(x=>x.order||0)))+1;
+  seqs.push(s); curId=s.id; persist(s); renderSeq(); return s;
+}
+function touch(s){ s.updated=Date.now(); persist(s); }
+function addStep(s,pose,at){ const st={pose, dur:5, unit:"b", note:""}; if(at==null||at>=s.steps.length) s.steps.push(st); else s.steps.splice(at,0,st); touch(s); if(s.id===curId) renderSeq(); else renderSeqList(); }
+function stepSecs(st,bs){ return st.unit==="s" ? +st.dur||0 : (+st.dur||0)*bs; }
+function totalTime(s){ const bs=+$("#prBreath").value||5; const t=s.steps.reduce((a,st)=>a+stepSecs(st,bs),0); const m=Math.floor(t/60), sec=t%60; return m? `${m}분 ${sec?sec+"초":""}`.trim() : `${sec}초`; }
+
+$("#newSeq").onclick=()=>{ createSeq(); setTimeout(()=>{ const i=$("#seqPanel input.name"); if(i){i.focus(); i.select();} },30); };
+
+function renderSeqList(){
+  $("#seqList").innerHTML = seqs.length ? seqs.map(s=>`
+    <button class="seqitem ${s.id===curId?"on":""}" data-s="${s.id}">
+      <span class="n">${esc(s.name||"이름 없는 시퀀스")}</span>
+      <span class="m">${s.steps.length}개 자세 · 약 ${totalTime(s)}</span>
+    </button>`).join("") : `<div class="empty" style="padding:16px">아직 시퀀스가 없어요.</div>`;
+}
+$("#seqList").onclick=e=>{const b=e.target.closest("[data-s]"); if(!b)return; curId=b.dataset.s; renderSeq();};
+
+function renderSeq(){
+  if(!getSeq(curId)) curId = seqs[0]?.id || null;
+  renderSeqList();
+  const s=getSeq(curId), P=$("#seqPanel");
+  if(!s){ P.innerHTML=`<div class="panel"><div class="empty">왼쪽의 <b>＋ 새 시퀀스</b>로 나만의 수련 순서를 만들어 보세요.<br>아사나 용어집에서 자세를 눌러 바로 추가할 수도 있어요.</div></div>`; return; }
+  P.innerHTML=`<div class="panel">
+    <div class="seqhead">
+      <input class="name" id="sName" value="${esc(s.name)}" placeholder="시퀀스 이름">
+      <textarea id="sDesc" rows="1" placeholder="메모 (목적, 수련 시간대, 느낀 점…)">${esc(s.desc||"")}</textarea>
+      <div class="seqmeta"><span>${s.steps.length}개 자세 · 약 ${totalTime(s)}</span><span class="sp"></span>
+        <button class="btn pri sm" id="sPlay" ${s.steps.length?"":"disabled"}>▶ 수련 시작</button>
+        <button class="btn sm" id="sCopyTxt">텍스트 복사</button>
+        <button class="btn sm" id="sDup">복제</button>
+        <button class="btn sm danger" id="sDel">삭제</button>
+      </div>
+      <div id="sConfirm"></div>
+    </div>
+    ${s.steps.length?`<div class="strip">${s.steps.map(st=>PMAP[st.pose]?figSVG(PMAP[st.pose]):"").join("")}</div>`:""}
+    <div class="steps" id="steps">
+      ${s.steps.map((st,i)=>{ const p=PMAP[st.pose]; if(!p) return ""; return `
+      ${i>0?`<button class="ins" data-ins="${i}" title="${i}번과 ${i+1}번 사이에 넣기"><span>＋ 여기에 자세 넣기</span></button>`:""}
+      <div class="step" data-i="${i}">
+        <div class="no">${i+1}</div>
+        <div class="mini" data-view="${p.id}">${figSVG(p)}</div>
+        <div class="info">
+          <div class="t">${esc(p.kr)} <span>· ${esc(p.sa)} ·</span> ${esc(p.ko)}</div>
+          <div class="ctrl">
+            <input type="number" min="1" max="600" value="${esc(st.dur)}" data-f="dur" aria-label="길이">
+            <select data-f="unit"><option value="b" ${st.unit==="b"?"selected":""}>호흡</option><option value="s" ${st.unit==="s"?"selected":""}>초</option></select>
+            <input class="note" data-f="note" value="${esc(st.note||"")}" placeholder="메모 (좌/우, 변형, 큐잉…)">
+          </div>
+        </div>
+        <div class="acts">
+          <button class="icon" data-a="up" title="위로">▲</button>
+          <button class="icon" data-a="down" title="아래로">▼</button>
+          <button class="icon" data-a="ins" title="이 아래에 자세 넣기">＋</button>
+          <button class="icon" data-a="dup" title="복제">⧉</button>
+          <button class="icon" data-a="del" title="삭제">✕</button>
+        </div>
+      </div>`;}).join("") || `<div class="empty">아래 버튼으로 자세를 추가하세요.</div>`}
+    </div>
+    <button class="btn" id="sAdd">＋ 자세 추가</button>
+  </div>`;
+  if(PUBLIC){ P.querySelectorAll("input,textarea,select").forEach(el=>{ el.readOnly=true; if(el.tagName==="SELECT"||el.type==="number") el.disabled=true; el.placeholder=""; }); if(!s.desc) $("#sDesc").hidden=true; P.querySelectorAll("input.note").forEach(el=>{ if(!el.value) el.hidden=true; }); }
+  $("#sName").oninput=e=>{ s.name=e.target.value; touch(s); renderSeqList(); };
+  $("#sDesc").oninput=e=>{ s.desc=e.target.value; touch(s); };
+  $("#sAdd").onclick=()=>openPicker(s);
+  $("#sDup").onclick=()=>{ createSeq(s); toast("시퀀스를 복제했어요"); };
+  $("#sPlay").onclick=()=>startPractice(s);
+  $("#sCopyTxt").onclick=async()=>{
+    const txt=`${s.name}\n`+s.steps.map((st,i)=>{const p=PMAP[st.pose]; return `${i+1}. ${full(p)} — ${st.dur}${st.unit==="b"?"호흡":"초"}${st.note?" · "+st.note:""}`;}).join("\n");
+    try{ await navigator.clipboard.writeText(txt); toast("클립보드에 복사했어요"); }catch(e){ toast("복사할 수 없는 환경이에요"); }
+  };
+  $("#sDel").onclick=()=>{
+    $("#sConfirm").innerHTML=`<div class="confirm">‘${esc(s.name)}’을(를) 삭제할까요? 되돌릴 수 없어요. <button class="btn sm danger" id="cYes">삭제</button><button class="btn sm" id="cNo">취소</button></div>`;
+    $("#cNo").onclick=()=>$("#sConfirm").innerHTML="";
+    $("#cYes").onclick=()=>{ seqs=seqs.filter(x=>x.id!==s.id); removeSeqStore(s.id); curId=seqs[0]?.id||null; renderSeq(); toast("삭제했어요"); };
+  };
+  const box=$("#steps");
+  box.oninput=e=>{ const row=e.target.closest(".step"); const f=e.target.dataset.f; if(!row||!f) return; const st=s.steps[+row.dataset.i]; st[f]= f==="dur" ? Math.max(1,+e.target.value||1) : e.target.value; touch(s); if(f!=="note"){ renderSeqList(); P.querySelector(".seqmeta span").textContent=`${s.steps.length}개 자세 · 약 ${totalTime(s)}`; } };
+  box.onchange=box.oninput;
+  box.onclick=e=>{
+    const v=e.target.closest("[data-view]"); if(v){ openPose(v.dataset.view); return; }
+    const ins=e.target.closest("[data-ins]"); if(ins){ openPicker(s,+ins.dataset.ins); return; }
+    const b=e.target.closest("[data-a]"); if(!b) return; const i=+b.closest(".step").dataset.i, a=b.dataset.a, A=s.steps;
+    if(a==="ins"){ openPicker(s,i+1); return; }
+    if(a==="up"&&i>0) [A[i-1],A[i]]=[A[i],A[i-1]];
+    else if(a==="down"&&i<A.length-1) [A[i+1],A[i]]=[A[i],A[i+1]];
+    else if(a==="dup") A.splice(i+1,0,structuredClone(A[i]));
+    else if(a==="del") A.splice(i,1);
+    else return;
+    touch(s); renderSeq();
+  };
+}
+
+function openPicker(s,at){
+  let pos = (at==null) ? null : at;
+  openModal(`<button class="btn sm ghost x" data-close>✕</button>
+    <h3 style="margin:0 0 4px">‘${esc(s.name)}’에 자세 추가</h3>
+    <div id="pkWhere" style="font-size:13px;color:var(--accent);margin-bottom:8px"></div>
+    <input class="search" id="pkQ" placeholder="검색" style="width:100%">
+    <div class="chips" id="pkCats" style="margin-top:8px"></div>
+    <div class="picker" id="pkGrid"></div>
+    <div style="font-size:12.5px;color:var(--soft);margin-top:8px">여러 개를 연달아 누르면 누른 순서대로 들어갑니다.</div>`);
+  const where=()=>{ const A=s.steps; let m;
+    if(pos==null||pos>=A.length) m="📍 넣을 위치: 맨 끝";
+    else if(pos===0) m=`📍 넣을 위치: 맨 앞 (${PMAP[A[0].pose]?.kr||""} 앞)`;
+    else m=`📍 넣을 위치: ${pos}번 ${PMAP[A[pos-1].pose]?.kr||""} 다음 → ${PMAP[A[pos].pose]?.kr||""} 앞`;
+    $("#pkWhere").textContent=m; };
+  where();
+  let cat="전체";
+  const draw=()=>{
+    $("#pkCats").innerHTML=CATS.map(c=>`<button class="chip ${c===cat?"on":""}" data-c="${c}">${c}</button>`).join("");
+    const q=norm($("#pkQ").value);
+    $("#pkGrid").innerHTML=POSES.filter(p=>(cat==="전체"||p.cat===cat)&&(!q||norm([p.kr,p.sa,p.ko,p.en].join(" ")).includes(q)))
+      .map(p=>`<button class="pick" data-p="${p.id}">${figSVG(p)}<b>${esc(p.kr)}</b>${esc(p.sa)}<br><span style="color:var(--soft)">${esc(p.ko)}</span></button>`).join("");
+  };
+  draw();
+  $("#pkQ").oninput=draw; $("#pkQ").focus();
+  $("#pkCats").onclick=e=>{const b=e.target.closest("[data-c]"); if(b){cat=b.dataset.c; draw();}};
+  $("#pkGrid").onclick=e=>{const b=e.target.closest("[data-p]"); if(!b)return;
+    const n = pos==null ? s.steps.length+1 : pos+1;
+    addStep(s,b.dataset.p,pos); if(pos!=null) pos++;
+    toast(`${PMAP[b.dataset.p].kr} → ${n}번째에 추가`); where();};
+}
+
+/* ---------- 수련 모드 ---------- */
+let pr=null;
+function startPractice(s){ pr={s, i:0, left:0, total:0, playing:false, tick:null}; loadStep(); $("#practice").classList.add("on"); $("#prTitle").textContent=s.name; }
+function loadStep(){
+  const st=pr.s.steps[pr.i], p=PMAP[st.pose], nx=pr.s.steps[pr.i+1];
+  pr.total=pr.left=stepSecs(st,+$("#prBreath").value);
+  $("#prPos").textContent=`${pr.i+1} / ${pr.s.steps.length}`;
+  $("#prMain").innerHTML=`${figSVG(p)}
+    <div class="kr" style="font-size:26px">${esc(p.kr)}</div>
+    <div class="sa">${esc(p.sa)} <span class="dev">${esc(p.dev)}</span></div>
+    <div class="ko">${esc(p.ko)} <span class="en">· ${esc(p.en)}</span></div>
+    ${st.note?`<div class="pr-note">${esc(st.note)}</div>`:""}
+    <div class="pr-timer" id="prT"></div>
+    <div class="pr-bar"><i id="prB"></i></div>
+    <div class="pr-next">${nx?`다음: ${esc(full(PMAP[nx.pose]))}`:"마지막 자세"}</div>`;
+  paintT();
+}
+function paintT(){ const t=Math.max(0,Math.ceil(pr.left)); const bs=+$("#prBreath").value; const st=pr.s.steps[pr.i];
+  $("#prT").textContent = st.unit==="b" ? `${Math.ceil(pr.left/bs)} 호흡` : `${Math.floor(t/60)}:${String(t%60).padStart(2,"0")}`;
+  $("#prB").style.width = (pr.total? (1-pr.left/pr.total)*100 : 0)+"%"; }
+function play(on){ pr.playing=on; $("#prPlay").textContent=on?"❚❚ 일시정지":"▶ 시작"; clearInterval(pr.tick);
+  if(on) pr.tick=setInterval(()=>{ pr.left-=0.25; if(pr.left<=0){ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } else { play(false); pr.left=0; paintT(); $("#prMain").insertAdjacentHTML("beforeend",`<div class="pr-note" style="font-size:18px">🙏 수련 완료. Om śānti.</div><button class="btn pri" id="prJournal" style="margin-top:8px">📝 오늘 수련 일지 쓰기</button>`); const sid=pr.s.id; $("#prJournal").onclick=()=>{ stopPractice(); openJournal(sid); }; } } else paintT(); },250); }
+function stopPractice(){ if(pr){ clearInterval(pr.tick); } pr=null; $("#practice").classList.remove("on"); }
+$("#prPlay").onclick=()=>play(!pr.playing);
+$("#prPrev").onclick=()=>{ if(pr.i>0){ pr.i--; loadStep(); } };
+$("#prNextBtn").onclick=()=>{ if(pr.i<pr.s.steps.length-1){ pr.i++; loadStep(); } };
+$("#prClose").onclick=stopPractice;
+$("#prBreath").onchange=()=>{ if(pr) loadStep(); renderSeqList(); };
+
+/* ---------- 수련 일지 ---------- */
+let jType="feel", jFilter="all", jEditId=null;
+const today=()=>{ const d=new Date(); return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10); };
+const JT={feel:"💭 느낀 점",teacher:"🧘 선생님 말씀"};
+const WD=["일","월","화","수","목","금","토"];
+function fmtDay(s){ const d=new Date(s+"T00:00:00"); return isNaN(d)? s : `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} (${WD[d.getDay()]})`; }
+function setJType(t){ jType=t; document.querySelectorAll("#jType .chip").forEach(c=>c.classList.toggle("on",c.dataset.t===t)); }
+function fillSeqSelect(sel){ $("#jSeq").innerHTML=`<option value="">시퀀스 (선택)</option>`+seqs.map(s=>`<option value="${s.id}">${esc(s.name||"이름 없는 시퀀스")}</option>`).join(""); $("#jSeq").value=sel||""; }
+function resetJForm(){ jEditId=null; $("#jForm").classList.remove("editing"); $("#jEditing").textContent=""; $("#jCancel").hidden=true; $("#jSave").textContent="저장"; $("#jText").value=""; $("#jDate").value=today(); }
+function openJournal(seqId){ resetJForm(); fillSeqSelect(seqId||""); $("#drawer").classList.add("on"); renderJournal(); setTimeout(()=>$("#jText").focus(),50); }
+function closeJournal(){ $("#drawer").classList.remove("on"); }
+$("#jOpen").onclick=()=>openJournal("");
+$("#jClose").onclick=closeJournal;
+$("#drawer").onclick=e=>{ if(e.target.id==="drawer") closeJournal(); };
+$("#jType").onclick=e=>{ const b=e.target.closest("[data-t]"); if(b) setJType(b.dataset.t); };
+$("#jFilter").onclick=e=>{ const b=e.target.closest("[data-f]"); if(!b) return; jFilter=b.dataset.f; document.querySelectorAll("#jFilter .chip").forEach(c=>c.classList.toggle("on",c===b)); renderJournal(); };
+$("#jSearch").oninput=renderJournal;
+$("#jCancel").onclick=resetJForm;
+let jBusy=false;
+$("#jForm").onsubmit=async e=>{
+  e.preventDefault(); if(jBusy) return;
+  const text=$("#jText").value.trim(); if(!text){ $("#jText").focus(); return; }
+  const seqId=$("#jSeq").value, seqName=seqId?(getSeq(seqId)?.name||""):"";
+  const isNew=!jEditId, id=jEditId||uid();
+  const prev=journal.find(j=>j.id===id);
+  const entry={date:$("#jDate").value||today(), type:jType, text, seqId, seqName, created:prev?.created||Date.now(), updated:Date.now()};
+  if(prev) Object.assign(prev,entry); else journal.push({id,...entry});
+  renderJournal(); resetJForm(); toast(isNew?"일지를 저장했어요":"일지를 고쳤어요");
+  if(storeMode!=="db"){ lsSave(); return; }
+  jBusy=true;
+  try{ await db.doc("journal/"+id).set(entry); }catch(err){ toast(err&&err.code==="quota_exceeded"?"저장 공간이 가득 찼어요":"저장하지 못했어요. 다시 시도해 주세요."); }
+  jBusy=false;
+};
+function renderJournal(){
+  $("#jCount").textContent=journal.length;
+  if(!$("#drawer").classList.contains("on")) return;
+  const q=norm($("#jSearch").value.trim());
+  const list=journal.filter(j=>(jFilter==="all"||j.type===jFilter)&&(!q||norm(j.text+" "+(j.seqName||"")).includes(q)))
+    .sort((a,b)=> (b.date||"").localeCompare(a.date||"") || (b.created||0)-(a.created||0));
+  if(!list.length){ $("#jList").innerHTML=`<div class="empty">${journal.length?"조건에 맞는 기록이 없어요.":(PUBLIC?"아직 공개된 기록이 없어요.":"아직 기록이 없어요. 오늘 수련의 느낌을 남겨 보세요.")}</div>`; return; }
+  let html="", last="";
+  for(const j of list){
+    if(j.date!==last){ html+=`<div class="jday">${esc(fmtDay(j.date))}</div>`; last=j.date; }
+    const sname = j.seqId&&getSeq(j.seqId) ? getSeq(j.seqId).name : j.seqName;
+    html+=`<div class="jentry ${j.type}" data-j="${j.id}">
+      <div class="jmeta"><span class="jbadge ${j.type}">${JT[j.type]||""}</span>${sname?`<span>· ${esc(sname)}</span>`:""}
+        <span class="jacts"><button class="icon" data-ja="edit" title="고치기">✎</button><button class="icon" data-ja="del" title="삭제">✕</button></span></div>
+      <div class="jtext">${esc(j.text)}</div><div class="jconf"></div></div>`;
+  }
+  $("#jList").innerHTML=html;
+}
+$("#jList").onclick=e=>{
+  const b=e.target.closest("[data-ja]"); if(!b) return;
+  const box=b.closest("[data-j]"), j=journal.find(x=>x.id===box.dataset.j); if(!j) return;
+  if(b.dataset.ja==="edit"){
+    jEditId=j.id; $("#jDate").value=j.date; setJType(j.type); fillSeqSelect(j.seqId); $("#jText").value=j.text;
+    $("#jForm").classList.add("editing"); $("#jEditing").textContent="✎ 기록을 고치는 중"; $("#jCancel").hidden=false; $("#jSave").textContent="고친 내용 저장";
+    $("#drawer .dpanel").scrollTop=0; $("#jText").focus();
+  } else {
+    box.querySelector(".jconf").innerHTML=`<div class="confirm">이 기록을 삭제할까요? <button class="btn sm danger" data-yes>삭제</button><button class="btn sm" data-no>취소</button></div>`;
+    box.querySelector("[data-no]").onclick=ev=>{ ev.stopPropagation(); box.querySelector(".jconf").innerHTML=""; };
+    box.querySelector("[data-yes]").onclick=async ev=>{ ev.stopPropagation();
+      journal=journal.filter(x=>x.id!==j.id); if(jEditId===j.id) resetJForm(); renderJournal(); toast("삭제했어요");
+      if(storeMode!=="db"){ lsSave(); return; }
+      try{ await db.doc("journal/"+j.id).delete(); }catch(err){ toast("삭제하지 못했어요"); } };
+  }
+};
+$("#jDate").value=today();
+
+/* ---------- 시작 ---------- */
+renderChips(); renderAsanas(); renderRoots(); renderTerms(); renderSeq();
+initStore();
+</script>
+</body>
+</html>
